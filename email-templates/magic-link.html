@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<title>Sign in to yepgent</title>
+<style>
+  @media (max-width: 600px) {
+    .card { width: 100% !important; padding: 28px 22px !important; border-radius: 0 !important; border-left: none !important; border-right: none !important; }
+    .h1   { font-size: 22px !important; }
+  }
+</style>
+</head>
+<body style="margin:0;padding:0;background:#0e0f12;color:#e8e8ea;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+<div style="display:none;font-size:1px;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden;mso-hide:all;">Your one-time sign-in link for yepgent.</div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#0e0f12;">
+  <tr><td align="center" style="padding:48px 16px;">
+    <table role="presentation" class="card" width="560" cellpadding="0" cellspacing="0" border="0" style="background:#16181c;border:1px solid #1f2127;border-radius:14px;width:560px;max-width:560px;">
+      <tr><td style="padding:36px 40px 0 40px;">
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td valign="middle" style="padding-right:10px;font-size:24px;line-height:1;">&#127793;</td>
+            <td valign="middle" style="font-weight:600;font-size:17px;letter-spacing:.2px;color:#e8e8ea;">yepgent</td>
+          </tr>
+        </table>
+      </td></tr>
+      <tr><td style="padding:24px 40px 0 40px;">
+        <h1 class="h1" style="margin:0 0 12px 0;font-weight:600;font-size:26px;line-height:1.25;color:#e8e8ea;">Sign in to yepgent</h1>
+        <p style="margin:0 0 26px 0;font-size:15px;line-height:1.6;color:#b6b8be;">Click below to sign in. No password &mdash; this link is unique to you and works once.</p>
+      </td></tr>
+      <tr><td align="left" style="padding:0 40px 8px 40px;">
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+          <tr><td bgcolor="#7cf5c4" style="border-radius:10px;">
+            <a href="{{ .ConfirmationURL }}" style="display:inline-block;padding:14px 28px;font-weight:600;font-size:15px;color:#0e0f12;text-decoration:none;border-radius:10px;letter-spacing:.2px;">Sign in &rarr;</a>
+          </td></tr>
+        </table>
+      </td></tr>
+      <tr><td style="padding:24px 40px 0 40px;">
+        <p style="margin:0 0 8px 0;font-size:13px;line-height:1.55;color:#8a8c92;">Or paste this link into your browser:</p>
+        <p style="margin:0 0 24px 0;font-size:12px;line-height:1.55;word-break:break-all;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;"><a href="{{ .ConfirmationURL }}" style="color:#7cf5c4;text-decoration:none;">{{ .ConfirmationURL }}</a></p>
+      </td></tr>
+      <tr><td style="padding:0 40px 32px 40px;">
+        <hr style="border:none;border-top:1px solid #1f2127;margin:8px 0 20px 0;">
+        <p style="margin:0;font-size:12px;line-height:1.55;color:#8a8c92;">If you didn&rsquo;t request a sign-in, ignore this email &mdash; the link expires in 1 hour and works only once.</p>
+      </td></tr>
+    </table>
+    <table role="presentation" width="560" cellpadding="0" cellspacing="0" border="0" style="width:560px;max-width:560px;">
+      <tr><td align="center" style="padding:18px 16px 0 16px;">
+        <p style="margin:0;font-size:12px;line-height:1.55;color:#8a8c92;"><a href="https://yepgent.com" style="color:#8a8c92;text-decoration:none;">yepgent.com</a> &nbsp;&middot;&nbsp; <a href="https://yepgent.com/.well-known/yepgent.json" style="color:#8a8c92;text-decoration:none;">manifest</a> &nbsp;&middot;&nbsp; <a href="https://yepgent.com/account/" style="color:#8a8c92;text-decoration:none;">account</a></p>
+        <p style="margin:8px 0 0 0;font-size:12px;line-height:1.55;color:#5d6066;">Yep, an agent that grows.</p>
+      </td></tr>
+    </table>
+  </td></tr>
+</table>
+</body>
+</html>
