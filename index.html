@@ -57,6 +57,12 @@
       <form id="subscribe-form" class="subscribe-form" novalidate>
         <label class="vh" for="email">Email</label>
         <input type="email" name="email" id="email" required placeholder="you@example.com" autocomplete="email" />
+        <!-- Honeypot: real users never see/fill this; bots that auto-fill
+             every input give themselves away. Server silently drops on hit. -->
+        <div class="honeypot" aria-hidden="true">
+          <label for="bot_field">Leave this field empty</label>
+          <input type="text" name="bot_field" id="bot_field" tabindex="-1" autocomplete="off" />
+        </div>
         <button type="submit">Subscribe</button>
       </form>
       <p id="subscribe-msg" class="note"></p>
@@ -124,10 +130,11 @@
         msg.textContent = 'Sending…';
         msg.dataset.kind = 'pending';
         try {
+          const botField = (form.bot_field && form.bot_field.value) || '';
           const res = await fetch('/api/subscribe', {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({ email })
+            body: JSON.stringify({ email, bot_field: botField })
           });
           const data = await res.json().catch(() => ({}));
           if (!res.ok || !data.ok) {
