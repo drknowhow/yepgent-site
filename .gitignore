@@ -2,3 +2,5 @@
 Thumbs.db
 .netlify/
 node_modules/
+_*.py
+
