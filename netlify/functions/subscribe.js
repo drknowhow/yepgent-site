@@ -27,6 +27,15 @@ export default async (req, _context) => {
     return json({ error: 'invalid_json' }, { status: 400 });
   }
 
+  // Honeypot: real users can't see the bot_field input; bots that
+  // auto-fill every input populate it. Reply with a 200 success
+  // shape so the bot doesn't retry or learn — but never write a row.
+  const botField = (body?.bot_field || '').trim();
+  if (botField) {
+    console.warn('[subscribe] honeypot tripped, dropping submission');
+    return json({ ok: true, status: 'subscribed' });
+  }
+
   const email = clamp((body?.email || '').trim(), 320);
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return json({ error: 'invalid_email' }, { status: 400 });

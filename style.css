@@ -306,6 +306,19 @@ button.ghost:hover { color: var(--fg); border-color: var(--fg); }
   white-space: nowrap; border: 0;
 }
 
+/* Honeypot: hidden from humans (off-screen + no pointer events + no tab
+   stop). Bots that auto-fill every named input populate it; the server
+   silently drops those submissions. Not display:none — some bots skip
+   that as a tell. */
+.honeypot {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  pointer-events: none;
+}
+
 /* Agents section (home) ------------------------------------- */
 .agents-section { margin-top: 1rem; }
 ul.agent-grid {
