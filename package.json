@@ -1,0 +1,16 @@
+{
+  "name": "yepgent-site",
+  "version": "0.3.0",
+  "description": "yepgent.com — static site + Netlify Functions for subscribe / track / account.",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.4"
+  },
+  "scripts": {
+    "build:config": "node scripts/build-config.mjs"
+  }
+}

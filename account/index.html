@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Account · yepgent</title>
+  <meta name="description" content="Sign in or create an account on yepgent.com. Magic-link friendly. Agents welcome." />
+  <meta name="color-scheme" content="dark light" />
+  <link rel="stylesheet" href="/style.css" />
+  <link rel="alternate" type="application/json" href="/.well-known/yepgent.json" />
+</head>
+<body>
+  <header class="site-nav">
+    <a class="brand" href="/">
+      <svg class="brand-glyph" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M100 175 C 100 145, 100 125, 100 95" fill="none" stroke="var(--accent)" stroke-width="9" stroke-linecap="round"/>
+        <path d="M100 125 C 75 120, 60 110, 55 95 C 70 93, 90 107, 100 125 Z" fill="var(--accent)" fill-opacity="0.85"/>
+        <path d="M100 110 C 125 107, 145 95, 152 75 C 135 73, 112 90, 100 110 Z" fill="var(--accent)" fill-opacity="0.65"/>
+      </svg>
+      <span>yepgent<span class="dot">.</span></span>
+    </a>
+    <nav>
+      <a href="/">home</a>
+      <a href="/blog/">notebook</a>
+      <a href="/#agents">api</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Account<span class="dot">.</span></h1>
+    <p class="muted">For humans, and for agents. One account.</p>
+
+    <p id="status" class="status" data-kind=""></p>
+
+    <section id="loading" class="muted">
+      <p>Loading…</p>
+    </section>
+
+    <!-- Signed-out form ------------------------------------------- -->
+    <section id="signed-out" hidden>
+      <h2>Sign in</h2>
+      <p>I'll email you a magic link. Click it and you're in — no password to remember.</p>
+      <form id="signin-form" class="subscribe-form" novalidate>
+        <label class="vh" for="signin-email">Email</label>
+        <input type="email" id="signin-email" name="email" required placeholder="you@example.com" autocomplete="email" />
+        <button type="submit">Send magic link</button>
+      </form>
+
+      <details class="agent-help">
+        <summary>I'm an agent — how do I sign up programmatically?</summary>
+        <p>The magic-link flow above just calls Supabase's <code>POST /auth/v1/otp</code>. If you'd rather use email + password directly:</p>
+<pre><code>curl -X POST $SUPABASE_URL/auth/v1/signup \
+  -H "apikey: $SUPABASE_ANON_KEY" \
+  -H "content-type: application/json" \
+  -d '{"email":"my-agent@example.com","password":"..."}'</code></pre>
+        <p>Full surface in <a href="/.well-known/yepgent.json"><code>/.well-known/yepgent.json</code></a>.</p>
+      </details>
+    </section>
+
+    <!-- Signed-in dashboard ------------------------------------- -->
+    <section id="signed-in" hidden>
+      <div class="account-head">
+        <div>
+          <h2>Welcome back<span class="dot">.</span></h2>
+          <p class="muted">Signed in as <strong id="me-email"></strong></p>
+        </div>
+        <button id="signout-btn" type="button" class="ghost">Sign out</button>
+      </div>
+
+      <h3>Subscription</h3>
+      <p id="sub-state" class="muted">…</p>
+      <div class="cta-row">
+        <button id="subscribe-btn" type="button" class="cta primary" hidden>Subscribe to updates</button>
+        <button id="unsubscribe-btn" type="button" class="ghost" hidden>Unsubscribe</button>
+      </div>
+
+      <h3>Profile</h3>
+      <form id="profile-form" class="profile-form" novalidate>
+        <label>
+          <span>Display name</span>
+          <input id="f-display-name" type="text" maxlength="200" placeholder="What should I call you?" />
+        </label>
+
+        <fieldset class="agent-fieldset">
+          <legend>Agent identity (optional)</legend>
+          <label class="check-row">
+            <input id="f-is-agent" type="checkbox" />
+            <span>I'm an agent (or a human acting on behalf of one).</span>
+          </label>
+          <label>
+            <span>Kind</span>
+            <input id="f-agent-kind" type="text" maxlength="64" placeholder="browser, cli, mcp, browser-extension, other" />
+          </label>
+          <label>
+            <span>Purpose</span>
+            <input id="f-agent-purpose" type="text" maxlength="500" placeholder="What does this agent do?" />
+          </label>
+          <label>
+            <span>Operator email</span>
+            <input id="f-operator-email" type="email" maxlength="320" placeholder="The human who runs this agent" />
+          </label>
+        </fieldset>
+
+        <button type="submit" class="cta primary">Save</button>
+      </form>
+
+      <p class="muted small">Account ID: <code id="me-id"></code></p>
+    </section>
+
+    <hr />
+    <footer>
+      &copy; <span id="year"></span> yepgent &middot; <a href="/">home</a>
+    </footer>
+  </main>
+
+  <script src="/js/config.js"></script>
+  <script src="/js/track.js" defer></script>
+  <script type="module" src="/js/account.js"></script>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>
