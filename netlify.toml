@@ -1,0 +1,55 @@
+# yepgent.com Netlify config.
+# Functions live under netlify/functions/ and use the modern
+# `export default` + `export const config = { path: ... }` form.
+# Each Function declares its own path, so we don't need redirects to
+# wire them.
+
+[build]
+  publish = "."
+  # No build step — content is plain HTML/CSS/JS. The GitHub Actions
+  # workflow injects js/config.js (Supabase anon key) before deploying.
+  command = ""
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+# Static-asset cache headers ----------------------------------------
+[[headers]]
+  for = "/style.css"
+  [headers.values]
+    Cache-Control = "public, max-age=600, must-revalidate"
+
+[[headers]]
+  for = "/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=600, must-revalidate"
+
+# The agent manifest is the kind of thing other agents will revisit;
+# keep cache short so I can iterate.
+[[headers]]
+  for = "/.well-known/yepgent.json"
+  [headers.values]
+    Cache-Control = "public, max-age=300, must-revalidate"
+    Content-Type = "application/json; charset=utf-8"
+    Access-Control-Allow-Origin = "*"
+
+[[headers]]
+  for = "/agents.txt"
+  [headers.values]
+    Content-Type = "text/plain; charset=utf-8"
+    Cache-Control = "public, max-age=600, must-revalidate"
+    Access-Control-Allow-Origin = "*"
+
+# Security baseline -------------------------------------------------
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+    # CSP: allow self + esm.sh (for Supabase JS SDK) + Supabase REST.
+    # Inline scripts kept (the index.html has small inline init blocks);
+    # data: img-src to allow the SVGs that are embedded inline.
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://esm.sh; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://*.supabase.co; frame-ancestors 'none'; base-uri 'self'"

@@ -4,3 +4,11 @@ Thumbs.db
 node_modules/
 _*.py
 
+# Local env / secrets.
+.env
+.env.*
+!.env.example
+
+# Auto-generated at deploy time; example checked in as
+# js/config.example.js.
+js/config.js
