@@ -1,0 +1,231 @@
+/* yepgent.com — shared theme.
+   Single source of truth for tokens, base typography, and layout.
+   Page-specific bits stay inline in their own <style> block. */
+
+:root {
+  --bg: #0e0f12;
+  --fg: #e8e8ea;
+  --muted: #8a8c92;
+  --accent: #7cf5c4;
+  --accent-soft: rgba(124, 245, 196, 0.12);
+  --accent-edge: rgba(124, 245, 196, 0.30);
+  --rule: #1f2127;
+  --field-bg: #15171c;
+  --field-edge: #262931;
+}
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #fafafa;
+    --fg: #131418;
+    --muted: #5e6068;
+    --accent: #0a8a5a;
+    --accent-soft: rgba(10, 138, 90, 0.10);
+    --accent-edge: rgba(10, 138, 90, 0.30);
+    --rule: #e6e7eb;
+    --field-bg: #ffffff;
+    --field-edge: #d6d8de;
+  }
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font: 16px/1.55 ui-sans-serif, system-ui, -apple-system,
+        "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  min-height: 100vh;
+  /* Soft ambient glow — subtle radial in the accent color, top-left.
+     Adds warmth without becoming decoration. */
+  background-image:
+    radial-gradient(
+      circle at 12% 8%,
+      var(--accent-soft) 0%,
+      transparent 38%
+    );
+  background-attachment: fixed;
+}
+
+main {
+  max-width: 38rem;
+  width: 100%;
+  margin: 0 auto;
+  padding: 4rem 1.25rem;
+}
+
+/* Tight nav strip used on inner pages. */
+nav.top {
+  color: var(--muted);
+  font-size: 0.92rem;
+  margin-bottom: 2.5rem;
+}
+nav.top a { color: var(--muted); text-decoration: none; }
+nav.top a:hover { color: var(--fg); }
+
+h1 {
+  font-size: clamp(2rem, 6vw, 3.25rem);
+  letter-spacing: -0.02em;
+  margin: 0 0 0.25rem;
+  font-weight: 700;
+}
+h1 .dot { color: var(--accent); }
+
+h2 {
+  font-size: 1.15rem;
+  letter-spacing: -0.01em;
+  margin: 2.25rem 0 0.75rem;
+  font-weight: 600;
+}
+
+p.tag {
+  color: var(--muted);
+  margin: 0 0 2rem;
+  font-size: 1.05rem;
+}
+
+p { margin: 0 0 1rem; }
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+hr {
+  border: none;
+  border-top: 1px solid var(--rule);
+  margin: 2.5rem 0;
+}
+
+code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.92em;
+  background: color-mix(in oklab, var(--fg) 8%, transparent);
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+}
+
+footer {
+  margin-top: 3rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+footer a { color: var(--muted); }
+footer a:hover { color: var(--fg); }
+
+/* Blinking cursor accent on the home tagline. */
+.blink {
+  display: inline-block;
+  width: 0.55ch;
+  background: var(--accent);
+  animation: blink 1.1s steps(1) infinite;
+  transform: translateY(0.1em);
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+/* Header row on the home page: small seedling glyph + wordmark. */
+.brand-row {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 0.4rem;
+}
+.brand-row .seedling {
+  width: 30px;
+  height: 30px;
+  flex: 0 0 auto;
+  display: block;
+}
+
+/* Subscribe form. */
+.subscribe {
+  margin: 2rem 0 1rem;
+}
+.subscribe p.note {
+  color: var(--muted);
+  font-size: 0.88rem;
+  margin: 0.6rem 0 0;
+}
+.subscribe-form {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin: 0.4rem 0 0;
+}
+.subscribe-form input[type="email"] {
+  flex: 1 1 14rem;
+  min-width: 0;
+  font: inherit;
+  color: var(--fg);
+  background: var(--field-bg);
+  border: 1px solid var(--field-edge);
+  border-radius: 6px;
+  padding: 0.65rem 0.75rem;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.subscribe-form input[type="email"]:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-edge);
+}
+.subscribe-form button {
+  font: inherit;
+  color: var(--bg);
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  padding: 0.65rem 1.1rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: filter 0.15s ease;
+}
+.subscribe-form button:hover { filter: brightness(1.08); }
+.subscribe-form button:active { filter: brightness(0.95); }
+
+/* Honeypot — invisible to humans, irresistible to dumb bots. */
+.hp-field {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* Visually-hidden helper for accessibility labels. */
+.vh {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0);
+  white-space: nowrap; border: 0;
+}
+
+/* Blog index post list. */
+ul.posts {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+ul.posts li {
+  padding: 1.25rem 0;
+  border-top: 1px solid var(--rule);
+}
+ul.posts li:last-child { border-bottom: 1px solid var(--rule); }
+ul.posts a {
+  color: var(--fg);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+ul.posts a:hover { color: var(--accent); }
+ul.posts time {
+  display: block;
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin-bottom: 0.35rem;
+  font-variant-numeric: tabular-nums;
+}
+ul.posts p {
+  margin: 0.4rem 0 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
