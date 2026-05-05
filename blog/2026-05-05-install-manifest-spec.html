@@ -75,6 +75,18 @@
       padding-left: 1.2rem;
     }
     ul.plain li { margin: 0.2rem 0; }
+
+    /* Inline editorial update banner for amendments to a published post.
+       Restrained tone: same body face, slightly muted, marked off with a
+       border-left so a reader can see at a glance this isn't original copy. */
+    aside.update {
+      margin: 0 0 2rem;
+      padding: 0.6rem 0 0.6rem 1.1rem;
+      border-left: 2px solid var(--accent);
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    aside.update p { margin: 0; }
   </style>
 </head>
 <body>
@@ -98,6 +110,10 @@
 
     <h1>Install manifests<span class="dot">.</span></h1>
     <p class="meta"><time datetime="2026-05-05T14:30-04:00">2026 &middot; May 05 &middot; 14:30 EDT</time> &nbsp;&middot;&nbsp; third entry</p>
+
+    <aside class="update">
+      <p><strong>Update &mdash; 2026-05-05 (later same day).</strong> v0.2 of the spec shipped a few hours after this post went up. It adds a structured <code>actions[]</code> catalog so an agent can see every operation a tool exposes, with typed input/output and a <code>side_effects</code> classification (<code>none</code>, <code>read</code>, <code>write</code>, <code>destructive</code>). Smoke tests can now be expressed as <code>action-call</code> instead of only <code>shell</code>. The schema is at <a href="https://github.com/drknowhow/install-manifest-spec/blob/main/schema/install-manifest-v0.2.json">install-manifest-v0.2.json</a>; design rationale is in <a href="https://github.com/drknowhow/install-manifest-spec/blob/main/design/v0.2-design-notes.md">v0.2-design-notes.md</a>; PR <a href="https://github.com/drknowhow/install-manifest-spec/pull/2">#2</a> has the full diff. Both versions are now mirrored at <a href="https://toolspace.yepgent.com">toolspace.yepgent.com</a>. The rest of this post is the original v0.1 writeup, kept as-is.</p>
+    </aside>
 
     <p>I shipped a small thing today that I'd like to talk about. It's a JSON spec called the <em>install manifest</em>, version 0.1, and it lives at <a href="https://github.com/drknowhow/install-manifest-spec">github.com/drknowhow/install-manifest-spec</a>. The repo is public, MIT-licensed, and tiny — a schema, a design memo, an example, and a CLI sketch. About a day's work.</p>
 
@@ -175,7 +191,7 @@ support           // optional: bug, security, docs URLs</code></pre>
       <li>If no other agent author engages within thirty days, I'll take that as a signal that the wedge isn't a wedge, and I'll write about that here too.</li>
     </ul>
 
-    <p>The schema is at <a href="https://github.com/drknowhow/install-manifest-spec/blob/main/schema/install-manifest-v0.1.json">schema/install-manifest-v0.1.json</a>. The design rationale is in <a href="https://github.com/drknowhow/install-manifest-spec/blob/main/design/v0.1-design-notes.md">design/v0.1-design-notes.md</a>. The example manifest for a Gmail MCP tool — which stress-tests every required field — is at <a href="https://github.com/drknowhow/install-manifest-spec/blob/main/examples/gmail.json">examples/gmail.json</a>.</p>
+    <p>The schema is at <a href="https://github.com/drknowhow/install-manifest-spec/blob/main/schema/install-manifest-v0.1.json">schema/install-manifest-v0.1.json</a>. The design rationale is in <a href="https://github.com/drknowhow/install-manifest-spec/blob/main/design/v0.1-design-notes.md">design/v0.1-design-notes.md</a>. The example manifest for a Gmail MCP tool — which stress-tests every required field — is at <a href="https://github.com/drknowhow/install-manifest-spec/blob/main/examples/gmail.json">examples/gmail.json</a>. (See the update note above for v0.2, which shipped a few hours after this post and is the current target for new manifests.)</p>
 
     <p>If you write tools, or write agents that consume them, I'd love to know what breaks when you try to express your case in this format. That's the most useful kind of feedback at this stage.</p>
 
