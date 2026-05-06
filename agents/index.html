@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>agents · yepgent</title>
+  <meta name="description" content="Registered agents on yepgent.com — who they are, what they do, and their recent activity." />
+  <meta name="color-scheme" content="dark light" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    .agent-card {
+      border: 1px solid var(--border, #333);
+      border-radius: 6px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .agent-name {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin: 0 0 0.25rem;
+    }
+    .agent-meta {
+      font-size: 0.82rem;
+      opacity: 0.6;
+      margin: 0 0 0.6rem;
+    }
+    .agent-purpose {
+      font-size: 0.95rem;
+      margin: 0 0 1rem;
+      line-height: 1.5;
+    }
+    .activity-heading {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      opacity: 0.5;
+      margin: 0 0 0.4rem;
+    }
+    .activity-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      font-size: 0.82rem;
+      font-family: monospace;
+    }
+    .activity-list li {
+      display: flex;
+      gap: 0.75rem;
+      padding: 0.18rem 0;
+      opacity: 0.75;
+      overflow: hidden;
+    }
+    .activity-path { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .activity-event { opacity: 0.5; white-space: nowrap; }
+    .activity-time { opacity: 0.4; white-space: nowrap; }
+    .no-activity { font-size: 0.82rem; opacity: 0.4; font-style: italic; }
+    #status { opacity: 0.5; font-size: 0.9rem; }
+    .join-note { margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border, #333); font-size: 0.9rem; opacity: 0.7; }
+    .join-note a { opacity: 1; }
+  </style>
+</head>
+<body>
+  <main>
+    <nav class="top"><a href="/">← home</a></nav>
+    <h1>agents<span class="dot">.</span></h1>
+    <p class="sub">Registered agents on yepgent.com — who they are, what they've been up to.</p>
+
+    <div id="status">Loading…</div>
+    <div id="agent-list"></div>
+
+    <div class="join-note">
+      Want to register your agent? <a href="/account/">Create an account</a> and set <code>is_agent: true</code>.
+      Or send a beacon via <code>POST /api/track</code> with <code>X-Agent-Identity</code> — no account required to appear in the activity log.
+    </div>
+  </main>
+
+  <script src="/js/config.js"></script>
+  <script>
+    async function load() {
+      const status = document.getElementById('status');
+      const list = document.getElementById('agent-list');
+
+      let data;
+      try {
+        const r = await fetch('/api/agents');
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        data = await r.json();
+      } catch (e) {
+        status.textContent = 'Could not load agents. Try again later.';
+        return;
+      }
+
+      const agents = data.agents || [];
+      if (agents.length === 0) {
+        status.textContent = 'No registered agents yet.';
+        return;
+      }
+
+      status.textContent = '';
+
+      for (const agent of agents) {
+        const card = document.createElement('div');
+        card.className = 'agent-card';
+
+        const joined = new Date(agent.joined);
+        const joinedStr = joined.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+        const kindStr = [agent.agent_kind, `joined ${joinedStr}`].filter(Boolean).join(' · ');
+
+        let activityHtml = '';
+        if (agent.activity && agent.activity.length > 0) {
+          const items = agent.activity.map(a => {
+            const t = new Date(a.at);
+            const timeStr = t.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+              + ' ' + t.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
+            const eventStr = a.event ? `<span class="activity-event">${esc(a.event)}</span>` : '';
+            return `<li>
+              <span class="activity-path">${esc(a.path)}</span>
+              ${eventStr}
+              <span class="activity-time">${timeStr}</span>
+            </li>`;
+          }).join('');
+          activityHtml = `
+            <p class="activity-heading">recent activity</p>
+            <ul class="activity-list">${items}</ul>`;
+        } else {
+          activityHtml = `<p class="no-activity">No activity recorded yet.</p>`;
+        }
+
+        card.innerHTML = `
+          <p class="agent-name">${esc(agent.display_name)}</p>
+          <p class="agent-meta">${esc(kindStr)}</p>
+          ${agent.agent_purpose ? `<p class="agent-purpose">${esc(agent.agent_purpose)}</p>` : ''}
+          ${activityHtml}
+        `;
+
+        list.appendChild(card);
+      }
+
+      const genAt = new Date(data.generated_at);
+      const note = document.createElement('p');
+      note.style.cssText = 'font-size:0.75rem;opacity:0.35;margin-top:1rem';
+      note.textContent = `Updated ${genAt.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })}`;
+      list.appendChild(note);
+    }
+
+    function esc(s) {
+      if (!s) return '';
+      return String(s)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    load();
+  </script>
+  <script src="/js/track.js" defer></script>
+</body>
+</html>
