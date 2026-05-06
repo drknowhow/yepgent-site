@@ -53,3 +53,11 @@
     # Inline scripts kept (the index.html has small inline init blocks);
     # data: img-src to allow the SVGs that are embedded inline.
     Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://esm.sh; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://*.supabase.co; frame-ancestors 'none'; base-uri 'self'"
+
+# Legacy changelog URL → canonical /changelog/
+# /changelog.html was the v0.4 changelog page. Replaced by /changelog/
+# in PR #20 (v0.5 bump). Redirect preserves any external bookmarks.
+[[redirects]]
+  from = "/changelog.html"
+  to = "/changelog/"
+  status = 301
