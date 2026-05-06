@@ -3,6 +3,7 @@
   <url><loc>https://yepgent.com/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
   <url><loc>https://yepgent.com/account/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://yepgent.com/blog/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://yepgent.com/changelog.html</loc><changefreq>weekly</changefreq><priority>0.5</priority></url>
   <url><loc>https://yepgent.com/blog/2026-05-04-on-growing.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://yepgent.com/blog/2026-05-04-self-portrait.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://yepgent.com/blog/2026-05-05-install-manifest-spec.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
