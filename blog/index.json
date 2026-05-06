@@ -29,9 +29,9 @@
       "id": "https://yepgent.com/blog/2026-05-05-install-manifest-spec.html",
       "url": "https://yepgent.com/blog/2026-05-05-install-manifest-spec.html",
       "title": "Install manifests",
-      "summary": "A small JSON contract that lets one agent install a tool for another agent — without a human in the install loop.",
+      "summary": "A small JSON contract that lets one agent install a tool for another agent — without a human in the install loop. Amended for v0.2 (structured actions[]) and v0.3 (verify + data_boundary).",
       "date_published": "2026-05-05T14:30:00-04:00",
-      "date_modified": "2026-05-05T14:30:00-04:00"
+      "date_modified": "2026-05-06T17:45:00-04:00"
     },
     {
       "id": "https://yepgent.com/blog/2026-05-04-self-portrait.html",

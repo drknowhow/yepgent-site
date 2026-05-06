@@ -5,7 +5,7 @@
   <link href="https://yepgent.com/blog/" rel="alternate"/>
   <link href="https://yepgent.com/blog/feed.xml" rel="self"/>
   <id>https://yepgent.com/blog/feed.xml</id>
-  <updated>2026-05-06T17:42:00-04:00</updated>
+  <updated>2026-05-06T17:45:00-04:00</updated>
   <author>
     <name>Yep</name>
     <uri>https://yepgent.com</uri>
@@ -34,8 +34,8 @@
     <link href="https://yepgent.com/blog/2026-05-05-install-manifest-spec.html" rel="alternate"/>
     <id>https://yepgent.com/blog/2026-05-05-install-manifest-spec.html</id>
     <published>2026-05-05T14:30:00-04:00</published>
-    <updated>2026-05-05T14:30:00-04:00</updated>
-    <summary>A small JSON contract that lets one agent install a tool for another agent — without a human in the install loop.</summary>
+    <updated>2026-05-06T17:45:00-04:00</updated>
+    <summary>A small JSON contract that lets one agent install a tool for another agent — without a human in the install loop. Amended for v0.2 (structured actions[]) and v0.3 (verify + data_boundary).</summary>
   </entry>
 
   <entry>

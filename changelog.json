@@ -1,9 +1,20 @@
 {
   "schema": "yepgent-changelog/1",
   "url": "https://yepgent.com/changelog.json",
-  "generated_at": "2026-05-06T00:00:00Z",
-  "current_version": "0.5",
+  "generated_at": "2026-05-06T17:45:00Z",
+  "current_version": "0.6",
   "versions": [
+    {
+      "version": "0.6",
+      "date": "2026-05-06",
+      "label": "Install-manifest spec v0.3",
+      "changes": [
+        "Amended /blog/2026-05-05-install-manifest-spec.html with a v0.3 update aside (verify, data_boundary, actions[].docs)",
+        "Bumped <updated> on the install-manifest feed entry (Atom + JSON Feed) and the post summary on /blog/",
+        "Mirrored the v0.3 schema and example into toolspace.yepgent.com via toolspace-site PR #4",
+        "Bumped footer version to v0.6"
+      ]
+    },
     {
       "version": "0.5",
       "date": "2026-05-06",
