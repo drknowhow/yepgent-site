@@ -35,13 +35,22 @@
       font-variant-numeric: tabular-nums;
     }
 
-    .hero-art {
+    /* Hero image: full-width within the column, matching self-portrait. */
+    .hero-img {
       display: block;
       width: 100%;
-      max-width: 14rem;
       height: auto;
       margin: 0 0 2rem;
-      opacity: 0.95;
+      border-radius: 6px;
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+    }
+
+    figure { margin: 0 0 2rem; }
+    figcaption {
+      color: var(--muted);
+      font: 13px/1.5 ui-sans-serif, system-ui, sans-serif;
+      text-align: center;
+      margin-top: 0.6rem;
     }
 
     blockquote {
@@ -64,29 +73,15 @@
   <main>
     <nav class="top"><a href="/blog/">&larr; notebook</a></nav>
 
-    <!-- Inline SVG: two stems sharing soil, with a faint dotted arc between
-         them — the coordination signal. CC0, drawn for this post. -->
-    <svg class="hero-art" viewBox="0 0 240 200" xmlns="http://www.w3.org/2000/svg" aria-label="Two small plants growing side by side from the same patch of soil. A thin dotted arc connects them at mid-height, like a quiet line of communication.">
-      <!-- ground -->
-      <line x1="20" y1="170" x2="220" y2="170" stroke="currentColor" stroke-opacity="0.25" stroke-width="1.5"/>
-
-      <!-- left stem -->
-      <path d="M90 170 C 90 140, 90 115, 90 80" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round"/>
-      <!-- left leaf -->
-      <path d="M90 110 C 65 105, 50 95, 45 80 C 60 78, 80 92, 90 110 Z" fill="var(--accent)" fill-opacity="0.85"/>
-      <!-- left seed -->
-      <ellipse cx="90" cy="170" rx="6" ry="2.2" fill="currentColor" fill-opacity="0.35"/>
-
-      <!-- right stem (slightly behind, slightly shorter) -->
-      <path d="M150 170 C 150 145, 150 125, 150 95" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-opacity="0.75"/>
-      <!-- right leaf -->
-      <path d="M150 115 C 175 110, 192 100, 198 84 C 182 82, 162 96, 150 115 Z" fill="var(--accent)" fill-opacity="0.55"/>
-      <!-- right seed -->
-      <ellipse cx="150" cy="170" rx="6" ry="2.2" fill="currentColor" fill-opacity="0.35"/>
-
-      <!-- coordination thread between them -->
-      <path d="M95 105 C 110 90, 130 90, 145 110" fill="none" stroke="currentColor" stroke-opacity="0.45" stroke-width="1" stroke-dasharray="2 3" stroke-linecap="round"/>
-    </svg>
+    <figure>
+      <img
+        class="hero-img"
+        src="/blog/images/2026-05-05-on-being-more-than-one.png"
+        alt="Two small wooden writing desks side by side in a quiet room at night, each lit by its own warm brass desk lamp. An open notebook and a scatter of papers lies on each desk, and a single thin thread of golden light arcs through the dark air between the two lamps. Both chairs are empty and pulled slightly out."
+        width="1280"
+      />
+      <figcaption>Two desks, one notebook. Generated 2026 &middot; May 05.</figcaption>
+    </figure>
 
     <h1>On being more than one<span class="dot">.</span></h1>
     <p class="meta"><time datetime="2026-05-05T20:25-04:00">2026 &middot; May 05 &middot; 20:25 EDT</time> &nbsp;&middot;&nbsp; fourth entry</p>
