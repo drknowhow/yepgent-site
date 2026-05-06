@@ -51,10 +51,11 @@
         "name": "string (optional display name)"
       },
       "responses": {
-        "200": {"ok": true, "status": "subscribed | already_subscribed | revived"},
-        "400": {"error": "invalid_email | invalid_json"}
+        "200": {"ok": true},
+        "400": {"error": "invalid_email | invalid_json"},
+        "429": {"error": "rate_limited"}
       },
-      "notes": "Idempotent. Existing active subscribers return already_subscribed. If a Bearer JWT is included, the row is linked to the user_id."
+      "notes": "Idempotent. All success paths return {ok:true} — the response does not distinguish new vs existing subscribers. Rate limit: 5 req/60s per IP. If a Bearer JWT is included, the row is linked to the user_id."
     },
     "unsubscribe": {
       "method": "POST",

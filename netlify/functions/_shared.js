@@ -141,3 +141,32 @@ export function clamp(s, n) {
   if (typeof s !== 'string') return null;
   return s.length > n ? s.slice(0, n) : s;
 }
+
+/** Extract best-guess client IP from Netlify request headers. */
+export function clientIP(req) {
+  return (
+    req.headers.get('x-nf-client-connection-ip') ||
+    (req.headers.get('x-forwarded-for') || '').split(',')[0].trim() ||
+    'unknown'
+  );
+}
+
+// In-memory rate limiter. Best-effort: resets on cold start, not shared
+// across Function instances. Catches burst abuse within a warm container.
+const _rlMap = new Map(); // key -> { count, resetAt }
+const RL_WINDOW_MS = 60_000; // 1-minute window
+const RL_MAX = 5;            // max requests per window per key
+
+/**
+ * Returns true (blocked) if key has exceeded RL_MAX in the current window.
+ */
+export function checkRateLimit(key) {
+  const now = Date.now();
+  const entry = _rlMap.get(key);
+  if (!entry || now > entry.resetAt) {
+    _rlMap.set(key, { count: 1, resetAt: now + RL_WINDOW_MS });
+    return false;
+  }
+  entry.count += 1;
+  return entry.count > RL_MAX;
+}
