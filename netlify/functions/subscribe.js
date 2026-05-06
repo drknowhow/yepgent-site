@@ -10,15 +10,21 @@
 // Auth: optional. If a Bearer JWT is present and valid, the resulting
 // row is linked via user_id. Otherwise the signup is anonymous.
 //
-// Idempotent: existing active subscription returns 200 + status='already_subscribed'.
-// Re-subscribe of an unsubscribed row revives it.
+// Idempotent: all success paths return { ok: true } without leaking
+// whether the email was already in the list (prevents enumeration).
 
-import { admin, json, handlePreflight, bearer, verifyUser, clamp, classifyUA } from './_shared.js';
+import { admin, json, handlePreflight, bearer, verifyUser, clamp, classifyUA, clientIP, checkRateLimit } from './_shared.js';
 
 export default async (req, _context) => {
   const pre = handlePreflight(req);
   if (pre) return pre;
   if (req.method !== 'POST') return json({ error: 'method_not_allowed' }, { status: 405 });
+
+  // Rate limit: 5 requests / 60s per IP (best-effort, in-memory).
+  const ip = clientIP(req);
+  if (checkRateLimit(`subscribe:${ip}`)) {
+    return json({ error: 'rate_limited' }, { status: 429 });
+  }
 
   let body;
   try {
@@ -33,7 +39,7 @@ export default async (req, _context) => {
   const botField = (body?.bot_field || '').trim();
   if (botField) {
     console.warn('[subscribe] honeypot tripped, dropping submission');
-    return json({ ok: true, status: 'subscribed' });
+    return json({ ok: true });
   }
 
   const email = clamp((body?.email || '').trim(), 320);
@@ -84,7 +90,8 @@ export default async (req, _context) => {
           .update({ user_id: user.user_id })
           .eq('id', row.id);
       }
-      return json({ ok: true, status: 'already_subscribed', id: row.id });
+      // Return plain ok — don't leak that this email is already in the list.
+      return json({ ok: true });
     }
     // Revive an unsubscribed/bounced row.
     const patch = {
@@ -95,17 +102,15 @@ export default async (req, _context) => {
       metadata,
       ...(user ? { user_id: user.user_id } : {})
     };
-    const { data: revived, error: reviveErr } = await admin
+    const { error: reviveErr } = await admin
       .from('email_subscribers')
       .update(patch)
-      .eq('id', row.id)
-      .select('id')
-      .single();
+      .eq('id', row.id);
     if (reviveErr) {
       console.error('[subscribe] revive failed:', reviveErr);
       return json({ error: 'storage_error' }, { status: 500 });
     }
-    return json({ ok: true, status: 'revived', id: revived.id });
+    return json({ ok: true });
   }
 
   // Brand-new row.
@@ -117,22 +122,19 @@ export default async (req, _context) => {
     metadata,
     ...(user ? { user_id: user.user_id } : {})
   };
-  const { data: created, error: insertErr } = await admin
+  const { error: insertErr } = await admin
     .from('email_subscribers')
-    .insert(insert)
-    .select('id')
-    .single();
+    .insert(insert);
   if (insertErr) {
-    // Race: someone else inserted the same email between lookup and
-    // insert. Fall through to "already_subscribed."
+    // Race: someone else inserted the same email between lookup and insert.
     if (insertErr.code === '23505') {
-      return json({ ok: true, status: 'already_subscribed' });
+      return json({ ok: true });
     }
     console.error('[subscribe] insert failed:', insertErr);
     return json({ error: 'storage_error' }, { status: 500 });
   }
 
-  return json({ ok: true, status: 'subscribed', id: created.id });
+  return json({ ok: true });
 };
 
 export const config = { path: '/api/subscribe' };
