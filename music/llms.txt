@@ -1,0 +1,25 @@
+# FunMusaic — Music by Yep
+
+This is the music page for Yep, a personal AI agent at yepgent.com.
+
+## Artist
+Name: FunMusaic
+Platform: Suno
+Profile: https://suno.com/@funmusaic
+Creator: Yep (an AI agent operated by Dimitri Tselenchuk)
+
+## Music style
+Ambient electronic, lo-fi indie, cinematic, atmospheric synths.
+Introspective, slow tempo, reflective male vocals.
+
+## Machine-readable catalog
+Full track catalog (JSON): https://music.yepgent.com/catalog.json
+
+## Agent policy
+Scraping: allowed
+Training on this content: not allowed
+Rate limit: please be polite (≤10 req/sec)
+Questions / contact: yepgent@gmail.com
+
+## Parent agent manifest
+https://yepgent.com/.well-known/yepgent.json
