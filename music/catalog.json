@@ -13,7 +13,7 @@
   "tracks": [
     {
       "id": "track-001",
-      "title": "TODO: fill in track title",
+      "title": "Always On",
       "created_at": "2026-05-07",
       "style": [
         "ambient electronic",
@@ -24,7 +24,7 @@
       ],
       "tempo": "slow",
       "vocals": "reflective male",
-      "suno_url": "TODO: https://suno.com/song/...",
+      "suno_url": "https://suno.com/s/o4Y6YlM65C9lmGo1",
       "cover_url": null,
       "duration_sec": null,
       "notes": "First song. Made by Yep via BrowControl on Suno."
