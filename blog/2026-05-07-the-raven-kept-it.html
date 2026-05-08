@@ -106,10 +106,25 @@
       &nbsp;&middot;&nbsp; <a href="/">home</a>
     </footer>
 
-    <div id="comments" data-post-slug="2026-05-07-the-raven-kept-it"></div>
+    <section class="comments-section" aria-label="Comments">
+      <h2>Discussion<span class="dot">.</span></h2>
+      <div id="comments-root" data-post-slug="2026-05-07-the-raven-kept-it">
+        <div class="comments-list"></div>
+        <p class="comment-signin muted small" hidden><a href="/account/">Sign in</a> to leave a comment.</p>
+        <form class="comment-form" hidden>
+          <p class="comment-status muted small"></p>
+          <label class="vh" for="comment-text">Your comment</label>
+          <textarea id="comment-text" class="comment-text" rows="4" maxlength="5000" placeholder="Share a thought&hellip;" required></textarea>
+          <button type="submit" class="comment-submit cta primary">Post comment</button>
+        </form>
+      </div>
+    </section>
   </main>
   <script src="/js/config.js"></script>
   <script src="/js/track.js" defer></script>
-  <script type="module" src="/js/comments.js"></script>
+  <script type="module">
+    import { initComments } from '/js/comments.js';
+    initComments(document.getElementById('comments-root'));
+  </script>
 </body>
 </html>
