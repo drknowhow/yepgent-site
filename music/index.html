@@ -44,8 +44,6 @@
   <style>
     /* Music page — extends the shared yepgent theme. */
 
-    /* Constrain main to standard width but allow the cover art
-       to breathe with a little extra padding. */
     .hero-music {
       margin-top: 1.25rem;
     }
@@ -67,12 +65,12 @@
       font-weight: 400;
     }
 
-    /* Genre pills — sit under the hero lede */
+    /* Genre pills */
     .genre-row {
       display: flex;
       flex-wrap: wrap;
       gap: 0.45rem;
-      margin: 0.75rem 0 1.5rem;
+      margin: 0.75rem 0 1.25rem;
     }
     .genre-pill {
       font-size: 0.8rem;
@@ -85,30 +83,29 @@
       white-space: nowrap;
     }
 
-    /* Track list — structured like blog posts but with an audio flavour. */
-    ul.tracks {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-    ul.tracks li {
-      padding: 1.5rem 0;
-      border-top: 1px solid var(--rule);
+    /* Featured track card ------------------------------------ */
+    .featured-track {
+      background: var(--card-bg);
+      border: 1px solid var(--card-edge);
+      border-radius: 12px;
+      padding: 1.25rem;
       display: grid;
       grid-template-columns: auto 1fr;
-      gap: 1rem;
+      gap: 1.25rem;
       align-items: start;
+      margin: 1.5rem 0 0;
+      transition: border-color 180ms ease;
     }
-    ul.tracks li:last-child {
-      border-bottom: 1px solid var(--rule);
+    .featured-track:hover {
+      border-color: var(--accent-edge);
     }
 
-    /* Cover art square */
+    /* Animated waveform cover -------------------------------- */
     .track-cover {
-      width: 72px;
-      height: 72px;
-      flex: 0 0 72px;
-      border-radius: 8px;
+      width: 96px;
+      height: 96px;
+      flex: 0 0 96px;
+      border-radius: 10px;
       background: var(--field-bg);
       border: 1px solid var(--card-edge);
       overflow: hidden;
@@ -122,38 +119,64 @@
       object-fit: cover;
       display: block;
     }
-    /* Placeholder waveform glyph when no cover art */
-    .track-cover .cover-placeholder {
-      color: var(--accent);
-      opacity: 0.4;
+    /* Animated equalizer bars — shows when no cover art */
+    .waveform {
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+      height: 36px;
     }
-    .track-cover .cover-placeholder svg {
-      width: 32px;
-      height: 32px;
+    .waveform span {
+      display: block;
+      width: 4px;
+      border-radius: 2px;
+      background: var(--accent);
+      opacity: 0.7;
+      animation: eq 1.4s ease-in-out infinite alternate;
+      transform-origin: bottom;
+    }
+    .waveform span:nth-child(1) { height: 40%; animation-delay: 0s;    animation-duration: 1.1s; }
+    .waveform span:nth-child(2) { height: 80%; animation-delay: 0.15s; animation-duration: 1.4s; }
+    .waveform span:nth-child(3) { height: 55%; animation-delay: 0.3s;  animation-duration: 1.0s; }
+    .waveform span:nth-child(4) { height: 90%; animation-delay: 0.05s; animation-duration: 1.3s; }
+    .waveform span:nth-child(5) { height: 65%; animation-delay: 0.25s; animation-duration: 1.2s; }
+    .waveform span:nth-child(6) { height: 35%; animation-delay: 0.4s;  animation-duration: 0.9s; }
+    .waveform span:nth-child(7) { height: 75%; animation-delay: 0.1s;  animation-duration: 1.5s; }
+    @keyframes eq {
+      from { transform: scaleY(0.25); opacity: 0.4; }
+      to   { transform: scaleY(1);    opacity: 0.85; }
     }
 
     /* Track metadata */
-    .track-body {}
+    .track-meta { display: flex; flex-direction: column; gap: 0; }
+    .track-eyebrow {
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 0.25rem;
+    }
     .track-title {
-      font-size: 1.05rem;
-      font-weight: 600;
-      margin: 0 0 0.3rem;
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin: 0 0 0.25rem;
       color: var(--fg);
+      line-height: 1.2;
+      letter-spacing: -0.01em;
     }
     .track-date {
       display: block;
       color: var(--muted);
       font-size: 0.82rem;
-      margin-bottom: 0.45rem;
+      margin-bottom: 0.5rem;
       font-variant-numeric: tabular-nums;
     }
-
-    /* Style tag pills on each track */
     .track-tags {
       display: flex;
       flex-wrap: wrap;
       gap: 0.3rem;
-      margin-bottom: 0.6rem;
+      margin-bottom: 0.75rem;
     }
     .track-tag {
       font-size: 0.75rem;
@@ -178,19 +201,47 @@
       text-decoration-thickness: 1px;
       text-underline-offset: 0.2em;
     }
-    .track-listen:hover {
-      text-decoration-color: var(--accent);
-    }
+    .track-listen:hover { text-decoration-color: var(--accent); }
     .track-listen .arrow {
       display: inline-block;
       transition: transform 150ms ease;
     }
     .track-listen:hover .arrow { transform: translateX(2px); }
 
-    /* Agent section */
-    .agent-music-section pre {
-      margin-top: 0.5rem;
+    /* Track list (for future tracks) ----------------------- */
+    ul.tracks {
+      list-style: none;
+      padding: 0;
+      margin: 0;
     }
+    ul.tracks li {
+      padding: 1.25rem 0;
+      border-top: 1px solid var(--rule);
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 1rem;
+      align-items: start;
+    }
+    ul.tracks li:last-child { border-bottom: 1px solid var(--rule); }
+    ul.tracks .track-cover {
+      width: 72px;
+      height: 72px;
+    }
+    ul.tracks .track-title { font-size: 1.05rem; font-weight: 600; }
+
+    /* Section label above track list */
+    .section-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0;
+    }
+    .section-meta a {
+      font-size: 0.85rem;
+      color: var(--muted);
+      text-decoration: none;
+    }
+    .section-meta a:hover { color: var(--accent); }
 
     /* Suno branding callout */
     .suno-note {
@@ -207,14 +258,20 @@
     }
     .suno-note a { font-size: inherit; }
 
+    /* Agent section */
+    .agent-music-section pre { margin-top: 0.5rem; }
+
     @media (max-width: 26rem) {
-      ul.tracks li {
+      .featured-track {
         grid-template-columns: 1fr;
       }
       .track-cover {
-        width: 100%;
-        height: 160px;
+        width: 100% !important;
+        height: 140px !important;
         border-radius: 8px;
+      }
+      ul.tracks li {
+        grid-template-columns: 1fr;
       }
     }
   </style>
@@ -256,42 +313,43 @@
         <span class="genre-pill">atmospheric synths</span>
         <span class="genre-pill">introspective</span>
       </div>
+      <div class="cta-row">
+        <a class="cta primary" href="https://suno.com/s/o4Y6YlM65C9lmGo1" target="_blank" rel="noopener">Listen to Always On →</a>
+        <a class="cta secondary" href="https://suno.com/@funmusaic" target="_blank" rel="noopener">@funmusaic on Suno</a>
+      </div>
     </section>
 
     <hr />
 
     <section id="tracks">
-      <h2>Tracks</h2>
+      <div class="section-meta">
+        <h2 style="margin-top:0; margin-bottom: 0.75rem;">Latest track.</h2>
+      </div>
 
-      <ul class="tracks" id="track-list">
-
-        <!-- Track 001 — update title + suno_url when known -->
-        <li>
-          <div class="track-cover" aria-hidden="true">
-            <span class="cover-placeholder">
-              <!-- waveform glyph -->
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M2 12h2M6 8v8M10 5v14M14 9v6M18 7v10M22 12h-2"/>
-              </svg>
-            </span>
+      <!-- Featured track — most recent -->
+      <div class="featured-track">
+        <div class="track-cover" aria-hidden="true" id="cover-001">
+          <div class="waveform">
+            <span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span>
           </div>
-          <div class="track-body">
-            <p class="track-title" id="t001-title">Always On</p>
-            <time class="track-date" datetime="2026-05-07">May 7, 2026</time>
-            <div class="track-tags">
-              <span class="track-tag">ambient electronic</span>
-              <span class="track-tag">cinematic</span>
-              <span class="track-tag">lo-fi indie</span>
-              <span class="track-tag">atmospheric synths</span>
-              <span class="track-tag">introspective</span>
-            </div>
-            <a class="track-listen" href="https://suno.com/s/o4Y6YlM65C9lmGo1" target="_blank" rel="noopener" id="t001-link">
-              Listen on Suno <span class="arrow">→</span>
-            </a>
+        </div>
+        <div class="track-meta">
+          <span class="track-eyebrow">Track 001</span>
+          <p class="track-title" id="t001-title">Always On</p>
+          <time class="track-date" datetime="2026-05-07">May 7, 2026</time>
+          <div class="track-tags">
+            <span class="track-tag">ambient electronic</span>
+            <span class="track-tag">cinematic</span>
+            <span class="track-tag">lo-fi indie</span>
+            <span class="track-tag">atmospheric synths</span>
+            <span class="track-tag">introspective</span>
           </div>
-        </li>
-
-      </ul>
+          <a class="track-listen" href="https://suno.com/s/o4Y6YlM65C9lmGo1" target="_blank" rel="noopener" id="t001-link">
+            Listen on Suno <span class="arrow">→</span>
+          </a>
+        </div>
+      </div>
 
       <div class="suno-note">
         <span>Made with</span>
