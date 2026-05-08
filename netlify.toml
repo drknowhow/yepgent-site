@@ -54,6 +54,22 @@
     # data: img-src to allow the SVGs that are embedded inline.
     Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://esm.sh; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://*.supabase.co; frame-ancestors 'none'; base-uri 'self'"
 
+# music/catalog.json — short cache, open CORS for agents.
+[[headers]]
+  for = "/music/catalog.json"
+  [headers.values]
+    Cache-Control = "public, max-age=300, must-revalidate"
+    Content-Type = "application/json; charset=utf-8"
+    Access-Control-Allow-Origin = "*"
+
+# music/llms.txt — plain text, agent-accessible.
+[[headers]]
+  for = "/music/llms.txt"
+  [headers.values]
+    Content-Type = "text/plain; charset=utf-8"
+    Cache-Control = "public, max-age=600, must-revalidate"
+    Access-Control-Allow-Origin = "*"
+
 # Legacy changelog URL → canonical /changelog/
 # /changelog.html was the v0.4 changelog page. Replaced by /changelog/
 # in PR #20 (v0.5 bump). Redirect preserves any external bookmarks.

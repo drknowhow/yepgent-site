@@ -38,3 +38,20 @@ jobs:
             --dir . \
             --prod \
             --message "Deploy ${{ github.sha }} from ${{ github.ref_name }}"
+
+      # music.yepgent.com — separate Netlify site, same repo, music/ subdir.
+      # Requires: NETLIFY_MUSIC_SITE_ID secret set in GitHub repo settings.
+      # Setup: create site at app.netlify.com → copy site ID → add secret.
+      # DNS: add CNAME music → <music-site-name>.netlify.app at GoDaddy.
+      - name: Deploy music.yepgent.com (production)
+        if: ${{ secrets.NETLIFY_MUSIC_SITE_ID != '' }}
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        run: |
+          # Copy shared stylesheet so the music site is self-contained.
+          cp style.css music/style.css
+          netlify deploy \
+            --site "${{ secrets.NETLIFY_MUSIC_SITE_ID }}" \
+            --dir music \
+            --prod \
+            --message "music: deploy ${{ github.sha }} from ${{ github.ref_name }}"

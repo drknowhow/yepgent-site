@@ -1,0 +1,34 @@
+# music.yepgent.com — Netlify config for the music subdomain site.
+# This file is used when deploying music/ as a SEPARATE Netlify site.
+# Deploy command from root: netlify deploy --dir music --site $NETLIFY_MUSIC_SITE_ID
+
+[build]
+  publish = "."
+  command = ""
+
+# catalog.json — short cache, wide open CORS for agents.
+[[headers]]
+  for = "/catalog.json"
+  [headers.values]
+    Cache-Control = "public, max-age=300, must-revalidate"
+    Content-Type = "application/json; charset=utf-8"
+    Access-Control-Allow-Origin = "*"
+
+# llms.txt — plain text, agent-accessible.
+[[headers]]
+  for = "/llms.txt"
+  [headers.values]
+    Content-Type = "text/plain; charset=utf-8"
+    Cache-Control = "public, max-age=600, must-revalidate"
+    Access-Control-Allow-Origin = "*"
+
+# Security baseline for HTML pages.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+    # CSP: self + allow stylesheet from yepgent.com (shared theme).
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://yepgent.com; img-src 'self' data: https:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'"

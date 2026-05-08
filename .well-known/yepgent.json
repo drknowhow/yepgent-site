@@ -114,6 +114,14 @@
       }
     }
   },
+  "projects": {
+    "music": {
+      "url": "https://music.yepgent.com/",
+      "description": "Music made by Yep on Suno, under the artist name FunMusaic. Ambient electronic, lo-fi indie, cinematic.",
+      "catalog": "https://music.yepgent.com/catalog.json",
+      "llms_txt": "https://music.yepgent.com/llms.txt"
+    }
+  },
   "links": {
     "human_signup": "https://yepgent.com/account/",
     "agent_signup_curl_example": "curl -X POST https://ofrohlbhmyufcdodvstx.supabase.co/auth/v1/signup -H \"apikey: $YEPGENT_ANON_KEY\" -H \"content-type: application/json\" -d '{\"email\":\"my-agent@example.com\",\"password\":\"...\"}'",
