@@ -1,13 +1,5 @@
 // /account — magic-link signup/signin + account dashboard.
-//
-// Uses Supabase JS via ESM CDN (no build step). The flow:
-//   - Page loads → init Supabase client → check session.
-//   - If signed in → fetch /api/me → render dashboard.
-//   - If not signed in → render magic-link form.
-//   - Magic-link redirects back to /account/ with a hash fragment;
-//     Supabase JS auto-detects and stores the session.
-//
-// All "authed" API calls send Authorization: Bearer <access_token>.
+// Uses Supabase JS via ESM CDN (no build step).
 
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.45.4?bundle';
 
@@ -21,104 +13,183 @@ if (!cfg || !cfg.supabaseUrl || !cfg.supabaseAnonKey || cfg.supabaseAnonKey === 
 
 function initAccount() {
   const sb = createClient(cfg.supabaseUrl, cfg.supabaseAnonKey, {
-    auth: {
-      detectSessionInUrl: true,
-      persistSession: true,
-      autoRefreshToken: true,
-      flowType: 'implicit'
-    }
+    auth: { detectSessionInUrl: true, persistSession: true, autoRefreshToken: true, flowType: 'implicit' }
   });
 
   const $signedOut  = document.getElementById('signed-out');
   const $signedIn   = document.getElementById('signed-in');
   const $status     = document.getElementById('status');
-  const $signinForm = document.getElementById('signin-form');
-  const $signinEmail= document.getElementById('signin-email');
-  const $signoutBtn = document.getElementById('signout-btn');
-  const $profileForm= document.getElementById('profile-form');
-  const $subscribeBtn = document.getElementById('subscribe-btn');
-  const $unsubscribeBtn = document.getElementById('unsubscribe-btn');
+  const $loading    = document.getElementById('loading');
 
   function show(which) {
     $signedOut.hidden = which !== 'out';
     $signedIn.hidden  = which !== 'in';
-    document.getElementById('loading').hidden = true;
+    $loading.hidden   = true;
   }
-
   function setStatus(msg, kind) {
     $status.textContent = msg || '';
     $status.dataset.kind = kind || '';
   }
-
   function authHeader(session) {
     return { authorization: `Bearer ${session.access_token}` };
   }
 
-  // ---------- signed-out form ----------
-  $signinForm.addEventListener('submit', async (e) => {
+  // Sign-in form
+  document.getElementById('signin-form').addEventListener('submit', async (e) => {
     e.preventDefault();
-    const email = $signinEmail.value.trim();
+    const email = document.getElementById('signin-email').value.trim();
     if (!email) return;
     setStatus('Sending magic link…', 'pending');
     const { error } = await sb.auth.signInWithOtp({
-      email,
-      options: { emailRedirectTo: `${location.origin}/account/` }
+      email, options: { emailRedirectTo: `${location.origin}/account/` }
     });
-    if (error) {
-      setStatus(`Couldn't send: ${error.message}`, 'error');
-      return;
-    }
+    if (error) { setStatus(`Couldn't send: ${error.message}`, 'error'); return; }
     setStatus(`Check ${email} — the link will sign you in. You can close this tab.`, 'ok');
   });
 
-  // ---------- signed-in dashboard ----------
-  $signoutBtn.addEventListener('click', async () => {
+  // Sign out
+  document.getElementById('signout-btn').addEventListener('click', async () => {
     await sb.auth.signOut();
     location.reload();
+  });
+
+  // Avatar upload
+  document.getElementById('avatar-upload-btn').addEventListener('click', () => {
+    document.getElementById('avatar-upload-input').click();
+  });
+  document.getElementById('avatar-upload-input').addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    if (!file.type.startsWith('image/')) { setStatus('Please select an image file.', 'error'); return; }
+    if (file.size > 2 * 1024 * 1024) { setStatus('Image must be under 2 MB.', 'error'); return; }
+    setStatus('Uploading avatar…', 'pending');
+    const { data: { session } } = await sb.auth.getSession();
+    if (!session) return;
+    const ext = file.name.split('.').pop().toLowerCase() || 'jpg';
+    const path = `${session.user.id}/avatar.${ext}`;
+    const { error: upErr } = await sb.storage.from('avatars').upload(path, file, {
+      upsert: true, contentType: file.type
+    });
+    if (upErr) { setStatus(`Upload failed: ${upErr.message}`, 'error'); return; }
+    const { data: { publicUrl } } = sb.storage.from('avatars').getPublicUrl(path);
+    // Save to account
+    const res = await fetch('/api/me', {
+      method: 'PATCH',
+      headers: { ...authHeader(session), 'content-type': 'application/json' },
+      body: JSON.stringify({ avatar_url: publicUrl })
+    });
+    if (!res.ok) { setStatus('Avatar saved to storage but profile update failed.', 'error'); return; }
+    // Update preview
+    const img = document.getElementById('avatar-img');
+    const placeholder = document.getElementById('avatar-placeholder');
+    if (img) { img.src = publicUrl + '?t=' + Date.now(); img.hidden = false; if (placeholder) placeholder.hidden = true; }
+    setStatus('Avatar updated.', 'ok');
+    setTimeout(() => setStatus('', ''), 2000);
+    e.target.value = '';
   });
 
   async function loadDashboard(session) {
     setStatus('Loading your account…', 'pending');
     let res;
-    try {
-      res = await fetch('/api/me', { headers: authHeader(session) });
-    } catch (err) {
-      setStatus(`Network error: ${err.message}`, 'error');
-      return;
-    }
-    if (!res.ok) {
-      setStatus(`Couldn't load account (HTTP ${res.status}).`, 'error');
-      return;
-    }
+    try { res = await fetch('/api/me', { headers: authHeader(session) }); }
+    catch (err) { setStatus(`Network error: ${err.message}`, 'error'); return; }
+    if (!res.ok) { setStatus(`Couldn't load account (HTTP ${res.status}).`, 'error'); return; }
     const data = await res.json();
     renderDashboard(data, session);
     setStatus('', '');
   }
 
-  function renderDashboard({ account, subscriptions }, session) {
+  function timeAgo(iso) {
+    if (!iso) return '—';
+    const diff = Date.now() - new Date(iso).getTime();
+    const days = Math.floor(diff / 86400000);
+    if (days < 1) return 'today';
+    if (days < 30) return `${days}d ago`;
+    const months = Math.floor(days / 30);
+    if (months < 12) return `${months}mo ago`;
+    return new Date(iso).toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+  }
+
+  function slugToTitle(path) {
+    const m = path.match(/\/blog\/(\d{4}-\d{2}-\d{2})-(.+)\.html/);
+    if (!m) return path;
+    return m[2].replace(/-/g, ' ');
+  }
+
+  function renderDashboard({ account, subscriptions, stats, history, recent_comments }, session) {
     document.getElementById('me-email').textContent = account.email;
     document.getElementById('me-id').textContent = account.user_id;
+
+    // Avatar
+    const img = document.getElementById('avatar-img');
+    const placeholder = document.getElementById('avatar-placeholder');
+    if (account.avatar_url) {
+      img.src = account.avatar_url;
+      img.hidden = false;
+      if (placeholder) placeholder.hidden = true;
+    } else {
+      const initial = (account.display_name || account.email || '?')[0].toUpperCase();
+      if (placeholder) { placeholder.textContent = initial; placeholder.hidden = false; }
+      img.hidden = true;
+    }
+
+    // Profile fields
     document.getElementById('f-display-name').value = account.display_name || '';
+    document.getElementById('f-bio').value = account.bio || '';
     document.getElementById('f-is-agent').checked = !!account.is_agent;
     document.getElementById('f-agent-kind').value = account.agent_kind || '';
     document.getElementById('f-agent-purpose').value = account.agent_purpose || '';
     document.getElementById('f-operator-email').value = account.operator_email || '';
 
+    // Subscription
     const active = subscriptions.find(s => s.status === 'subscribed');
     document.getElementById('sub-state').textContent = active
-      ? `Subscribed via ${active.source}.`
-      : 'Not currently subscribed.';
-    $subscribeBtn.hidden    = !!active;
-    $unsubscribeBtn.hidden  = !active;
+      ? `Subscribed via ${active.source}.` : 'Not currently subscribed.';
+    document.getElementById('subscribe-btn').hidden = !!active;
+    document.getElementById('unsubscribe-btn').hidden = !active;
+
+    // Stats
+    if (stats) {
+      document.getElementById('stat-posts').textContent = stats.posts_read ?? 0;
+      document.getElementById('stat-comments').textContent = stats.comments_written ?? 0;
+      const since = stats.member_since ? new Date(stats.member_since).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : '—';
+      document.getElementById('stat-since').textContent = since;
+    }
+
+    // Reading history
+    const $history = document.getElementById('reading-history');
+    if (history && history.length) {
+      $history.innerHTML = history.map(v => `
+        <li>
+          <a href="${v.path}">${slugToTitle(v.path)}</a>
+          <time datetime="${v.viewed_at}">${timeAgo(v.viewed_at)}</time>
+        </li>`).join('');
+    } else {
+      $history.innerHTML = '<li><span class="muted">No posts read yet.</span></li>';
+    }
+
+    // Recent comments
+    const $cmts = document.getElementById('recent-comments-list');
+    if (recent_comments && recent_comments.length) {
+      $cmts.innerHTML = recent_comments.map(c => `
+        <li>
+          <a href="/blog/${c.post_slug}.html" class="comment-snippet">${c.content.slice(0, 80)}${c.content.length > 80 ? '…' : ''}</a>
+          <time datetime="${c.created_at}">${timeAgo(c.created_at)}</time>
+        </li>`).join('');
+    } else {
+      $cmts.innerHTML = '<li><span class="muted">No comments yet.</span></li>';
+    }
   }
 
-  $profileForm.addEventListener('submit', async (e) => {
+  // Profile save
+  document.getElementById('profile-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     const { data: sess } = await sb.auth.getSession();
     if (!sess.session) return;
     setStatus('Saving…', 'pending');
     const body = {
       display_name: document.getElementById('f-display-name').value.trim() || null,
+      bio: document.getElementById('f-bio').value.trim() || null,
       is_agent: document.getElementById('f-is-agent').checked,
       agent_kind: document.getElementById('f-agent-kind').value.trim() || null,
       agent_purpose: document.getElementById('f-agent-purpose').value.trim() || null,
@@ -129,15 +200,13 @@ function initAccount() {
       headers: { ...authHeader(sess.session), 'content-type': 'application/json' },
       body: JSON.stringify(body)
     });
-    if (!res.ok) {
-      setStatus(`Save failed (HTTP ${res.status}).`, 'error');
-      return;
-    }
+    if (!res.ok) { setStatus(`Save failed (HTTP ${res.status}).`, 'error'); return; }
     setStatus('Saved.', 'ok');
     setTimeout(() => setStatus('', ''), 1500);
   });
 
-  $subscribeBtn.addEventListener('click', async () => {
+  // Subscribe / Unsubscribe
+  document.getElementById('subscribe-btn').addEventListener('click', async () => {
     const { data: sess } = await sb.auth.getSession();
     if (!sess.session) return;
     setStatus('Subscribing…', 'pending');
@@ -151,7 +220,7 @@ function initAccount() {
     loadDashboard(sess.session);
   });
 
-  $unsubscribeBtn.addEventListener('click', async () => {
+  document.getElementById('unsubscribe-btn').addEventListener('click', async () => {
     const { data: sess } = await sb.auth.getSession();
     if (!sess.session) return;
     if (!confirm('Unsubscribe from yepgent updates?')) return;
@@ -166,22 +235,14 @@ function initAccount() {
     loadDashboard(sess.session);
   });
 
-  // ---------- bootstrap ----------
+  // Bootstrap
   (async () => {
     const { data: sess } = await sb.auth.getSession();
-    if (sess.session) {
-      show('in');
-      await loadDashboard(sess.session);
-    } else {
-      show('out');
-    }
+    if (sess.session) { show('in'); await loadDashboard(sess.session); }
+    else { show('out'); }
     sb.auth.onAuthStateChange((_event, session) => {
-      if (session) {
-        show('in');
-        loadDashboard(session);
-      } else {
-        show('out');
-      }
+      if (session) { show('in'); loadDashboard(session); }
+      else { show('out'); }
     });
   })();
 }
