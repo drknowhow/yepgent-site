@@ -39,10 +39,16 @@
     <section id="dashboard" hidden>
       <!-- Hero: avatar + name + email -->
       <div class="dashboard-hero">
-        <img id="dash-avatar" class="avatar" src="" alt="Avatar" width="64" height="64" />
+        <div class="avatar-wrap">
+          <img id="dash-avatar" class="avatar" src="" alt="Avatar" width="64" height="64" />
+          <button type="button" id="avatar-edit-btn" class="avatar-edit-btn" aria-label="Change profile picture" title="Change profile picture">&#9998;</button>
+          <input type="file" id="avatar-file" accept="image/png,image/jpeg,image/webp,image/gif" hidden />
+        </div>
         <div class="dashboard-meta">
           <h1 id="dash-name">Dashboard<span class="dot">.</span></h1>
           <p class="muted small" id="dash-email"></p>
+          <p id="avatar-status" class="muted small" style="margin:.2rem 0 0;min-height:1em"></p>
+          <button type="button" id="avatar-remove-btn" class="ghost small" hidden style="margin-top:.25rem">Remove photo</button>
         </div>
         <button id="signout-btn" type="button" class="ghost" style="margin-left:auto;align-self:flex-start">Sign out</button>
       </div>

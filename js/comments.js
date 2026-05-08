@@ -86,9 +86,11 @@ function buildComment(c, replies, myId, token) {
 
   const when = timeAgo(new Date(c.created_at));
   const isOwn = myId && c.user_id === myId;
+  const avatar = commentAvatar(c);
 
   art.innerHTML = `
     <header class="comment-header">
+      <img class="comment-avatar" src="${esc(avatar)}" alt="" width="28" height="28" loading="lazy" />
       <span class="comment-author">${esc(c.author_display || 'anon')}</span>
       <time class="comment-time" datetime="${esc(c.created_at)}">${esc(when)}</time>
       ${isOwn ? '<button class="comment-delete ghost small" type="button" title="Delete">&times;</button>' : ''}
@@ -169,6 +171,18 @@ function setupForm(root, slug, sb, onPosted) {
     }
     submit.disabled = false;
   });
+}
+
+function commentAvatar(c) {
+  if (c.avatar_url) {
+    // Use comment created_at as a stable cache-bust per render cycle —
+    // avatars rarely change, and identical URLs across renders dedupe in
+    // the browser cache.
+    const sep = c.avatar_url.includes('?') ? '&' : '?';
+    return `${c.avatar_url}${sep}v=${encodeURIComponent(c.created_at || '')}`;
+  }
+  const seed = encodeURIComponent(c.author_display || 'anon');
+  return `https://api.dicebear.com/8.x/initials/svg?seed=${seed}&backgroundColor=6366f1&fontColor=ffffff&radius=50`;
 }
 
 function esc(s) {

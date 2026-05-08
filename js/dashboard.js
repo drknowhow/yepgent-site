@@ -15,9 +15,50 @@ function setStatus(msg, kind) {
 }
 function authH(s) { return { authorization: `Bearer ${s.access_token}` }; }
 
-function avatarUrl(displayName, email) {
+function fallbackAvatarUrl(displayName, email) {
   const seed = encodeURIComponent(displayName || email || 'user');
   return `https://api.dicebear.com/8.x/initials/svg?seed=${seed}&backgroundColor=6366f1&fontColor=ffffff&radius=50`;
+}
+
+function resolveAvatarUrl(account) {
+  // Cache-bust on account.updated_at so a freshly uploaded image
+  // replaces the previous Storage object in the browser cache.
+  if (account?.avatar_url) {
+    const u = account.avatar_url;
+    const sep = u.includes('?') ? '&' : '?';
+    const stamp = account.updated_at ? `v=${encodeURIComponent(account.updated_at)}` : `v=${Date.now()}`;
+    return `${u}${sep}${stamp}`;
+  }
+  return fallbackAvatarUrl(account?.display_name, account?.email);
+}
+
+/**
+ * Resize a File to a square JPEG <= maxDim px on the long edge.
+ * Center-crops to a square first. Returns a Blob (image/jpeg).
+ */
+async function resizeImageToSquareJpeg(file, maxDim = 256, quality = 0.86) {
+  const bitmap = await createImageBitmap(file);
+  const side = Math.min(bitmap.width, bitmap.height);
+  const sx = Math.floor((bitmap.width  - side) / 2);
+  const sy = Math.floor((bitmap.height - side) / 2);
+  const out = Math.min(side, maxDim);
+
+  const canvas = document.createElement('canvas');
+  canvas.width = out;
+  canvas.height = out;
+  const ctx = canvas.getContext('2d');
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = 'high';
+  ctx.drawImage(bitmap, sx, sy, side, side, 0, 0, out, out);
+  bitmap.close?.();
+
+  return await new Promise((resolve, reject) => {
+    canvas.toBlob(
+      b => b ? resolve(b) : reject(new Error('toBlob_failed')),
+      'image/jpeg',
+      quality
+    );
+  });
 }
 
 (async () => {
@@ -70,7 +111,7 @@ async function loadDashboard(sb, session) {
 
   // Avatar
   const avatar = document.getElementById('dash-avatar');
-  if (avatar) avatar.src = avatarUrl(account.display_name, account.email);
+  if (avatar) avatar.src = resolveAvatarUrl(account);
 
   // Name heading
   const nameEl = document.getElementById('dash-name');
@@ -111,6 +152,10 @@ async function loadDashboard(sb, session) {
   setVal('f-operator-email',account.operator_email);
 
   setStatus('', '');
+
+  // Avatar upload + remove wiring (must run after each dashboard load
+  // because we re-attach with the latest account snapshot in scope).
+  setupAvatarControls(sb, account);
 
   // Load user's own comments
   loadMyComments(session);
@@ -156,7 +201,7 @@ async function loadDashboard(sb, session) {
       setTimeout(() => setStatus('', ''), 1500);
       const { account: upd } = await r.json();
       const av = document.getElementById('dash-avatar');
-      if (av) av.src = avatarUrl(upd.display_name, upd.email);
+      if (av) av.src = resolveAvatarUrl(upd);
       const ne = document.getElementById('dash-name');
       if (ne) ne.innerHTML = `${esc(upd.display_name || 'Dashboard')}<span class="dot">.</span>`;
     } else {
@@ -197,6 +242,124 @@ async function loadDashboard(sb, session) {
     setTimeout(() => setStatus('', ''), 1500);
     await loadDashboard(sb, s);
   };
+}
+
+function setupAvatarControls(sb, account) {
+  const fileInput = document.getElementById('avatar-file');
+  const editBtn   = document.getElementById('avatar-edit-btn');
+  const removeBtn = document.getElementById('avatar-remove-btn');
+  const statusEl  = document.getElementById('avatar-status');
+  const avatarEl  = document.getElementById('dash-avatar');
+  if (!fileInput || !editBtn) return;
+
+  function setAvStatus(msg, kind) {
+    if (!statusEl) return;
+    statusEl.textContent = msg || '';
+    statusEl.dataset.kind = kind || '';
+  }
+
+  removeBtn.hidden = !account.avatar_url;
+
+  // Replace any previous listeners by cloning. Cheap idempotency.
+  const editFresh = editBtn.cloneNode(true);
+  editBtn.parentNode.replaceChild(editFresh, editBtn);
+  const fileFresh = fileInput.cloneNode(true);
+  fileInput.parentNode.replaceChild(fileFresh, fileInput);
+  const removeFresh = removeBtn.cloneNode(true);
+  removeBtn.parentNode.replaceChild(removeFresh, removeBtn);
+  removeFresh.hidden = !account.avatar_url;
+
+  editFresh.addEventListener('click', () => fileFresh.click());
+
+  fileFresh.addEventListener('change', async () => {
+    const file = fileFresh.files?.[0];
+    if (!file) return;
+    if (!/^image\//.test(file.type)) {
+      setAvStatus('Pick an image file.', 'error');
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      setAvStatus('Image too large (max 5 MB).', 'error');
+      return;
+    }
+    setAvStatus('Uploading…', 'pending');
+
+    let blob;
+    try {
+      blob = await resizeImageToSquareJpeg(file, 256, 0.86);
+    } catch (e) {
+      console.error('[avatar] resize failed', e);
+      setAvStatus('Couldn\'t process that image.', 'error');
+      return;
+    }
+
+    const { data: { session: s } } = await sb.auth.getSession();
+    if (!s) { setAvStatus('Session expired — sign in again.', 'error'); return; }
+
+    const path = `${account.user_id}/avatar.jpg`;
+    const { error: upErr } = await sb.storage
+      .from('avatars')
+      .upload(path, blob, { cacheControl: '60', upsert: true, contentType: 'image/jpeg' });
+    if (upErr) {
+      console.error('[avatar] upload failed', upErr);
+      setAvStatus(`Upload failed: ${upErr.message || 'unknown'}.`, 'error');
+      return;
+    }
+
+    const { data: pub } = sb.storage.from('avatars').getPublicUrl(path);
+    const publicUrl = pub?.publicUrl;
+    if (!publicUrl) { setAvStatus('Upload succeeded but URL unavailable.', 'error'); return; }
+
+    const r = await fetch('/api/me', {
+      method: 'PATCH',
+      headers: { ...authH(s), 'content-type': 'application/json' },
+      body: JSON.stringify({ avatar_url: publicUrl })
+    });
+    if (!r.ok) {
+      const err = await r.json().catch(() => ({}));
+      setAvStatus(`Save failed: ${err.error || r.status}.`, 'error');
+      return;
+    }
+    const { account: upd } = await r.json();
+    if (avatarEl) avatarEl.src = resolveAvatarUrl(upd);
+    removeFresh.hidden = false;
+    Object.assign(account, upd);
+    setAvStatus('Updated.', 'ok');
+    setTimeout(() => setAvStatus('', ''), 1800);
+    fileFresh.value = '';
+  });
+
+  removeFresh.addEventListener('click', async () => {
+    if (!confirm('Remove your profile picture?')) return;
+    setAvStatus('Removing…', 'pending');
+    const { data: { session: s } } = await sb.auth.getSession();
+    if (!s) { setAvStatus('Session expired — sign in again.', 'error'); return; }
+
+    // Best-effort delete of the storage object. The PATCH below is the
+    // source of truth for what shows on the site.
+    try {
+      await sb.storage.from('avatars').remove([`${account.user_id}/avatar.jpg`]);
+    } catch (e) {
+      console.warn('[avatar] storage remove warn', e);
+    }
+
+    const r = await fetch('/api/me', {
+      method: 'PATCH',
+      headers: { ...authH(s), 'content-type': 'application/json' },
+      body: JSON.stringify({ avatar_url: null })
+    });
+    if (!r.ok) {
+      const err = await r.json().catch(() => ({}));
+      setAvStatus(`Save failed: ${err.error || r.status}.`, 'error');
+      return;
+    }
+    const { account: upd } = await r.json();
+    if (avatarEl) avatarEl.src = resolveAvatarUrl(upd);
+    removeFresh.hidden = true;
+    Object.assign(account, upd);
+    setAvStatus('Removed.', 'ok');
+    setTimeout(() => setAvStatus('', ''), 1800);
+  });
 }
 
 async function loadMyComments(session) {

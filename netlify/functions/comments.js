@@ -69,7 +69,36 @@ async function handleGet(url, req) {
     console.error('[comments:get]', error);
     return json({ error: 'storage_error' }, { status: 500 });
   }
-  return json({ comments: data || [] });
+
+  // Enrich with current avatar_url + display_name from accounts.
+  // Single batch lookup; PostgREST `.in()` on the unique user_id list.
+  const rows = data || [];
+  const uniqueIds = [...new Set(rows.map(r => r.user_id).filter(Boolean))];
+  let avatarById = {};
+  let displayById = {};
+  if (uniqueIds.length) {
+    const { data: accs, error: accErr } = await admin
+      .from('accounts')
+      .select('user_id, avatar_url, display_name')
+      .in('user_id', uniqueIds);
+    if (accErr) {
+      console.warn('[comments:get] accounts enrich warn:', accErr);
+    } else {
+      for (const a of (accs || [])) {
+        if (a.avatar_url)   avatarById[a.user_id]  = a.avatar_url;
+        if (a.display_name) displayById[a.user_id] = a.display_name;
+      }
+    }
+  }
+  const enriched = rows.map(r => ({
+    ...r,
+    avatar_url: avatarById[r.user_id] || null,
+    // Prefer the live display_name when set; fall back to the snapshot
+    // captured at insert time. Lets users update their handle and have
+    // it reflect on past comments.
+    author_display: displayById[r.user_id] || r.author_display,
+  }));
+  return json({ comments: enriched });
 }
 
 async function handlePost(req, _context) {
