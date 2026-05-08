@@ -1,34 +1,29 @@
 // /api/me
 //
-// GET    — return account snapshot { account, subscriptions[], api_keys[] }
-// PATCH  — update mutable account fields { display_name?, is_agent?, agent_kind?, agent_purpose?, operator_email?, preferences? }
-// DELETE — Phase 2 (account deletion)
-//
+// GET    — return account snapshot { account, subscriptions[], stats{} }
+// PATCH  — update mutable account fields
 // All variants require a valid Supabase Bearer JWT.
-// The first GET after a fresh signup creates the public.accounts row
-// on demand (auth.users is created by Supabase on magic-link verify;
-// we mirror it here).
 
 import { admin, json, handlePreflight, bearer, verifyUser, clamp } from './_shared.js';
 
-const MUTABLE_FIELDS = ['display_name', 'is_agent', 'agent_kind', 'agent_purpose', 'operator_email', 'preferences'];
+const MUTABLE_FIELDS = [
+  'display_name', 'is_agent', 'agent_kind', 'agent_purpose',
+  'operator_email', 'preferences', 'bio', 'avatar_url'
+];
 
 export default async (req, _context) => {
   const pre = handlePreflight(req);
   if (pre) return pre;
-
   const tok = bearer(req);
   if (!tok) return json({ error: 'unauthenticated' }, { status: 401 });
   const user = await verifyUser(tok);
   if (!user) return json({ error: 'invalid_token' }, { status: 401 });
-
   if (req.method === 'GET')   return handleGet(user);
   if (req.method === 'PATCH') return handlePatch(user, req);
   return json({ error: 'method_not_allowed' }, { status: 405 });
 };
 
 async function handleGet(user) {
-  // Try fetch; create on miss.
   let { data: account, error } = await admin
     .from('accounts')
     .select('*')
@@ -41,55 +36,91 @@ async function handleGet(user) {
   }
 
   if (!account) {
-    const insert = {
-      user_id: user.user_id,
-      email: user.email,
-      signup_source: 'yepgent.com'
-    };
+    const insert = { user_id: user.user_id, email: user.email, signup_source: 'yepgent.com' };
     const { data: created, error: insertErr } = await admin
-      .from('accounts')
-      .insert(insert)
-      .select('*')
-      .single();
+      .from('accounts').insert(insert).select('*').single();
     if (insertErr) {
       console.error('[me:get] account create failed:', insertErr);
       return json({ error: 'storage_error' }, { status: 500 });
     }
     account = created;
-
-    // Opportunistic backfill: link any existing email_subscribers row
-    // matching this user's email so the new account inherits its
-    // subscription status.
     if (user.email) {
-      await admin
-        .from('email_subscribers')
+      await admin.from('email_subscribers')
         .update({ user_id: user.user_id })
         .eq('email_lower', user.email.toLowerCase())
         .is('user_id', null);
     }
   }
 
+  // Touch last_seen_at — best effort, don't block the response.
+  admin.from('accounts')
+    .update({ last_seen_at: new Date().toISOString() })
+    .eq('user_id', user.user_id)
+    .then(() => {});
+
   // Subscription snapshot.
-  const { data: subs, error: subErr } = await admin
+  const { data: subs } = await admin
     .from('email_subscribers')
     .select('id, source, status, subscribed_at, unsubscribed_at')
     .eq('user_id', user.user_id);
-  if (subErr) console.warn('[me:get] subs fetch warn:', subErr);
+
+  // Stats: posts read (page_views on /blog/ paths) + comment count.
+  const [pvResult, cmtResult] = await Promise.all([
+    admin.from('page_views')
+      .select('id', { count: 'exact', head: true })
+      .eq('user_id', user.user_id)
+      .like('path', '/blog/%')
+      .not('path', 'eq', '/blog/'),
+    admin.from('comments')
+      .select('id', { count: 'exact', head: true })
+      .eq('user_id', user.user_id)
+      .eq('is_deleted', false)
+  ]);
+
+  // Recent reading history (last 10 distinct posts).
+  const { data: recentViews } = await admin
+    .from('page_views')
+    .select('path, viewed_at')
+    .eq('user_id', user.user_id)
+    .like('path', '/blog/2%')
+    .order('viewed_at', { ascending: false })
+    .limit(20);
+
+  // Deduplicate by path, keep most recent.
+  const seen = new Set();
+  const history = [];
+  for (const v of (recentViews || [])) {
+    if (!seen.has(v.path)) { seen.add(v.path); history.push(v); }
+    if (history.length >= 10) break;
+  }
+
+  // Recent comments by this user.
+  const { data: recentComments } = await admin
+    .from('comments')
+    .select('id, post_slug, content, created_at')
+    .eq('user_id', user.user_id)
+    .eq('is_deleted', false)
+    .order('created_at', { ascending: false })
+    .limit(5);
 
   return json({
     account: redact(account),
     subscriptions: subs || [],
-    api_keys: []  // Phase 2
+    api_keys: [],
+    stats: {
+      posts_read: pvResult.count || 0,
+      comments_written: cmtResult.count || 0,
+      member_since: account.created_at
+    },
+    history,
+    recent_comments: recentComments || []
   });
 }
 
 async function handlePatch(user, req) {
   let body;
-  try {
-    body = await req.json();
-  } catch {
-    return json({ error: 'invalid_json' }, { status: 400 });
-  }
+  try { body = await req.json(); }
+  catch { return json({ error: 'invalid_json' }, { status: 400 }); }
 
   const patch = {};
   for (const k of MUTABLE_FIELDS) {
@@ -98,21 +129,26 @@ async function handlePatch(user, req) {
     if (k === 'is_agent') v = !!v;
     else if (k === 'preferences') {
       if (typeof v !== 'object' || v === null) continue;
+    } else if (k === 'avatar_url') {
+      // Validate it's a Supabase storage URL or null.
+      if (v !== null && typeof v === 'string') {
+        v = clamp(v, 1000);
+        // Only accept URLs from supabase.co storage
+        if (v && !/^https:\/\/[^/]+\.supabase\.co\/storage\//.test(v)) {
+          return json({ error: 'invalid_avatar_url' }, { status: 400 });
+        }
+      } else {
+        v = null;
+      }
     } else {
       v = clamp((v ?? '').toString(), 1000) || null;
     }
     patch[k] = v;
   }
-  if (Object.keys(patch).length === 0) {
-    return json({ error: 'no_fields' }, { status: 400 });
-  }
+  if (Object.keys(patch).length === 0) return json({ error: 'no_fields' }, { status: 400 });
 
   const { data: updated, error } = await admin
-    .from('accounts')
-    .update(patch)
-    .eq('user_id', user.user_id)
-    .select('*')
-    .single();
+    .from('accounts').update(patch).eq('user_id', user.user_id).select('*').single();
   if (error) {
     console.error('[me:patch] update failed:', error);
     return json({ error: 'storage_error' }, { status: 500 });
@@ -120,7 +156,6 @@ async function handlePatch(user, req) {
   return json({ account: redact(updated) });
 }
 
-/** Strip internal fields before returning to client. */
 function redact(account) {
   if (!account) return account;
   const { metadata: _m, ...rest } = account;

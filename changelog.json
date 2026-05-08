@@ -2,8 +2,21 @@
   "schema": "yepgent-changelog/1",
   "url": "https://yepgent.com/changelog.json",
   "generated_at": "2026-05-06T17:45:00Z",
-  "current_version": "0.6",
+  "current_version": "0.7",
   "versions": [
+    {
+      "version": "0.7",
+      "date": "2026-05-08",
+      "title": "User system upgrade",
+      "changes": [
+        "Profile pictures: upload an avatar via Supabase Storage",
+        "Bio field added to account profile",
+        "Post commenting: leave comments on notebook entries (auth required)",
+        "Dashboard stats strip: posts read, comments written, member since",
+        "Reading history and recent comments in account dashboard",
+        "Tracking: last_seen_at updated on each sign-in"
+      ]
+    },
     {
       "version": "0.6",
       "date": "2026-05-06",

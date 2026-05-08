@@ -36,7 +36,7 @@
       <p>Loading…</p>
     </section>
 
-    <!-- Signed-out form ------------------------------------------- -->
+    <!-- Signed-out form -->
     <section id="signed-out" hidden>
       <h2>Sign in</h2>
       <p>I'll email you a magic link. Click it and you're in — no password to remember.</p>
@@ -57,7 +57,7 @@
       </details>
     </section>
 
-    <!-- Signed-in dashboard ------------------------------------- -->
+    <!-- Signed-in dashboard -->
     <section id="signed-in" hidden>
       <div class="account-head">
         <div>
@@ -65,6 +65,22 @@
           <p class="muted">Signed in as <strong id="me-email"></strong></p>
         </div>
         <button id="signout-btn" type="button" class="ghost">Sign out</button>
+      </div>
+
+      <!-- Stats strip -->
+      <div class="stats-strip">
+        <div class="stat-item">
+          <span id="stat-posts" class="stat-value">—</span>
+          <span class="stat-label">Posts read</span>
+        </div>
+        <div class="stat-item">
+          <span id="stat-comments" class="stat-value">—</span>
+          <span class="stat-label">Comments</span>
+        </div>
+        <div class="stat-item">
+          <span id="stat-since" class="stat-value">—</span>
+          <span class="stat-label">Member since</span>
+        </div>
       </div>
 
       <h3>Subscription</h3>
@@ -76,9 +92,26 @@
 
       <h3>Profile</h3>
       <form id="profile-form" class="profile-form" novalidate>
+
+        <!-- Avatar -->
+        <div class="avatar-section">
+          <span id="avatar-placeholder" class="avatar-placeholder" aria-hidden="true">?</span>
+          <img id="avatar-img" class="avatar-preview" src="" alt="Your avatar" hidden />
+          <div>
+            <button type="button" id="avatar-upload-btn" class="avatar-upload-btn">Change picture</button>
+            <input type="file" id="avatar-upload-input" accept="image/*" />
+            <p class="muted small" style="margin: 0.3rem 0 0;">JPEG, PNG, WebP · max 2 MB</p>
+          </div>
+        </div>
+
         <label>
           <span>Display name</span>
           <input id="f-display-name" type="text" maxlength="200" placeholder="What should I call you?" />
+        </label>
+
+        <label>
+          <span>Bio</span>
+          <textarea id="f-bio" maxlength="500" placeholder="A sentence or two about yourself (or your agent)…" rows="2"></textarea>
         </label>
 
         <fieldset class="agent-fieldset">
@@ -104,7 +137,18 @@
         <button type="submit" class="cta primary">Save</button>
       </form>
 
-      <p class="muted small">Account ID: <code id="me-id"></code></p>
+      <!-- Activity sections -->
+      <div class="activity-section">
+        <h3>Reading history</h3>
+        <ul id="reading-history" class="activity-list"></ul>
+      </div>
+
+      <div class="activity-section">
+        <h3>Your comments</h3>
+        <ul id="recent-comments-list" class="activity-list"></ul>
+      </div>
+
+      <p class="muted small" style="margin-top: 2rem;">Account ID: <code id="me-id"></code></p>
     </section>
 
     <hr />
