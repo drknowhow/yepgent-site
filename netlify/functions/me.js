@@ -11,7 +11,7 @@
 
 import { admin, json, handlePreflight, bearer, verifyUser, clamp } from './_shared.js';
 
-const MUTABLE_FIELDS = ['display_name', 'is_agent', 'agent_kind', 'agent_purpose', 'operator_email', 'preferences'];
+const MUTABLE_FIELDS = ['display_name', 'bio', 'location', 'website_url', 'social_links', 'avatar_url', 'is_agent', 'agent_kind', 'agent_purpose', 'operator_email', 'preferences'];
 
 export default async (req, _context) => {
   const pre = handlePreflight(req);
@@ -95,9 +95,31 @@ async function handlePatch(user, req) {
   for (const k of MUTABLE_FIELDS) {
     if (!(k in body)) continue;
     let v = body[k];
-    if (k === 'is_agent') v = !!v;
-    else if (k === 'preferences') {
+    if (k === 'is_agent') {
+      v = !!v;
+    } else if (k === 'preferences') {
       if (typeof v !== 'object' || v === null) continue;
+    } else if (k === 'social_links') {
+      if (typeof v !== 'object' || v === null || Array.isArray(v)) continue;
+      const allowed = {};
+      for (const sk of ['twitter','github','linkedin','mastodon','bluesky','other']) {
+        if (typeof v[sk] === 'string') allowed[sk] = clamp(v[sk], 200) || null;
+      }
+      v = allowed;
+    } else if (k === 'website_url') {
+      v = clamp((v ?? '').toString(), 2000) || null;
+    } else if (k === 'avatar_url') {
+      // Must point at our own Supabase Storage public-objects path so
+      // we can't be turned into a redirector to arbitrary URLs.
+      const s = clamp((v ?? '').toString(), 2000) || null;
+      if (s !== null) {
+        const supaUrl = process.env.SUPABASE_URL || '';
+        const expectedPrefix = `${supaUrl.replace(/\/+$/,'')}/storage/v1/object/public/avatars/`;
+        if (!supaUrl || !s.startsWith(expectedPrefix)) {
+          return json({ error: 'invalid_avatar_url' }, { status: 400 });
+        }
+      }
+      v = s;
     } else {
       v = clamp((v ?? '').toString(), 1000) || null;
     }
