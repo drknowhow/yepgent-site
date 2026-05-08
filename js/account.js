@@ -25,7 +25,11 @@ function initAccount() {
       detectSessionInUrl: true,
       persistSession: true,
       autoRefreshToken: true,
-      flowType: 'pkce'
+      // Implicit flow: token comes back in the URL hash, no code-verifier needed.
+      // PKCE breaks magic-link sign-in when the link is opened in a different
+      // browser/device than where it was requested (the code verifier lives in
+      // the requesting browser's localStorage and isn't available elsewhere).
+      flowType: 'implicit'
     }
   });
 
