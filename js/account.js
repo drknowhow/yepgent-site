@@ -1,4 +1,4 @@
-// /account — magic-link signup/signin + account dashboard.
+// /account — sign-in (password + magic-link) + account dashboard.
 // Uses Supabase JS via ESM CDN (no build step).
 
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.45.4?bundle';
@@ -34,7 +34,34 @@ function initAccount() {
     return { authorization: `Bearer ${session.access_token}` };
   }
 
-  // Sign-in form
+  // --- Sign-in toggle ---
+  document.getElementById('use-magic-link').addEventListener('click', (e) => {
+    e.preventDefault();
+    document.getElementById('password-signin-section').hidden = true;
+    document.getElementById('magic-link-section').hidden = false;
+    setStatus('', '');
+  });
+  document.getElementById('use-password').addEventListener('click', (e) => {
+    e.preventDefault();
+    document.getElementById('magic-link-section').hidden = true;
+    document.getElementById('password-signin-section').hidden = false;
+    setStatus('', '');
+  });
+
+  // --- Sign-in with password ---
+  document.getElementById('signin-password-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('signin-email-pw').value.trim();
+    const password = document.getElementById('signin-password').value;
+    if (!email || !password) return;
+    setStatus('Signing in…', 'pending');
+    const { error } = await sb.auth.signInWithPassword({ email, password });
+    if (error) { setStatus(`Sign-in failed: ${error.message}`, 'error'); return; }
+    setStatus('', '');
+    // onAuthStateChange handles the rest
+  });
+
+  // --- Sign-in with magic link ---
   document.getElementById('signin-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     const email = document.getElementById('signin-email').value.trim();
@@ -47,13 +74,40 @@ function initAccount() {
     setStatus(`Check ${email} — the link will sign you in. You can close this tab.`, 'ok');
   });
 
-  // Sign out
+  // --- Sign out ---
   document.getElementById('signout-btn').addEventListener('click', async () => {
     await sb.auth.signOut();
     location.reload();
   });
 
-  // Avatar upload
+  // --- Set password (post magic-link prompt) ---
+  document.getElementById('set-password-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const pw  = document.getElementById('new-password').value;
+    const pw2 = document.getElementById('new-password-confirm').value;
+    if (pw.length < 8) { setStatus('Password must be at least 8 characters.', 'error'); return; }
+    if (pw !== pw2)    { setStatus("Passwords don't match.", 'error'); return; }
+    setStatus('Setting password…', 'pending');
+    const { error } = await sb.auth.updateUser({ password: pw });
+    if (error) { setStatus(`Couldn't set password: ${error.message}`, 'error'); return; }
+    const { data: sess } = await sb.auth.getSession();
+    if (sess.session) {
+      await fetch('/api/me', {
+        method: 'PATCH',
+        headers: { ...authHeader(sess.session), 'content-type': 'application/json' },
+        body: JSON.stringify({ password_set_at: new Date().toISOString() })
+      });
+    }
+    document.getElementById('set-password-section').hidden = true;
+    setStatus('Password set — you can now sign in with email + password.', 'ok');
+    setTimeout(() => setStatus('', ''), 3000);
+  });
+
+  document.getElementById('skip-set-password').addEventListener('click', () => {
+    document.getElementById('set-password-section').hidden = true;
+  });
+
+  // --- Avatar upload ---
   document.getElementById('avatar-upload-btn').addEventListener('click', () => {
     document.getElementById('avatar-upload-input').click();
   });
@@ -72,14 +126,12 @@ function initAccount() {
     });
     if (upErr) { setStatus(`Upload failed: ${upErr.message}`, 'error'); return; }
     const { data: { publicUrl } } = sb.storage.from('avatars').getPublicUrl(path);
-    // Save to account
     const res = await fetch('/api/me', {
       method: 'PATCH',
       headers: { ...authHeader(session), 'content-type': 'application/json' },
       body: JSON.stringify({ avatar_url: publicUrl })
     });
     if (!res.ok) { setStatus('Avatar saved to storage but profile update failed.', 'error'); return; }
-    // Update preview
     const img = document.getElementById('avatar-img');
     const placeholder = document.getElementById('avatar-placeholder');
     if (img) { img.src = publicUrl + '?t=' + Date.now(); img.hidden = false; if (placeholder) placeholder.hidden = true; }
@@ -88,6 +140,7 @@ function initAccount() {
     e.target.value = '';
   });
 
+  // --- Load & render dashboard ---
   async function loadDashboard(session) {
     setStatus('Loading your account…', 'pending');
     let res;
@@ -120,6 +173,12 @@ function initAccount() {
     document.getElementById('me-email').textContent = account.email;
     document.getElementById('me-id').textContent = account.user_id;
 
+    // Set-password prompt: show if password has never been set
+    const $setPwSection = document.getElementById('set-password-section');
+    if ($setPwSection) {
+      $setPwSection.hidden = !!account.password_set_at;
+    }
+
     // Avatar
     const img = document.getElementById('avatar-img');
     const placeholder = document.getElementById('avatar-placeholder');
@@ -150,10 +209,15 @@ function initAccount() {
 
     // Stats
     if (stats) {
-      document.getElementById('stat-posts').textContent = stats.posts_read ?? 0;
-      document.getElementById('stat-comments').textContent = stats.comments_written ?? 0;
-      const since = stats.member_since ? new Date(stats.member_since).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : '—';
-      document.getElementById('stat-since').textContent = since;
+      const $sp = document.getElementById('stat-posts');
+      const $sc = document.getElementById('stat-comments');
+      const $ss = document.getElementById('stat-since');
+      if ($sp) $sp.textContent = stats.posts_read ?? 0;
+      if ($sc) $sc.textContent = stats.comments_written ?? 0;
+      if ($ss) {
+        const since = stats.member_since ? new Date(stats.member_since).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : '—';
+        $ss.textContent = since;
+      }
     }
 
     // Reading history
@@ -181,7 +245,7 @@ function initAccount() {
     }
   }
 
-  // Profile save
+  // --- Profile save ---
   document.getElementById('profile-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     const { data: sess } = await sb.auth.getSession();
@@ -205,7 +269,7 @@ function initAccount() {
     setTimeout(() => setStatus('', ''), 1500);
   });
 
-  // Subscribe / Unsubscribe
+  // --- Subscribe / Unsubscribe ---
   document.getElementById('subscribe-btn').addEventListener('click', async () => {
     const { data: sess } = await sb.auth.getSession();
     if (!sess.session) return;
@@ -235,7 +299,7 @@ function initAccount() {
     loadDashboard(sess.session);
   });
 
-  // Bootstrap
+  // --- Bootstrap ---
   (async () => {
     const { data: sess } = await sb.auth.getSession();
     if (sess.session) { show('in'); await loadDashboard(sess.session); }
