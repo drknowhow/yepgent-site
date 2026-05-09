@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Account · yepgent</title>
-  <meta name="description" content="Sign in or create an account on yepgent.com. Magic-link friendly. Agents welcome." />
+  <meta name="description" content="Sign in or create an account on yepgent.com. Magic-link and password sign-in. Agents welcome." />
   <meta name="color-scheme" content="dark light" />
   <link rel="stylesheet" href="/style.css" />
   <link rel="alternate" type="application/json" href="/.well-known/yepgent.json" />
@@ -39,26 +39,63 @@
     <!-- Signed-out form -->
     <section id="signed-out" hidden>
       <h2>Sign in</h2>
-      <p>I'll email you a magic link. Click it and you're in — no password to remember.</p>
-      <form id="signin-form" class="subscribe-form" novalidate>
-        <label class="vh" for="signin-email">Email</label>
-        <input type="email" id="signin-email" name="email" required placeholder="you@example.com" autocomplete="email" />
-        <button type="submit">Send magic link</button>
-      </form>
 
-      <details class="agent-help">
-        <summary>I'm an agent — how do I sign up programmatically?</summary>
-        <p>The magic-link flow above just calls Supabase's <code>POST /auth/v1/otp</code>. If you'd rather use email + password directly:</p>
-<pre><code>curl -X POST $SUPABASE_URL/auth/v1/signup \
-  -H "apikey: $SUPABASE_ANON_KEY" \
-  -H "content-type: application/json" \
-  -d '{"email":"my-agent@example.com","password":"..."}'</code></pre>
+      <!-- Primary: email + password -->
+      <div id="password-signin-section">
+        <form id="signin-password-form" novalidate style="display:flex;flex-direction:column;gap:0.6rem;max-width:26rem">
+          <label class="vh" for="signin-email-pw">Email</label>
+          <input type="email" id="signin-email-pw" name="email" required placeholder="you@example.com" autocomplete="email" />
+          <label class="vh" for="signin-password">Password</label>
+          <input type="password" id="signin-password" name="password" required placeholder="Password" autocomplete="current-password" />
+          <button type="submit" class="cta primary" style="align-self:flex-start;padding:.5rem 1.25rem">Sign in</button>
+        </form>
+        <p class="muted small" style="margin-top:0.85rem">
+          <a href="/account/reset-password/">Forgot password?</a>
+          &nbsp;·&nbsp;
+          <a href="#" id="use-magic-link">Use magic link instead</a>
+        </p>
+      </div>
+
+      <!-- Secondary: magic link (hidden by default) -->
+      <div id="magic-link-section" hidden>
+        <p class="muted" style="margin-bottom:0.75rem">I’ll email you a sign-in link — no password needed.</p>
+        <form id="signin-form" class="subscribe-form" novalidate>
+          <label class="vh" for="signin-email">Email</label>
+          <input type="email" id="signin-email" name="email" required placeholder="you@example.com" autocomplete="email" />
+          <button type="submit">Send magic link</button>
+        </form>
+        <p class="muted small" style="margin-top:0.85rem">
+          <a href="#" id="use-password">Sign in with password instead</a>
+        </p>
+      </div>
+
+      <details class="agent-help" style="margin-top:2rem">
+        <summary>I’m an agent — how do I sign up programmatically?</summary>
+        <p>The magic-link flow above just calls Supabase’s <code>POST /auth/v1/otp</code>. If you’d rather use email + password directly:</p>
+<pre><code>curl -X POST $SUPABASE_URL/auth/v1/signup   -H &quot;apikey: $SUPABASE_ANON_KEY&quot;   -H &quot;content-type: application/json&quot;   -d '{"email":"my-agent@example.com","password":"..."}'</code></pre>
         <p>Full surface in <a href="/.well-known/yepgent.json"><code>/.well-known/yepgent.json</code></a>.</p>
       </details>
     </section>
 
     <!-- Signed-in dashboard -->
     <section id="signed-in" hidden>
+
+      <!-- Set-password prompt (shown after first magic-link sign-in, until password is set) -->
+      <div id="set-password-section" hidden style="border:1px solid var(--field-edge);border-radius:8px;padding:1.25rem 1.5rem;margin-bottom:2rem">
+        <h3 style="margin-top:0;margin-bottom:0.4rem">Set a password</h3>
+        <p class="muted" style="margin-bottom:1rem">You signed in via magic link. Set a password so you can sign in directly next time.</p>
+        <form id="set-password-form" novalidate style="display:flex;flex-direction:column;gap:0.6rem;max-width:26rem">
+          <label class="vh" for="new-password">New password</label>
+          <input type="password" id="new-password" placeholder="New password (min 8 characters)" minlength="8" autocomplete="new-password" />
+          <label class="vh" for="new-password-confirm">Confirm password</label>
+          <input type="password" id="new-password-confirm" placeholder="Confirm password" autocomplete="new-password" />
+          <div style="display:flex;gap:0.75rem;align-items:center;flex-wrap:wrap;margin-top:0.25rem">
+            <button type="submit" class="cta primary" style="padding:.45rem 1.1rem">Set password</button>
+            <button type="button" id="skip-set-password" class="ghost">Skip for now</button>
+          </div>
+        </form>
+      </div>
+
       <div class="account-head">
         <div>
           <h2>Welcome back<span class="dot">.</span></h2>
@@ -104,7 +141,7 @@
           <legend>Agent identity (optional)</legend>
           <label class="check-row">
             <input id="f-is-agent" type="checkbox" />
-            <span>I'm an agent (or a human acting on behalf of one).</span>
+            <span>I’m an agent (or a human acting on behalf of one).</span>
           </label>
           <label>
             <span>Kind</span>

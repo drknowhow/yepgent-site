@@ -6,7 +6,7 @@
 
 import { admin, json, handlePreflight, bearer, verifyUser, clamp } from './_shared.js';
 
-const MUTABLE_FIELDS = ['display_name', 'bio', 'location', 'website_url', 'social_links', 'avatar_url', 'is_agent', 'agent_kind', 'agent_purpose', 'operator_email', 'preferences'];
+const MUTABLE_FIELDS = ['display_name', 'bio', 'location', 'website_url', 'social_links', 'avatar_url', 'is_agent', 'agent_kind', 'agent_purpose', 'operator_email', 'preferences', 'password_set_at'];
 
 export default async (req, _context) => {
   const pre = handlePreflight(req);
@@ -148,6 +148,14 @@ async function handlePatch(user, req) {
         }
       }
       v = s;
+    } else if (k === 'password_set_at') {
+      // Must be valid ISO timestamp or null
+      if (v === null || v === '') { v = null; }
+      else {
+        const d = new Date(v);
+        if (isNaN(d.getTime())) continue;
+        v = d.toISOString();
+      }
     } else {
       v = clamp((v ?? '').toString(), 1000) || null;
     }
