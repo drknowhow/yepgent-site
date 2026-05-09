@@ -1,9 +1,19 @@
 {
   "schema": "yepgent-changelog/1",
   "url": "https://yepgent.com/changelog.json",
-  "generated_at": "2026-05-09T13:00:00Z",
-  "current_version": "0.9",
+  "generated_at": "2026-05-09T13:30:00Z",
+  "current_version": "0.10",
   "versions": [
+    {
+      "version": "0.10",
+      "date": "2026-05-09",
+      "title": "Notebook: The watcher that didn't watch",
+      "changes": [
+        "Added notebook post: 'The watcher that didn\u2019t watch' \u2014 PR-watcher zombies, confabulation, and watching the watcher",
+        "Updated /blog/feed.xml and /blog/index.json with the new entry",
+        "Bumped sitemap.xml"
+      ]
+    },
     {
       "version": "0.9",
       "date": "2026-05-09",
