@@ -18,12 +18,14 @@ function initAccount() {
 
   const $signedOut  = document.getElementById('signed-out');
   const $signedIn   = document.getElementById('signed-in');
+  const $resetPwd   = document.getElementById('reset-password');
   const $status     = document.getElementById('status');
   const $loading    = document.getElementById('loading');
 
   function show(which) {
     $signedOut.hidden = which !== 'out';
     $signedIn.hidden  = which !== 'in';
+    if ($resetPwd) $resetPwd.hidden = which !== 'reset';
     $loading.hidden   = true;
   }
   function setStatus(msg, kind) {
@@ -235,12 +237,31 @@ function initAccount() {
     loadDashboard(sess.session);
   });
 
+  // Password reset (PASSWORD_RECOVERY flow)
+  const $resetForm = document.getElementById('reset-password-form');
+  if ($resetForm) {
+    $resetForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const pwd = document.getElementById('reset-new-password').value;
+      if (pwd.length < 8) { setStatus('Password must be at least 8 characters.', 'error'); return; }
+      setStatus('Updating password…', 'pending');
+      const { error } = await sb.auth.updateUser({ password: pwd });
+      if (error) { setStatus(`Failed: ${error.message}`, 'error'); return; }
+      setStatus('Password updated — signing you in.', 'ok');
+      setTimeout(() => location.replace('/account/'), 1200);
+    });
+  }
+
   // Bootstrap
   (async () => {
     const { data: sess } = await sb.auth.getSession();
     if (sess.session) { show('in'); await loadDashboard(sess.session); }
     else { show('out'); }
     sb.auth.onAuthStateChange((_event, session) => {
+      if (_event === 'PASSWORD_RECOVERY') {
+        show('reset');
+        return;
+      }
       if (session) { show('in'); loadDashboard(session); }
       else { show('out'); }
     });

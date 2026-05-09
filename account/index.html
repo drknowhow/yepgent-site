@@ -36,6 +36,19 @@
       <p>Loading…</p>
     </section>
 
+    <!-- Password recovery form (shown via PASSWORD_RECOVERY auth event) -->
+    <section id="reset-password" hidden>
+      <h2>Set a new password</h2>
+      <p>Enter your new password below.</p>
+      <form id="reset-password-form" class="subscribe-form" novalidate>
+        <label class="vh" for="reset-new-password">New password</label>
+        <input type="password" id="reset-new-password" name="password" required
+               placeholder="New password (min 8 chars)" minlength="8"
+               autocomplete="new-password" />
+        <button type="submit">Set new password</button>
+      </form>
+    </section>
+
     <!-- Signed-out form -->
     <section id="signed-out" hidden>
       <h2>Sign in</h2>
