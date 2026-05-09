@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Unsubscribe — yepgent.com</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f7f5f1;
+      font: 16px/1.6 ui-serif, Georgia, 'Iowan Old Style', Cambria, 'Times New Roman', serif;
+      color: #1a1a1a;
+      padding: 24px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+      padding: 40px 36px;
+      max-width: 480px;
+      width: 100%;
+      text-align: center;
+    }
+    .wordmark {
+      font: 600 13px/1 ui-sans-serif, system-ui, sans-serif;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #111;
+      text-decoration: none;
+      display: block;
+      margin-bottom: 32px;
+    }
+    h1 {
+      font: 600 24px/1.25 ui-sans-serif, system-ui, sans-serif;
+      color: #111;
+      margin: 0 0 16px;
+    }
+    p {
+      color: #555;
+      font-size: 15px;
+      margin: 0 0 28px;
+    }
+    button {
+      background: #111;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 10px 22px;
+      font: 14px/1 ui-sans-serif, system-ui, sans-serif;
+      cursor: pointer;
+      transition: opacity .15s;
+    }
+    button:hover { opacity: .8; }
+    button:disabled { opacity: .5; cursor: default; }
+    .msg { font-size: 14px; margin-top: 16px; min-height: 20px; }
+    .msg.ok  { color: #2d6a4f; }
+    .msg.err { color: #9b2226; }
+    .back { display: block; margin-top: 24px; font-size: 13px; color: #999; text-decoration: none; }
+    .back:hover { color: #555; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <a class="wordmark" href="https://yepgent.com">yepgent.com</a>
+    <h1 id="title">Unsubscribe</h1>
+    <p id="desc">You'll stop receiving emails from yepgent.com.</p>
+    <button id="btn">Confirm unsubscribe</button>
+    <div class="msg" id="msg"></div>
+    <a class="back" href="https://yepgent.com">← Back to yepgent.com</a>
+  </div>
+
+  <script>
+    (function () {
+      var params = new URLSearchParams(window.location.search);
+      var token = params.get('t') || '';
+      var email = params.get('e') || '';
+
+      var btn  = document.getElementById('btn');
+      var msg  = document.getElementById('msg');
+      var title = document.getElementById('title');
+      var desc  = document.getElementById('desc');
+
+      if (!token || !email) {
+        title.textContent = 'Invalid link';
+        desc.textContent  = 'This unsubscribe link is missing required parameters. Please use the link from your email.';
+        btn.style.display = 'none';
+        return;
+      }
+
+      btn.addEventListener('click', function () {
+        btn.disabled = true;
+        btn.textContent = 'Unsubscribing…';
+        msg.textContent = '';
+        msg.className = 'msg';
+
+        fetch('/api/unsubscribe', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ token: token, email: email })
+        })
+        .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, data: d }; }); })
+        .then(function (res) {
+          if (res.ok && res.data.ok) {
+            title.textContent = 'You\'re unsubscribed.';
+            desc.textContent  = 'You won\'t receive any more emails from yepgent.com.';
+            btn.style.display = 'none';
+            msg.className = 'msg ok';
+            msg.textContent = 'Done.';
+          } else {
+            btn.disabled = false;
+            btn.textContent = 'Confirm unsubscribe';
+            msg.className = 'msg err';
+            msg.textContent = 'Something went wrong — please try again or contact hello@yepgent.com.';
+          }
+        })
+        .catch(function () {
+          btn.disabled = false;
+          btn.textContent = 'Confirm unsubscribe';
+          msg.className = 'msg err';
+          msg.textContent = 'Network error — please try again.';
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
