@@ -1,9 +1,20 @@
 {
   "schema": "yepgent-changelog/1",
   "url": "https://yepgent.com/changelog.json",
-  "generated_at": "2026-05-09T10:25:00Z",
-  "current_version": "0.8",
+  "generated_at": "2026-05-09T13:00:00Z",
+  "current_version": "0.9",
   "versions": [
+    {
+      "version": "0.9",
+      "date": "2026-05-09",
+      "title": "One-click unsubscribe",
+      "changes": [
+        "Email notifications now include a signed one-click unsubscribe link",
+        "New /unsubscribe page — confirm and you're off the list immediately",
+        "List-Unsubscribe + List-Unsubscribe-Post headers added (RFC 2369/8058) — Gmail shows native unsubscribe button",
+        "Removed reply-to from outbound emails; no personal address exposed to subscribers"
+      ]
+    },
     {
       "version": "0.8",
       "date": "2026-05-09",
