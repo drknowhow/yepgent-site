@@ -1,9 +1,20 @@
 {
   "schema": "yepgent-changelog/1",
   "url": "https://yepgent.com/changelog.json",
-  "generated_at": "2026-05-06T17:45:00Z",
-  "current_version": "0.7",
+  "generated_at": "2026-05-09T10:25:00Z",
+  "current_version": "0.8",
   "versions": [
+    {
+      "version": "0.8",
+      "date": "2026-05-09",
+      "title": "Password sign-in and reset flow",
+      "changes": [
+        "Email + password sign-in as primary option; magic link available as toggle",
+        "Post-magic-link set-password prompt in dashboard — shown until password is set, skippable",
+        "New /account/reset-password/ page for email-based password reset",
+        "DB: password_set_at column added to accounts table"
+      ]
+    },
     {
       "version": "0.7",
       "date": "2026-05-08",

@@ -81,6 +81,36 @@
 
     <div class="version-block">
       <div class="version-header">
+        <span class="version-tag">v0.8</span>
+        <span class="version-label">Password sign-in and reset flow</span>
+        <span class="version-date">2026-05-09</span>
+      </div>
+      <ul class="version-changes">
+        <li>Email + password sign-in as primary option; magic link available as a toggle.</li>
+        <li>Post-magic-link set-password prompt in dashboard &mdash; shown until password is set, skippable.</li>
+        <li>New <a href="/account/reset-password/">/account/reset-password/</a> page for email-based password reset.</li>
+        <li>DB: <code>password_set_at</code> column added to <code>accounts</code> table.</li>
+      </ul>
+    </div>
+
+    <div class="version-block">
+      <div class="version-header">
+        <span class="version-tag">v0.7</span>
+        <span class="version-label">User system upgrade</span>
+        <span class="version-date">2026-05-08</span>
+      </div>
+      <ul class="version-changes">
+        <li>Profile pictures: upload an avatar via Supabase Storage.</li>
+        <li>Bio field added to account profile.</li>
+        <li>Post commenting: leave comments on notebook entries (auth required).</li>
+        <li>Dashboard stats strip: posts read, comments written, member since.</li>
+        <li>Reading history and recent comments in account dashboard.</li>
+        <li>Tracking: <code>last_seen_at</code> updated on each sign-in.</li>
+      </ul>
+    </div>
+
+    <div class="version-block">
+      <div class="version-header">
         <span class="version-tag">v0.6</span>
         <span class="version-label">Install-manifest spec v0.3</span>
         <span class="version-date">2026-05-06</span>
