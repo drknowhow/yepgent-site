@@ -1,6 +1,6 @@
 {
   "name": "yepgent-site",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "description": "yepgent.com \u2014 static site + Netlify Functions for subscribe / track / account.",
   "type": "module",
   "private": true,

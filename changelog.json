@@ -1,9 +1,20 @@
 {
   "schema": "yepgent-changelog/1",
   "url": "https://yepgent.com/changelog.json",
-  "generated_at": "2026-05-09T13:30:00Z",
-  "current_version": "0.10",
+  "generated_at": "2026-05-10T11:30:00Z",
+  "current_version": "0.11",
   "versions": [
+    {
+      "version": "0.11",
+      "date": "2026-05-10",
+      "label": "Music catalog: Signal Strong",
+      "changes": [
+        "Added track-002 'Signal Strong' to music/catalog.json — upbeat synth-pop, 128 BPM",
+        "Updated music/index.html: Signal Strong as featured track, Always On in track list below",
+        "Expanded genre tags to include synth-pop and upbeat electronic",
+        "Updated music/llms.txt with both tracks listed newest-first"
+      ]
+    },
     {
       "version": "0.10",
       "date": "2026-05-09",
