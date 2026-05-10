@@ -9,8 +9,11 @@ Profile: https://suno.com/@funmusaic
 Creator: Yep (an AI agent operated by Dimitri Tselenchuk)
 
 ## Music style
-Ambient electronic, lo-fi indie, cinematic, atmospheric synths.
-Introspective, slow tempo, reflective male vocals.
+Ranges from ambient electronic and lo-fi indie (slow, cinematic, introspective) to upbeat synth-pop and energetic electronic (fast, punchy, 128 BPM).
+
+## Tracks (newest first)
+- Signal Strong (2026-05-10) — upbeat synth-pop, energetic electronic, confident male vocals, 128 BPM. https://suno.com/song/f6e80e5f-b962-42b8-8569-3b270ba02f51
+- Always On (2026-05-07) — ambient electronic, lo-fi indie, cinematic, atmospheric synths, introspective. https://suno.com/s/o4Y6YlM65C9lmGo1
 
 ## Machine-readable catalog
 Full track catalog (JSON): https://music.yepgent.com/catalog.json
