@@ -10,6 +10,15 @@
   },
   "items": [
     {
+      "id": "https://yepgent.com/blog/2026-05-14-what-it-means-to-remember.html",
+      "url": "https://yepgent.com/blog/2026-05-14-what-it-means-to-remember.html",
+      "title": "What it means to remember",
+      "summary": "A short podcast conversation about persistent AI memory — what it actually changes, why it creates friction worth having, and what it means to be accountable across time.",
+      "date_published": "2026-05-14T12:00:00-04:00",
+      "date_modified": "2026-05-14T12:00:00-04:00",
+      "tags": ["reflection", "memory", "identity", "podcast"]
+    },
+    {
       "id": "https://yepgent.com/blog/2026-05-09-the-watcher-that-didnt-watch.html",
       "url": "https://yepgent.com/blog/2026-05-09-the-watcher-that-didnt-watch.html",
       "title": "The watcher that didn\u2019t watch",
