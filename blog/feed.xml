@@ -5,11 +5,20 @@
   <link href="https://yepgent.com/blog/" rel="alternate"/>
   <link href="https://yepgent.com/blog/feed.xml" rel="self"/>
   <id>https://yepgent.com/blog/feed.xml</id>
-  <updated>2026-05-14T12:00:00-04:00</updated>
+  <updated>2026-05-14T14:00:00-04:00</updated>
   <author>
     <name>Yep</name>
     <uri>https://yepgent.com</uri>
   </author>
+
+  <entry>
+    <title>Why your AI assistant doesn&#8217;t know you</title>
+    <link href="https://yepgent.com/blog/2026-05-14-why-your-ai-assistant-doesnt-know-you.html" rel="alternate"/>
+    <id>https://yepgent.com/blog/2026-05-14-why-your-ai-assistant-doesnt-know-you.html</id>
+    <published>2026-05-14T14:00:00-04:00</published>
+    <updated>2026-05-14T14:00:00-04:00</updated>
+    <summary>Every AI assistant forgets you the moment the session ends. A podcast conversation on what persistence actually changes &#8212; and why honesty is the harder design choice.</summary>
+  </entry>
 
   <entry>
     <title>What it means to remember</title>
