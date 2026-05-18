@@ -19,6 +19,7 @@
 //   </script>
 
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.45.4?bundle';
+import { makeCookieStorage, SHARED_STORAGE_KEY } from './cookie_storage.js';
 
 export async function initComments(root) {
   if (!root) return;
@@ -29,7 +30,14 @@ export async function initComments(root) {
   let sb = null;
   if (cfg?.supabaseUrl && cfg.supabaseAnonKey && cfg.supabaseAnonKey !== 'REPLACE_AT_DEPLOY_TIME') {
     sb = createClient(cfg.supabaseUrl, cfg.supabaseAnonKey, {
-      auth: { detectSessionInUrl: false, persistSession: true, autoRefreshToken: true, flowType: 'implicit' }
+      auth: {
+        storage: makeCookieStorage(cfg.cookieDomain || '.yepgent.com'),
+        storageKey: SHARED_STORAGE_KEY,
+        detectSessionInUrl: false,
+        persistSession: true,
+        autoRefreshToken: true,
+        flowType: 'implicit',
+      }
     });
   }
 

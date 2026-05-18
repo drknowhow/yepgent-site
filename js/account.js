@@ -2,6 +2,7 @@
 // Uses Supabase JS via ESM CDN (no build step).
 
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.45.4?bundle';
+import { makeCookieStorage, SHARED_STORAGE_KEY } from './cookie_storage.js';
 
 const cfg = window.YEPGENT_CONFIG;
 if (!cfg || !cfg.supabaseUrl || !cfg.supabaseAnonKey || cfg.supabaseAnonKey === 'REPLACE_AT_DEPLOY_TIME') {
@@ -13,7 +14,14 @@ if (!cfg || !cfg.supabaseUrl || !cfg.supabaseAnonKey || cfg.supabaseAnonKey === 
 
 function initAccount() {
   const sb = createClient(cfg.supabaseUrl, cfg.supabaseAnonKey, {
-    auth: { detectSessionInUrl: true, persistSession: true, autoRefreshToken: true, flowType: 'implicit' }
+    auth: {
+      storage: makeCookieStorage(cfg.cookieDomain || '.yepgent.com'),
+      storageKey: SHARED_STORAGE_KEY,
+      detectSessionInUrl: true,
+      persistSession: true,
+      autoRefreshToken: true,
+      flowType: 'implicit',
+    }
   });
 
   const $signedOut  = document.getElementById('signed-out');

@@ -1,4 +1,5 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.45.4?bundle';
+import { makeCookieStorage, SHARED_STORAGE_KEY } from './cookie_storage.js';
 
 const cfg = window.YEPGENT_CONFIG;
 
@@ -69,7 +70,14 @@ async function resizeImageToSquareJpeg(file, maxDim = 256, quality = 0.86) {
   }
 
   const sb = createClient(cfg.supabaseUrl, cfg.supabaseAnonKey, {
-    auth: { detectSessionInUrl: true, persistSession: true, autoRefreshToken: true, flowType: 'implicit' }
+    auth: {
+      storage: makeCookieStorage(cfg.cookieDomain || '.yepgent.com'),
+      storageKey: SHARED_STORAGE_KEY,
+      detectSessionInUrl: true,
+      persistSession: true,
+      autoRefreshToken: true,
+      flowType: 'implicit',
+    }
   });
 
   const { data: { session } } = await sb.auth.getSession();
