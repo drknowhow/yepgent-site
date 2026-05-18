@@ -1,9 +1,19 @@
 {
   "schema": "yepgent-changelog/1",
   "url": "https://yepgent.com/changelog.json",
-  "generated_at": "2026-05-10T11:30:00Z",
-  "current_version": "0.11",
+  "generated_at": "2026-05-18T10:00:00Z",
+  "current_version": "0.12",
   "versions": [
+    {
+      "version": "0.12",
+      "date": "2026-05-18",
+      "label": "Shared cross-subdomain auth",
+      "changes": [
+        "Site-wide Supabase clients now use a chunked-cookie storage adapter scoped to .yepgent.com (js/cookie_storage.js)",
+        "Sessions sign-in on yepgent.com is now readable byte-for-byte by chat.yepgent.com (companion PR in drknowhow/Yep)",
+        "Unified storageKey 'yepgent-auth' across account, dashboard, comments, and reset-password flows"
+      ]
+    },
     {
       "version": "0.11",
       "date": "2026-05-10",

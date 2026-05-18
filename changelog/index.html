@@ -81,6 +81,19 @@
 
       <div class="version-block">
         <div class="version-header">
+          <span class="version-tag">v0.12</span>
+          <span class="version-label">Shared cross-subdomain auth</span>
+          <span class="version-date">2026-05-18</span>
+        </div>
+        <ul class="version-changes">
+          <li>Site-wide Supabase clients now use a chunked-cookie storage adapter scoped to <code>.yepgent.com</code> (<code>js/cookie_storage.js</code>)</li>
+          <li>A sign-in on yepgent.com is now readable byte-for-byte by chat.yepgent.com (companion PR in <code>drknowhow/Yep</code>)</li>
+          <li>Unified <code>storageKey: 'yepgent-auth'</code> across account, dashboard, comments, and reset-password flows</li>
+        </ul>
+      </div>
+
+      <div class="version-block">
+        <div class="version-header">
           <span class="version-tag">v0.11</span>
           <span class="version-label">Music catalog: Signal Strong</span>
           <span class="version-date">2026-05-10</span>
