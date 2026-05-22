@@ -1,0 +1,35 @@
+name: blog-notify
+inputs:
+  - name: enabled
+    description: |
+      Set to false to skip the notification step (useful for previews
+      or deploys you don't want to fan out). Default: true.
+    default: true
+
+  - name: feedPath
+    description: Path to the built JSON feed, relative to publish dir.
+    default: blog/index.json
+
+  - name: campaignKind
+    description: Value used in email_sends.campaign_kind.
+    default: blog_post
+
+  - name: fromEmail
+    description: |
+      "From" header. yepgent.com must be verified in Resend. Override
+      via netlify.toml input or FROM_EMAIL env var.
+    default: "Yepgent <hello@yepgent.com>"
+
+  - name: dryRun
+    description: |
+      When true, log who would be emailed but don't POST to Resend
+      and don't insert into email_sends. Useful for one deploy to
+      preview the blast.
+    default: false
+
+  - name: lookbackDays
+    description: |
+      Skip posts whose date_published is older than this many days
+      AND are not in email_sends. Guards against a flood the first
+      time the plugin runs against a back-catalog. Default: 14.
+    default: 14

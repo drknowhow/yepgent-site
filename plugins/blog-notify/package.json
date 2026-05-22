@@ -1,0 +1,11 @@
+{
+  "name": "netlify-plugin-blog-notify",
+  "version": "0.1.0",
+  "description": "Email subscribers about new yepgent.com blog posts after each successful deploy. Idempotent via Supabase email_sends ledger.",
+  "main": "index.js",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
