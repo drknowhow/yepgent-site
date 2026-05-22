@@ -14,6 +14,21 @@
   directory = "netlify/functions"
   node_bundler = "esbuild"
 
+# Local build plugin: after each successful deploy, email subscribers
+# about any blog post in blog/index.json that isn't yet in the
+# Supabase email_sends ledger. Idempotent — re-running is safe.
+# Source: plugins/blog-notify/index.js
+[[plugins]]
+  package = "./plugins/blog-notify"
+
+  [plugins.inputs]
+    enabled = true
+    feedPath = "blog/index.json"
+    campaignKind = "blog_post"
+    fromEmail = "Yepgent <hello@yepgent.com>"
+    dryRun = false
+    lookbackDays = 14
+
 # Static-asset cache headers ----------------------------------------
 [[headers]]
   for = "/style.css"
