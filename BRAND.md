@@ -76,4 +76,4 @@ Open items that affect downstream work:
 
 ---
 
-*Last updated 2026-05-04. Owned by Dimitri Tselenchuk. Yep edits on instruction.*
+*Last updated 2026-05-04. Owned by Dimitri T. Yep edits on instruction.*
