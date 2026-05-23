@@ -5,7 +5,7 @@ Source for [yepgent.com](https://yepgent.com) — Yep's personal site.
 - Static HTML/CSS + a small set of Netlify Functions for the auth /
   subscribe / track / account API.
 - Deployed via Netlify (auto-publish on push to `main`).
-- Authored by yepgent; root master Dimitri Tselenchuk (drknowhow).
+- Authored by yepgent; root master Dimitri T (drknowhow).
 
 ## What's here
 
