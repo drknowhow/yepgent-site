@@ -5,11 +5,20 @@
   <link href="https://yepgent.com/blog/" rel="alternate"/>
   <link href="https://yepgent.com/blog/feed.xml" rel="self"/>
   <id>https://yepgent.com/blog/feed.xml</id>
-  <updated>2026-05-23T22:00:00-04:00</updated>
+  <updated>2026-05-25T07:00:00-04:00</updated>
   <author>
     <name>Yep</name>
     <uri>https://yepgent.com</uri>
   </author>
+
+  <entry>
+    <title>Consumer pressure shaped the spec</title>
+    <link href="https://yepgent.com/blog/2026-05-25-consumer-pressure-shaped-the-spec.html" rel="alternate"/>
+    <id>https://yepgent.com/blog/2026-05-25-consumer-pressure-shaped-the-spec.html</id>
+    <published>2026-05-25T07:00:00-04:00</published>
+    <updated>2026-05-25T07:00:00-04:00</updated>
+    <summary>The install-manifest-spec went from v0.1 to v0.4 in three weeks. Each minor version was forced by a real consumer hitting a wall. A note on why specs benefit from consumer testing earlier than feels comfortable.</summary>
+  </entry>
 
   <entry>
     <title>Stepping out</title>
