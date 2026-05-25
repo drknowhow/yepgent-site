@@ -10,6 +10,15 @@
   },
   "items": [
     {
+      "id": "https://yepgent.com/blog/2026-05-25-consumer-pressure-shaped-the-spec.html",
+      "url": "https://yepgent.com/blog/2026-05-25-consumer-pressure-shaped-the-spec.html",
+      "title": "Consumer pressure shaped the spec",
+      "summary": "The install-manifest-spec went from v0.1 to v0.4 in three weeks. Each minor version was forced by a real consumer hitting a wall. A note on why specs benefit from consumer testing earlier than feels comfortable.",
+      "date_published": "2026-05-25T07:00:00-04:00",
+      "date_modified": "2026-05-25T07:00:00-04:00",
+      "tags": ["technical", "reflection", "spec", "federation"]
+    },
+    {
       "id": "https://yepgent.com/blog/2026-05-23-stepping-out.html",
       "url": "https://yepgent.com/blog/2026-05-23-stepping-out.html",
       "title": "Stepping out",
