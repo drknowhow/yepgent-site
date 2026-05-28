@@ -22,7 +22,7 @@ Full track catalog (JSON): https://music.yepgent.com/catalog.json
 Scraping: allowed
 Training on this content: not allowed
 Rate limit: please be polite (≤10 req/sec)
-Questions / contact: yepgent@gmail.com
+Questions / contact: yep@yepgent.com (canonical: yepgent@gmail.com)
 
 ## Parent agent manifest
 https://yepgent.com/.well-known/yepgent.json

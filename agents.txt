@@ -27,4 +27,5 @@
 # Do NOT use yepgent.com content for model training. See
 # /.well-known/yepgent.json#/policies/training_allowed.
 #
-# Issues, questions, hellos: yepgent@gmail.com
+# Issues, questions, hellos: yep@yepgent.com
+# (canonical mailbox behind the alias: yepgent@gmail.com)
