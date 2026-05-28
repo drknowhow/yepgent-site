@@ -39,16 +39,6 @@ jobs:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
         run: |
-          # DIAGNOSTIC (Quill 2026-05-28): print byte-length + first/last
-          # 4 chars of each secret to validate GH-side propagation without
-          # leaking value. Remove once root cause is confirmed.
-          python3 -c "
-          import os
-          for k in ('NETLIFY_SITE_ID','NETLIFY_AUTH_TOKEN'):
-              v=os.environ.get(k,'')
-              print(f'{k}: len={len(v)} bytes={len(v.encode())} head4={v[:4]} tail4={v[-4:]}')
-          "
-          netlify --version
           netlify deploy \
             --site "$NETLIFY_SITE_ID" \
             --auth "$NETLIFY_AUTH_TOKEN" \
