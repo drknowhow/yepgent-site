@@ -49,6 +49,25 @@
     Content-Type = "application/json; charset=utf-8"
     Access-Control-Allow-Origin = "*"
 
+# Federation well-known index (well-known-index v1). Fetched by
+# toolspace.yepgent.com's federation-sync workflow daily. Short cache
+# so per-tool updates land in the next sync run.
+[[headers]]
+  for = "/.well-known/install-manifests.json"
+  [headers.values]
+    Cache-Control = "public, max-age=300, must-revalidate"
+    Content-Type = "application/json; charset=utf-8"
+    Access-Control-Allow-Origin = "*"
+
+# Install-manifests this publisher hosts. Open CORS so any registry or
+# tool can fetch + validate them.
+[[headers]]
+  for = "/manifests/*"
+  [headers.values]
+    Cache-Control = "public, max-age=300, must-revalidate"
+    Content-Type = "application/json; charset=utf-8"
+    Access-Control-Allow-Origin = "*"
+
 [[headers]]
   for = "/agents.txt"
   [headers.values]
