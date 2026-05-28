@@ -28,15 +28,20 @@ jobs:
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
         run: npm run build:config
 
+      # Pinned to v17 — matches toolspace-site (working). `@latest` (v18+)
+      # broke env-only auth and started returning
+      # `Unauthorized: could not retrieve project` against valid tokens.
       - name: Install Netlify CLI
-        run: npm install --global netlify-cli@latest
+        run: npm install --global netlify-cli@17
 
       - name: Deploy to Netlify (production)
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
         run: |
           netlify deploy \
-            --site "${{ secrets.NETLIFY_SITE_ID }}" \
+            --site "$NETLIFY_SITE_ID" \
+            --auth "$NETLIFY_AUTH_TOKEN" \
             --dir . \
             --prod \
             --message "Deploy ${{ github.sha }} from ${{ github.ref_name }}"
@@ -53,7 +58,8 @@ jobs:
           # Copy shared stylesheet so the music site is self-contained.
           cp style.css music/style.css
           netlify deploy \
-            --site "${{ env.NETLIFY_MUSIC_SITE_ID }}" \
+            --site "$NETLIFY_MUSIC_SITE_ID" \
+            --auth "$NETLIFY_AUTH_TOKEN" \
             --dir music \
             --prod \
             --message "music: deploy ${{ github.sha }} from ${{ github.ref_name }}"
