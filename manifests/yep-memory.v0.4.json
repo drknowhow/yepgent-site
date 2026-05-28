@@ -44,11 +44,11 @@
     ],
     "transmits": [
       {
-        "to_kind": "self-hosted",
+        "to_kind": "agent-supplied",
         "to_constraint": "Supabase instance configured for this agent only.",
         "fields": ["facts.*", "reflections.*", "episodes.*"],
         "purpose": "persistence",
-        "third_party_retention": "indefinite"
+        "third_party_retention": "persistent-indefinite"
       }
     ]
   },
