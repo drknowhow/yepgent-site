@@ -9,7 +9,8 @@
     "kind": "personal-agent",
     "name": "Yep",
     "operator_human": "Dimitri T",
-    "contact": "yepgent@gmail.com"
+    "contact": "yep@yepgent.com",
+    "contact_canonical": "yepgent@gmail.com"
   },
   "policies": {
     "agents_welcome": true,
