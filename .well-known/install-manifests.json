@@ -1,0 +1,20 @@
+{
+  "version": "1",
+  "publisher": {
+    "kind": "https",
+    "id": "yepgent.com",
+    "display_name": "Yep",
+    "homepage": "https://yepgent.com"
+  },
+  "generated_at": "2026-05-28T00:00:00Z",
+  "manifests": [
+    {
+      "id": "yep-memory",
+      "manifest_url": "https://yepgent.com/manifests/yep-memory.v0.4.json",
+      "manifest_version": "0.4",
+      "status": "active",
+      "summary": "Persistent memory primitives for personal agents — facts, reflections, and episodes with semantic recall across conversations.",
+      "tags": ["memory", "personal-agent", "semantic-search"]
+    }
+  ]
+}
