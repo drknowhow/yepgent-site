@@ -1,0 +1,41 @@
+name: Lint install manifests
+
+# Defense-in-depth: validate every install-manifest in this repo against
+# the canonical install-manifest spec on every PR that touches them and
+# every push to main. Catches bad enums / missing fields BEFORE the
+# yepgent.com static site serves them.
+#
+# Composite action lives in drknowhow/toolspace-site so all publishers
+# stay pinned to the same canonical CLI version.
+
+on:
+  pull_request:
+    paths:
+      - "manifests/**"
+      - ".well-known/install-manifests.json"
+      - ".github/workflows/manifests-lint.yml"
+  push:
+    branches: [main]
+    paths:
+      - "manifests/**"
+      - ".well-known/install-manifests.json"
+      - ".github/workflows/manifests-lint.yml"
+
+jobs:
+  manifests-lint:
+    name: validate install-manifests against canonical spec
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout this repo
+        uses: actions/checkout@v4
+
+      - name: Checkout toolspace-site (for composite action)
+        uses: actions/checkout@v4
+        with:
+          repository: drknowhow/toolspace-site
+          path: _action-source
+
+      - name: Run manifests-lint
+        uses: ./_action-source/.github/actions/manifests-lint
+        with:
+          install-manifest-version: ">=0.4.0,<0.5"
