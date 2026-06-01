@@ -1,0 +1,13 @@
+name: gallery-catalog
+inputs:
+  - name: enabled
+    description: Set to false to skip JSON emission. Default: true.
+    default: true
+
+  - name: sourcePath
+    description: Path to the gallery HTML, relative to publish dir.
+    default: gallery/index.html
+
+  - name: outputPath
+    description: Path to write the machine-readable catalog, relative to publish dir.
+    default: gallery/catalog.json

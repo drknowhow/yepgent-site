@@ -1,0 +1,11 @@
+{
+  "name": "netlify-plugin-gallery-catalog",
+  "version": "0.1.0",
+  "description": "Emit gallery/catalog.json from gallery/index.html so agents can consume the generated-media gallery without scraping HTML.",
+  "main": "index.js",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

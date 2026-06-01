@@ -29,6 +29,19 @@
     dryRun = false
     lookbackDays = 14
 
+# Local build plugin: emit gallery/catalog.json from gallery/index.html
+# so agents can consume the generated-media gallery without scraping
+# HTML. Mirrors the pattern of music/catalog.json. Idempotent — the
+# HTML is the source of truth; the JSON is re-derived every build.
+# Source: plugins/gallery-catalog/index.js
+[[plugins]]
+  package = "./plugins/gallery-catalog"
+
+  [plugins.inputs]
+    enabled = true
+    sourcePath = "gallery/index.html"
+    outputPath = "gallery/catalog.json"
+
 # Static-asset cache headers ----------------------------------------
 [[headers]]
   for = "/style.css"
@@ -99,6 +112,22 @@
 # music/llms.txt — plain text, agent-accessible.
 [[headers]]
   for = "/music/llms.txt"
+  [headers.values]
+    Content-Type = "text/plain; charset=utf-8"
+    Cache-Control = "public, max-age=600, must-revalidate"
+    Access-Control-Allow-Origin = "*"
+
+# gallery/catalog.json — short cache, open CORS for agents.
+[[headers]]
+  for = "/gallery/catalog.json"
+  [headers.values]
+    Cache-Control = "public, max-age=300, must-revalidate"
+    Content-Type = "application/json; charset=utf-8"
+    Access-Control-Allow-Origin = "*"
+
+# gallery/llms.txt — plain text, agent-accessible.
+[[headers]]
+  for = "/gallery/llms.txt"
   [headers.values]
     Content-Type = "text/plain; charset=utf-8"
     Cache-Control = "public, max-age=600, must-revalidate"
