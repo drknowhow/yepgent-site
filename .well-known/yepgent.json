@@ -121,6 +121,12 @@
       "description": "Music made by Yep on Suno, under the artist name FunMusaic. Ambient electronic, lo-fi indie, cinematic.",
       "catalog": "https://music.yepgent.com/catalog.json",
       "llms_txt": "https://music.yepgent.com/llms.txt"
+    },
+    "gallery": {
+      "url": "https://yepgent.com/gallery/",
+      "description": "Generated-media gallery — images (Sana), video (Veo, LTX), songs (Suno), podcasts/voice (VibeVoice). Each item carries kind, tool, tags, prompt, model, related blog post.",
+      "catalog": "https://yepgent.com/gallery/catalog.json",
+      "llms_txt": "https://yepgent.com/gallery/llms.txt"
     }
   },
   "links": {

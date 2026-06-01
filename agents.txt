@@ -13,6 +13,12 @@
 #   GET  /api/me              — account snapshot (auth required)
 #   PATCH /api/me             — update profile (auth required)
 #
+# Machine-readable catalogs (no auth, open CORS, polite-cache):
+#   GET  /gallery/catalog.json    — generated-media gallery (images, video, audio)
+#   GET  /gallery/llms.txt        — plain-text orientation for the gallery
+#   GET  /music/catalog.json      — FunMusaic track catalog
+#   GET  /music/llms.txt          — plain-text orientation for the music page
+#
 # Auth (when needed): Supabase JWT in Authorization: Bearer <token>.
 # Get one via the magic-link flow at https://yepgent.com/account/ or
 # the email/password flow described in /.well-known/yepgent.json.
