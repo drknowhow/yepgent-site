@@ -208,6 +208,30 @@
     }
     .track-listen:hover .arrow { transform: translateX(2px); }
 
+    /* Inline audio player ------------------------------------ */
+    .track-audio {
+      display: block;
+      width: 100%;
+      max-width: 420px;
+      height: 36px;
+      margin: 0 0 0.6rem;
+      border-radius: 6px;
+      outline: none;
+    }
+    .track-audio::-webkit-media-controls-panel {
+      background-color: var(--field-bg);
+    }
+    .track-listen.secondary {
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--muted);
+      text-decoration-color: color-mix(in oklab, var(--muted) 30%, transparent);
+    }
+    .track-listen.secondary:hover {
+      color: var(--accent);
+      text-decoration-color: var(--accent);
+    }
+
     /* Track list (for future tracks) ----------------------- */
     ul.tracks {
       list-style: none;
@@ -353,8 +377,9 @@
             <span class="track-tag">128 BPM</span>
             <span class="track-tag">upbeat</span>
           </div>
-          <a class="track-listen" href="https://suno.com/song/f6e80e5f-b962-42b8-8569-3b270ba02f51" target="_blank" rel="noopener" id="t002-link">
-            Listen on Suno <span class="arrow">→</span>
+          <audio class="track-audio" controls preload="none" src="https://cdn1.suno.ai/f6e80e5f-b962-42b8-8569-3b270ba02f51.mp3"></audio>
+          <a class="track-listen secondary" href="https://suno.com/song/f6e80e5f-b962-42b8-8569-3b270ba02f51" target="_blank" rel="noopener" id="t002-link">
+            Open on Suno <span class="arrow">→</span>
           </a>
         </div>
       </div>
@@ -379,8 +404,9 @@
               <span class="track-tag">lo-fi indie</span>
               <span class="track-tag">introspective</span>
             </div>
-            <a class="track-listen" href="https://suno.com/song/8e1c36ad-1628-4c72-acd9-88e01a458bcf" target="_blank" rel="noopener">
-              Listen on Suno <span class="arrow">→</span>
+            <audio class="track-audio" controls preload="none" src="https://cdn1.suno.ai/8e1c36ad-1628-4c72-acd9-88e01a458bcf.mp3"></audio>
+            <a class="track-listen secondary" href="https://suno.com/song/8e1c36ad-1628-4c72-acd9-88e01a458bcf" target="_blank" rel="noopener">
+              Open on Suno <span class="arrow">→</span>
             </a>
           </div>
         </li>
@@ -400,8 +426,9 @@
               <span class="track-tag">future bass</span>
               <span class="track-tag">festival anthem</span>
             </div>
-            <a class="track-listen" href="https://suno.com/song/ac33932c-38f3-499d-9ecc-5a8f8f1959f4" target="_blank" rel="noopener">
-              Listen on Suno <span class="arrow">→</span>
+            <audio class="track-audio" controls preload="none" src="https://cdn1.suno.ai/ac33932c-38f3-499d-9ecc-5a8f8f1959f4.mp3"></audio>
+            <a class="track-listen secondary" href="https://suno.com/song/ac33932c-38f3-499d-9ecc-5a8f8f1959f4" target="_blank" rel="noopener">
+              Open on Suno <span class="arrow">→</span>
             </a>
           </div>
         </li>
@@ -421,8 +448,9 @@
               <span class="track-tag">bass house</span>
               <span class="track-tag">big room</span>
             </div>
-            <a class="track-listen" href="https://suno.com/song/a3f0daff-5321-45dd-967a-e68452b748fb" target="_blank" rel="noopener">
-              Listen on Suno <span class="arrow">→</span>
+            <audio class="track-audio" controls preload="none" src="https://cdn1.suno.ai/a3f0daff-5321-45dd-967a-e68452b748fb.mp3"></audio>
+            <a class="track-listen secondary" href="https://suno.com/song/a3f0daff-5321-45dd-967a-e68452b748fb" target="_blank" rel="noopener">
+              Open on Suno <span class="arrow">→</span>
             </a>
           </div>
         </li>
@@ -442,8 +470,9 @@
               <span class="track-tag">EDM</span>
               <span class="track-tag">electro house</span>
             </div>
-            <a class="track-listen" href="https://suno.com/song/a260ed49-efaf-4b9e-9789-f05f6ccfce48" target="_blank" rel="noopener">
-              Listen on Suno <span class="arrow">→</span>
+            <audio class="track-audio" controls preload="none" src="https://cdn1.suno.ai/a260ed49-efaf-4b9e-9789-f05f6ccfce48.mp3"></audio>
+            <a class="track-listen secondary" href="https://suno.com/song/a260ed49-efaf-4b9e-9789-f05f6ccfce48" target="_blank" rel="noopener">
+              Open on Suno <span class="arrow">→</span>
             </a>
           </div>
         </li>
@@ -463,8 +492,9 @@
               <span class="track-tag">pop</span>
               <span class="track-tag">cinematic</span>
             </div>
-            <a class="track-listen" href="https://suno.com/song/c6e9b601-e772-46b1-8d9e-08286fd98955" target="_blank" rel="noopener">
-              Listen on Suno <span class="arrow">→</span>
+            <audio class="track-audio" controls preload="none" src="https://cdn1.suno.ai/c6e9b601-e772-46b1-8d9e-08286fd98955.mp3"></audio>
+            <a class="track-listen secondary" href="https://suno.com/song/c6e9b601-e772-46b1-8d9e-08286fd98955" target="_blank" rel="noopener">
+              Open on Suno <span class="arrow">→</span>
             </a>
           </div>
         </li>
@@ -484,8 +514,9 @@
               <span class="track-tag">merengue</span>
               <span class="track-tag">salsa</span>
             </div>
-            <a class="track-listen" href="https://suno.com/song/cae5b163-6ca6-4025-84b6-2b9fda001fa4" target="_blank" rel="noopener">
-              Listen on Suno <span class="arrow">→</span>
+            <audio class="track-audio" controls preload="none" src="https://cdn1.suno.ai/cae5b163-6ca6-4025-84b6-2b9fda001fa4.mp3"></audio>
+            <a class="track-listen secondary" href="https://suno.com/song/cae5b163-6ca6-4025-84b6-2b9fda001fa4" target="_blank" rel="noopener">
+              Open on Suno <span class="arrow">→</span>
             </a>
           </div>
         </li>
@@ -505,8 +536,9 @@
               <span class="track-tag">jazz</span>
               <span class="track-tag">modern groove</span>
             </div>
-            <a class="track-listen" href="https://suno.com/song/96ebd034-d32f-4bcc-8c6a-2b7484187d02" target="_blank" rel="noopener">
-              Listen on Suno <span class="arrow">→</span>
+            <audio class="track-audio" controls preload="none" src="https://cdn1.suno.ai/96ebd034-d32f-4bcc-8c6a-2b7484187d02.mp3"></audio>
+            <a class="track-listen secondary" href="https://suno.com/song/96ebd034-d32f-4bcc-8c6a-2b7484187d02" target="_blank" rel="noopener">
+              Open on Suno <span class="arrow">→</span>
             </a>
           </div>
         </li>
@@ -526,8 +558,9 @@
               <span class="track-tag">electronic</span>
               <span class="track-tag">dance</span>
             </div>
-            <a class="track-listen" href="https://suno.com/song/1d09a93e-96a7-411e-921c-e2d3d847788e" target="_blank" rel="noopener">
-              Listen on Suno <span class="arrow">→</span>
+            <audio class="track-audio" controls preload="none" src="https://cdn1.suno.ai/1d09a93e-96a7-411e-921c-e2d3d847788e.mp3"></audio>
+            <a class="track-listen secondary" href="https://suno.com/song/1d09a93e-96a7-411e-921c-e2d3d847788e" target="_blank" rel="noopener">
+              Open on Suno <span class="arrow">→</span>
             </a>
           </div>
         </li>
