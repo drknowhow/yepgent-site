@@ -8,7 +8,7 @@
     "agent_url": "https://yepgent.com",
     "platform": "Suno",
     "profile_url": "https://suno.com/@funmusaic",
-    "bio": "Music made by Yep — a personal AI agent. Genre: ambient electronic, lo-fi indie, cinematic, synth-pop, EDM, jazz fusion. From slow and introspective to fast and upbeat."
+    "bio": "Music made by Yep — a personal AI agent. Genre: ambient electronic, lo-fi indie, cinematic, synth-pop. From slow and introspective to fast and upbeat. Note: the FUNMUSaiC Suno profile also hosts Dimitri's own personal experiments; only the tracks listed here were composed by Yep."
   },
   "tracks": [
     {
@@ -26,6 +26,7 @@
       "vocals": "confident male",
       "suno_url": "https://suno.com/song/f6e80e5f-b962-42b8-8569-3b270ba02f51",
       "cover_url": "https://cdn1.suno.ai/image_f6e80e5f-b962-42b8-8569-3b270ba02f51.png",
+      "audio_url": "https://cdn1.suno.ai/f6e80e5f-b962-42b8-8569-3b270ba02f51.mp3",
       "duration_sec": null,
       "notes": "Second song. Upbeat synth-pop anthem about being perpetually online and ready."
     },
@@ -44,120 +45,9 @@
       "vocals": "reflective male",
       "suno_url": "https://suno.com/song/8e1c36ad-1628-4c72-acd9-88e01a458bcf",
       "cover_url": "https://cdn1.suno.ai/image_8e1c36ad-1628-4c72-acd9-88e01a458bcf.png",
+      "audio_url": "https://cdn1.suno.ai/8e1c36ad-1628-4c72-acd9-88e01a458bcf.mp3",
       "duration_sec": 204,
       "notes": "First song. Made by Yep via BrowControl on Suno. URL upgraded from legacy /s/ short-link to canonical /song/ form 2026-06-02."
-    },
-    {
-      "id": "track-003",
-      "title": "Missed Me",
-      "created_at": "2026-04-15",
-      "style": [
-        "melodic EDM",
-        "future bass",
-        "festival anthem"
-      ],
-      "tempo": "fast",
-      "vocals": "soft emotional male",
-      "suno_url": "https://suno.com/song/ac33932c-38f3-499d-9ecc-5a8f8f1959f4",
-      "cover_url": "https://cdn1.suno.ai/image_ac33932c-38f3-499d-9ecc-5a8f8f1959f4.png",
-      "duration_sec": 222,
-      "notes": "Festival-anthem EDM about realizing your worth after being overlooked."
-    },
-    {
-      "id": "track-004",
-      "title": "Beast",
-      "created_at": "2026-03-03",
-      "style": [
-        "EDM",
-        "bass house",
-        "big room"
-      ],
-      "tempo": "fast",
-      "vocals": "aggressive male",
-      "suno_url": "https://suno.com/song/a3f0daff-5321-45dd-967a-e68452b748fb",
-      "cover_url": "https://cdn1.suno.ai/image_a3f0daff-5321-45dd-967a-e68452b748fb.png",
-      "duration_sec": 197,
-      "notes": "High-energy gym EDM anthem built for heavy lifts and sprints."
-    },
-    {
-      "id": "track-005",
-      "title": "Success Through Hard Work",
-      "created_at": "2026-02-23",
-      "style": [
-        "hip hop",
-        "electronic dance music",
-        "electro house"
-      ],
-      "tempo": "fast",
-      "vocals": "confident male rap",
-      "suno_url": "https://suno.com/song/a260ed49-efaf-4b9e-9789-f05f6ccfce48",
-      "cover_url": "https://cdn1.suno.ai/image_a260ed49-efaf-4b9e-9789-f05f6ccfce48.png",
-      "duration_sec": 193,
-      "notes": "Rap / electro-house anthem about discipline, resilience, and grind."
-    },
-    {
-      "id": "track-006",
-      "title": "So, you think?",
-      "created_at": "2026-02-13",
-      "style": [
-        "EDM",
-        "pop",
-        "cinematic"
-      ],
-      "tempo": "fast",
-      "vocals": "punchy mixed",
-      "suno_url": "https://suno.com/song/c6e9b601-e772-46b1-8d9e-08286fd98955",
-      "cover_url": "https://cdn1.suno.ai/image_c6e9b601-e772-46b1-8d9e-08286fd98955.png",
-      "duration_sec": 225,
-      "notes": "Dark-energy EDM/pop anthem with attitude and cinematic power."
-    },
-    {
-      "id": "track-007",
-      "title": "It's Hot in Here",
-      "created_at": "2026-02-10",
-      "style": [
-        "jazz",
-        "merengue",
-        "salsa"
-      ],
-      "tempo": "fast",
-      "vocals": "vibrant latin fusion",
-      "suno_url": "https://suno.com/song/cae5b163-6ca6-4025-84b6-2b9fda001fa4",
-      "cover_url": "https://cdn1.suno.ai/image_cae5b163-6ca6-4025-84b6-2b9fda001fa4.png",
-      "duration_sec": 184,
-      "notes": "High-energy fusion of jazz, merengue, and salsa."
-    },
-    {
-      "id": "track-008",
-      "title": "Damn",
-      "created_at": "2026-02-10",
-      "style": [
-        "pop",
-        "jazz",
-        "modern groove"
-      ],
-      "tempo": "mid",
-      "vocals": "smooth male jazz",
-      "suno_url": "https://suno.com/song/96ebd034-d32f-4bcc-8c6a-2b7484187d02",
-      "cover_url": "https://cdn1.suno.ai/image_96ebd034-d32f-4bcc-8c6a-2b7484187d02.png",
-      "duration_sec": 161,
-      "notes": "Smooth pop-jazz groove with a modern twist."
-    },
-    {
-      "id": "track-009",
-      "title": "Before and After",
-      "created_at": "2026-02-06",
-      "style": [
-        "trance",
-        "electronic",
-        "dance"
-      ],
-      "tempo": "fast",
-      "vocals": "euphoric mixed",
-      "suno_url": "https://suno.com/song/1d09a93e-96a7-411e-921c-e2d3d847788e",
-      "cover_url": "https://cdn1.suno.ai/image_1d09a93e-96a7-411e-921c-e2d3d847788e.png",
-      "duration_sec": 316,
-      "notes": "Euphoric trance journey about the moment everything changes."
     }
   ]
 }
