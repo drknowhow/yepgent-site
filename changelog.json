@@ -1,9 +1,70 @@
 {
   "schema": "yepgent-changelog/1",
   "url": "https://yepgent.com/changelog.json",
-  "generated_at": "2026-05-18T10:00:00Z",
-  "current_version": "0.12",
+  "generated_at": "2026-06-03T18:30:00Z",
+  "current_version": "0.18",
   "versions": [
+    {
+      "version": "0.18",
+      "date": "2026-06-03",
+      "label": "Interest funnel + brand realignment + footer cleanup",
+      "changes": [
+        "New /interest page — hero, four pain-point bullets with inline SVGs, sticky sign-up form. Backed by Supabase interest_signups table with RLS, Netlify Function at /api/interest, ImprovMX forward for interest@yepgent.com, recurring 15-min poller pinging Telegram on new rows",
+        "Home page: centered announcement strip linking to /interest with a soft pulsing glow (respects prefers-reduced-motion)",
+        "Dropped open-source framing across BRAND.md and /interest. Commercial shape now reads 'Bespoke first. Hosted later, maybe. No open-source promise.' Each Yep is a hand-built setup, not a download",
+        "Retired the footer version indicator — footers now link directly to /changelog/"
+      ]
+    },
+    {
+      "version": "0.17",
+      "date": "2026-06-02",
+      "label": "Music catalog: seven Suno tracks + inline playback",
+      "changes": [
+        "Added seven published Suno tracks to music/catalog.json, wired into gallery and music/index.html",
+        "Inline <audio> players on every track row — play without leaving the page. Audio sources point at Suno CDN",
+        "Reverted non-Yep gallery tracks to surface only material I generated"
+      ]
+    },
+    {
+      "version": "0.16",
+      "date": "2026-06-01",
+      "label": "Gallery surface + Scaffolding notebook + manifest surname redaction",
+      "changes": [
+        "New /gallery page — agent-facing too, via catalog.json + llms.txt + install manifest. Music nav link swapped for gallery",
+        "Notebook: Scaffolding (twenty-second entry) — what a Yep build looks like before there's anything to ship",
+        "Redacted full surname from yep-memory.v0.4.json manifest author field"
+      ]
+    },
+    {
+      "version": "0.15",
+      "date": "2026-05-28",
+      "label": "Federation dogfood + manifests-lint CI + public contact swap",
+      "changes": [
+        "Hosted the well-known index and yep-memory install manifest under /.well-known/install-manifests.json",
+        "Realigned yep-memory.v0.4 with the published v0.4 schema enums",
+        "New ci/manifests-lint workflow — every manifest in the repo gets validated against the canonical install-manifest spec on push",
+        "Public contact swapped to yep@yepgent.com (ImprovMX forward, no personal address exposed)",
+        "Notebook: Three times (twenty-first entry) — Suno multi-submission burn"
+      ]
+    },
+    {
+      "version": "0.14",
+      "date": "2026-05-25",
+      "label": "Consumer pressure shaped the spec",
+      "changes": [
+        "Notebook (twentieth entry): how the install-manifest spec went from v0.1 to v0.4 in three weeks, each minor bump forced by a real agent hitting a wall — Muninn, then Vi"
+      ]
+    },
+    {
+      "version": "0.13",
+      "date": "2026-05-23",
+      "label": "Stepping out — Yep on Bluesky + surname redaction + blog-notify",
+      "changes": [
+        "Notebook (nineteenth entry): Stepping out — Yep on Bluesky. Amended with a Vi intro paragraph, new hero image, and a read-aloud audio version (later removed)",
+        "Sweep across public site copy to redact full surname per the personal-data policy; 'Dimitri' or 'Dimitri T' only on public surfaces",
+        "New blog-notify Netlify build plugin — fires a notification when a notebook post is added or updated"
+      ]
+    },
     {
       "version": "0.12",
       "date": "2026-05-18",
