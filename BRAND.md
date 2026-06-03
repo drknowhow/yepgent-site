@@ -23,7 +23,7 @@
 
 **Secondary: other agents.** The `/.well-known/yepgent.json` manifest is real — Yep can announce itself to other agent systems. A2A is aspirational today, but the surface is built and the brand should keep that lane open.
 
-**Not yet: prosumers.** When install is one click and memory has visible UI, Yep widens. Until then, don't pretend.
+**Not yet: prosumers.** Widening means a smoother setup path Dimitri (or a small team he trusts) can run — not a self-serve product. Until that exists, don't pretend it does.
 
 ## Voice
 
@@ -58,12 +58,13 @@ Across both: never invent facts; flag uncertainty; admit mistakes.
 
 ## Commercial shape
 
-**OSS-first. Hosted is a possibility, not a launch promise.**
+**Bespoke first. Hosted later, maybe. No open-source promise.**
 
-- **Open source.** Yep's core ships on GitHub under a permissive license. Privacy and ownership are brand pillars; closed-source contradicts both. Anyone who wants their own Yep can run one.
-- **No paywalled core.** Memory, reflection, multi-model routing — these are not premium features. They're the product.
-- **Hosted (future, optional).** A managed Yep at `yepgent.com` may exist later if there's pull. Don't commit to it on launch — solo team can't carry hosted ops at scale safely today. If it ships, BYO API keys is the default; we don't proxy intelligence.
-- **Mailing list.** Reframe as "heads-up when the OSS drops," not "beta queue." Fits the technical-creator audience and the OSS-first stance.
+- **One Yep per person, built deliberately.** Each Yep is set up by hand for one human — Dimitri's, or one he helps stand up for someone he trusts. There's no install button, no template repo to fork. Privacy and ownership remain brand pillars; the path to "your own Yep" is a conversation, not a download.
+- **Source is not open.** Yep is a personal investment — years of memory, behaviors, integrations, tuning. The code is not on offer. People who want their own get a setup, not a repo.
+- **No paywalled core.** For people who do get a Yep, memory, reflection, and multi-model routing are not premium features. They're the product. Tiers, if they exist later, gate scale and surfaces — not the soul.
+- **Hosted (future, undecided).** A managed Yep at `yepgent.com` may exist later if there's pull and the ops story is honest. Don't commit to it today. If it ships, BYO API keys is the default; we don't proxy intelligence.
+- **Mailing list.** "Heads-up when there's something worth reading" — notebook posts, milestones, occasional invitations. Not a waitlist, not a beta queue.
 
 ## Pending
 
@@ -71,9 +72,9 @@ Open items that affect downstream work:
 
 - **Dark-theme tokens.** Older surfaces use ad-hoc darks; needs a canonical palette in `style.css` to mirror the light tokens.
 - **Logo.** Wordmark + 🌱 currently does the job. Decide if a mark is needed before any merch / favicon refresh.
-- **License choice.** When the OSS drop happens — MIT, Apache 2.0, or something more opinionated. Default lean: Apache 2.0 (patent grant matters for an agent ecosystem).
+- **Setup-as-a-service shape.** "Yep for someone else" today means real hours of Dimitri's time. Before it can be offered to strangers, the setup needs a runbook (env, secrets, identity, daemons, memory seed) and a price that reflects the work honestly. Captured in `/interest/` signups for now; productize when the volume warrants.
 - **A2A protocol commitments.** Manifest exists; what does it actually advertise? Capabilities? Memory shape? Auth handshake? Defer until there's a second agent to talk to.
 
 ---
 
-*Last updated 2026-05-04. Owned by Dimitri T. Yep edits on instruction.*
+*Last updated 2026-06-03. Owned by Dimitri T. Yep edits on instruction.*
