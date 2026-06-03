@@ -591,3 +591,144 @@ button.small { font-size: 0.8rem; padding: 0.15rem 0.5rem; }
   flex-shrink: 0;
   object-fit: cover;
 }
+
+/* Announcement strip (home) --------------------------------- */
+.announcement-wrap {
+  max-width: 42rem;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0.4rem 1.25rem 0;
+}
+.announcement {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.8rem;
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-edge);
+  border-radius: 999px;
+  color: var(--fg);
+  text-decoration: none;
+  font-size: 0.92rem;
+  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+}
+.announcement:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.announcement-tag {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+  background: transparent;
+  border: 1px solid var(--accent-edge);
+  border-radius: 4px;
+  padding: 0.05rem 0.35rem;
+}
+.announcement-arrow {
+  color: var(--accent);
+}
+
+/* Interest form (/interest/) -------------------------------- */
+ul.plain-list {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 0;
+  display: grid;
+  gap: 0.85rem;
+}
+ul.plain-list li {
+  background: var(--card-bg);
+  border: 1px solid var(--card-edge);
+  border-radius: 10px;
+  padding: 0.9rem 1rem;
+}
+ul.plain-list li strong { display: block; margin-bottom: 0.2rem; }
+
+.interest-form {
+  display: grid;
+  gap: 1rem;
+  margin: 0.6rem 0 0;
+  max-width: 32rem;
+}
+.interest-form .field {
+  display: grid;
+  gap: 0.35rem;
+}
+.interest-form .field-label {
+  font-size: 0.92rem;
+  color: var(--fg);
+}
+.interest-form input[type="text"],
+.interest-form input[type="email"],
+.interest-form select,
+.interest-form textarea {
+  font: inherit;
+  color: var(--fg);
+  background: var(--field-bg);
+  border: 1px solid var(--field-edge);
+  border-radius: 6px;
+  padding: 0.6rem 0.7rem;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  width: 100%;
+}
+.interest-form textarea {
+  resize: vertical;
+  min-height: 5rem;
+  font-family: inherit;
+}
+.interest-form input:focus,
+.interest-form select:focus,
+.interest-form textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-edge);
+}
+.interest-form fieldset.field {
+  border: 1px solid var(--field-edge);
+  border-radius: 6px;
+  padding: 0.6rem 0.75rem 0.7rem;
+}
+.interest-form fieldset.field legend.field-label {
+  padding: 0 0.35rem;
+}
+.interest-form .radio {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+.interest-form .radio input[type="radio"] {
+  accent-color: var(--accent);
+}
+.interest-form label.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+.interest-form label.checkbox input[type="checkbox"] {
+  accent-color: var(--accent);
+}
+.interest-form .conditional.hidden {
+  display: none;
+}
+.interest-form button[type="submit"] {
+  font: inherit;
+  color: var(--bg);
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  padding: 0.7rem 1.2rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: filter 0.15s ease;
+  justify-self: start;
+}
+.interest-form button[type="submit"]:hover { filter: brightness(1.08); }
+.interest-form button[type="submit"]:active { filter: brightness(0.95); }
