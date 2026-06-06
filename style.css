@@ -4044,3 +4044,354 @@ body.notebook-v4 .vh {
   }
   body.notebook-v4 .nv4-hero .aurora > span { animation: none !important; }
 }
+
+/* =================================================================
+   ABOUT PAGE — v4 design system, scoped to body.about-v4
+   Re-uses home-v4 shell (nav pill, body bg, design tokens, fonts).
+   ================================================================= */
+
+/* Quieter surface — no cursor orb here */
+body.about-v4 .cursor-orb { display: none; }
+
+/* ---------- HERO ---------- */
+body.about-v4 .av4-hero {
+  position: relative;
+  min-height: min(86svh, 880px);
+  padding: clamp(2.75rem, 7vw, 6rem) clamp(1.25rem, 5vw, 4rem) clamp(3rem, 6vw, 5.5rem);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  place-items: center;
+  isolation: isolate;
+  overflow: clip;
+}
+body.about-v4 .av4-hero > * { min-width: 0; }
+
+body.about-v4 .av4-hero .aurora {
+  position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  overflow: clip;
+}
+body.about-v4 .av4-hero .aurora > span {
+  position: absolute; display: block; border-radius: 50%;
+  filter: blur(80px); mix-blend-mode: screen; opacity: 0.78;
+}
+body.about-v4 .av4-hero .aurora .aurora-1 {
+  top: -12%; left: -8%; width: 70vw; height: 70vw;
+  background: conic-gradient(from 110deg at 50% 50%,
+    color-mix(in oklab, var(--accent) 36%, transparent),
+    transparent 35%,
+    color-mix(in oklab, var(--accent-strong) 24%, transparent) 60%,
+    transparent 80%);
+  animation: av4-drift-a 22s ease-in-out infinite alternate;
+}
+body.about-v4 .av4-hero .aurora .aurora-2 {
+  top: 25%; right: -12%; width: 62vw; height: 62vw;
+  background: radial-gradient(circle at 50% 50%,
+    color-mix(in oklab, var(--accent) 22%, transparent),
+    transparent 62%);
+  animation: av4-drift-b 26s ease-in-out infinite alternate;
+  opacity: 0.55;
+}
+@keyframes av4-drift-a {
+  from { transform: translate3d(0,0,0) scale(1) rotate(0deg); }
+  to   { transform: translate3d(5vw, 3vh, 0) scale(1.07) rotate(28deg); }
+}
+@keyframes av4-drift-b {
+  from { transform: translate3d(0,0,0) scale(1); }
+  to   { transform: translate3d(-4vw, 5vh, 0) scale(1.08); }
+}
+
+body.about-v4 .av4-hero-inner {
+  position: relative;
+  width: 100%;
+  max-width: 64rem;
+  text-align: left;
+}
+
+body.about-v4 .av4-eyebrow {
+  display: inline-flex; align-items: center; gap: 0.55rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--ink-soft);
+  margin: 0 0 1.6rem;
+}
+body.about-v4 .eyebrow-tick {
+  width: 0.45rem; height: 0.45rem; border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--accent) 18%, transparent);
+}
+
+/* Big editorial display — exercise the serif at full scale */
+body.about-v4 .av4-display {
+  font-family: var(--serif, "Iowan Old Style", Georgia, serif);
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  font-size: var(--display, clamp(2.8rem, 8vw, 7rem));
+  line-height: 1.0;
+  margin: 0 0 1.75rem;
+  color: var(--ink);
+  text-wrap: balance;
+}
+body.about-v4 .av4-display .serif-italic {
+  font-style: italic;
+  color: var(--accent);
+}
+
+body.about-v4 .av4-lede {
+  font-size: clamp(1.08rem, 1.45vw, 1.32rem);
+  line-height: 1.55;
+  color: var(--ink);
+  max-width: 46rem;
+  margin: 0;
+}
+body.about-v4 .av4-lede em {
+  font-family: var(--serif, Georgia, serif);
+  font-style: italic;
+  color: var(--ink);
+}
+
+/* ---------- SECTION SHELL ---------- */
+body.about-v4 .av4-section {
+  position: relative;
+  padding: clamp(2.5rem, 6vw, 5.25rem) clamp(1.25rem, 5vw, 4rem);
+  max-width: 78rem;
+  margin: 0 auto;
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity var(--dur-slow, 640ms) var(--ease, ease),
+              transform var(--dur-slow, 640ms) var(--ease, ease);
+}
+body.about-v4 .av4-section.is-in { opacity: 1; transform: none; }
+
+body.about-v4 .av4-section-head { margin-bottom: clamp(1.5rem, 3vw, 2.5rem); }
+
+body.about-v4 .av4-section-eyebrow {
+  display: inline-flex; align-items: center; gap: 0.55rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--ink-soft);
+  margin: 0 0 1rem;
+}
+
+body.about-v4 .av4-h2 {
+  font-family: var(--serif, Georgia, serif);
+  font-weight: 400;
+  letter-spacing: -0.012em;
+  font-size: var(--h2, clamp(2rem, 4.4vw, 3.8rem));
+  line-height: 1.05;
+  margin: 0 0 0.6rem;
+  color: var(--ink);
+  text-wrap: balance;
+}
+body.about-v4 .av4-h2 .serif-italic {
+  font-style: italic;
+  color: var(--accent);
+}
+
+body.about-v4 .av4-dek {
+  font-size: clamp(1rem, 1.25vw, 1.15rem);
+  line-height: 1.6;
+  color: var(--ink-soft);
+  max-width: 44rem;
+  margin: 0;
+}
+
+/* ---------- PROSE BLOCK ---------- */
+body.about-v4 .av4-prose {
+  max-width: 42rem;
+  font-size: 1.02rem;
+  line-height: 1.7;
+  color: var(--ink-soft);
+}
+body.about-v4 .av4-prose p { margin: 0 0 1.05rem; }
+body.about-v4 .av4-prose p:last-child { margin-bottom: 0; }
+body.about-v4 .av4-prose code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.92em;
+  padding: 0.05rem 0.35rem;
+  border-radius: var(--r-field, 6px);
+  background: color-mix(in oklab, var(--accent) 8%, transparent);
+  color: var(--ink);
+}
+
+/* Inline link style — accent underline, hover swap */
+body.about-v4 .av4-inline {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  transition: color var(--dur-fast, 150ms) var(--ease, ease);
+}
+body.about-v4 .av4-inline:hover { color: var(--accent); }
+
+/* ---------- GLASS CARD GRID (how it works + isn't) ---------- */
+body.about-v4 .av4-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(0, 18rem));
+  gap: clamp(0.9rem, 1.4vw, 1.25rem);
+}
+body.about-v4 .av4-card-grid > * { min-width: 0; }
+
+body.about-v4 .av4-isnt-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(0, 18rem));
+  gap: clamp(0.9rem, 1.4vw, 1.25rem);
+}
+body.about-v4 .av4-isnt-grid > * { min-width: 0; }
+
+body.about-v4 .av4-card {
+  position: relative;
+  background: var(--glass);
+  -webkit-backdrop-filter: saturate(1.3) blur(12px);
+  backdrop-filter: saturate(1.3) blur(12px);
+  border: 1px solid var(--glass-edge);
+  border-radius: 14px;
+  padding: clamp(1.1rem, 1.8vw, 1.4rem);
+  color: var(--ink);
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity var(--dur-slow, 640ms) var(--ease, ease),
+              transform var(--dur-slow, 640ms) var(--ease, ease),
+              border-color var(--dur, 280ms) var(--ease, ease),
+              box-shadow var(--dur, 280ms) var(--ease, ease);
+}
+body.about-v4 .av4-card.is-in { opacity: 1; transform: none; }
+body.about-v4 .av4-card:hover {
+  border-color: var(--accent-edge);
+  box-shadow: 0 10px 32px -18px color-mix(in oklab, var(--accent) 60%, var(--shadow-tint));
+}
+
+body.about-v4 .av4-card-num {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  color: color-mix(in oklab, var(--accent) 90%, transparent);
+  margin: 0 0 0.6rem;
+}
+
+body.about-v4 .av4-card h3 {
+  font-family: var(--serif, Georgia, serif);
+  font-weight: 400;
+  font-size: clamp(1.15rem, 1.6vw, 1.4rem);
+  line-height: 1.2;
+  margin: 0 0 0.55rem;
+  color: var(--ink);
+}
+
+body.about-v4 .av4-card p {
+  font-size: 0.97rem;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+/* ---------- "WHAT IT DOES" LIST ---------- */
+body.about-v4 .av4-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.25rem;
+  max-width: 60rem;
+}
+body.about-v4 .av4-list > * { min-width: 0; }
+body.about-v4 .av4-list li {
+  display: grid;
+  grid-template-columns: minmax(0, 14rem) minmax(0, 1fr);
+  gap: clamp(0.75rem, 2vw, 1.75rem);
+  align-items: baseline;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--line);
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity var(--dur, 280ms) var(--ease, ease),
+              transform var(--dur, 280ms) var(--ease, ease);
+}
+body.about-v4 .av4-list li.is-in { opacity: 1; transform: none; }
+body.about-v4 .av4-list li:first-child { border-top: 1px solid var(--line); }
+body.about-v4 .av4-list li > * { min-width: 0; }
+body.about-v4 .av4-list strong {
+  font-family: var(--serif, Georgia, serif);
+  font-weight: 400;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--ink);
+}
+body.about-v4 .av4-list span {
+  font-size: 0.98rem;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+/* ---------- COLOPHON ---------- */
+body.about-v4 .av4-colophon {
+  max-width: 78rem;
+  margin: 0 auto;
+  padding: clamp(2.5rem, 5vw, 4.5rem) clamp(1.25rem, 5vw, 4rem) clamp(3rem, 5vw, 5rem);
+  border-top: 1px solid var(--line);
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity var(--dur-slow, 640ms) var(--ease, ease),
+              transform var(--dur-slow, 640ms) var(--ease, ease);
+}
+body.about-v4 .av4-colophon.is-in { opacity: 1; transform: none; }
+body.about-v4 .av4-outro {
+  font-family: var(--serif, Georgia, serif);
+  font-style: italic;
+  font-size: clamp(1.1rem, 1.6vw, 1.4rem);
+  color: var(--ink);
+  margin: 0 0 1.5rem;
+}
+body.about-v4 .av4-colophon footer {
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+}
+body.about-v4 .av4-colophon footer a {
+  color: var(--ink-soft);
+  text-decoration: underline;
+  text-decoration-color: var(--line);
+  text-underline-offset: 3px;
+  transition: color var(--dur-fast, 150ms) var(--ease, ease),
+              text-decoration-color var(--dur-fast, 150ms) var(--ease, ease);
+}
+body.about-v4 .av4-colophon footer a:hover {
+  color: var(--accent);
+  text-decoration-color: var(--accent);
+}
+
+/* ---------- MOBILE ---------- */
+@media (max-width: 40rem) {
+  body.about-v4 .av4-hero {
+    padding: clamp(1.5rem, 6vw, 2.5rem) 1.1rem clamp(2rem, 6vw, 3rem);
+    min-height: auto;
+  }
+  body.about-v4 .av4-display { font-size: clamp(2.4rem, 11vw, 3.6rem); line-height: 1.04; }
+  body.about-v4 .av4-section { padding-left: 1.1rem; padding-right: 1.1rem; }
+  body.about-v4 .av4-card-grid,
+  body.about-v4 .av4-isnt-grid { grid-template-columns: minmax(0, 1fr); }
+  body.about-v4 .av4-list li {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.3rem;
+  }
+  /* Mobile reveal: shorter throw, faster duration so phones don't feel laggy */
+  body.about-v4 .av4-section,
+  body.about-v4 .av4-card,
+  body.about-v4 .av4-colophon {
+    transform: translateY(10px);
+    transition-duration: 320ms;
+  }
+}
+
+/* ---------- REDUCED MOTION ---------- */
+@media (prefers-reduced-motion: reduce) {
+  body.about-v4 .av4-section,
+  body.about-v4 .av4-card,
+  body.about-v4 .av4-colophon,
+  body.about-v4 .av4-list li {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  body.about-v4 .av4-hero .aurora > span { animation: none !important; }
+}
