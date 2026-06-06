@@ -6653,3 +6653,173 @@ body.dashboard-v4 .dv4-id code {
   body.dashboard-v4 .dv4-card-chev { transition: none; }
   body.dashboard-v4 .dv4-btn:hover { transform: none; }
 }
+
+
+/* ============================================================
+   CREATOR v4 — /creator/ — editorial profile page
+   ============================================================
+   Used by:
+     /creator/   body.home-v4.creator-v4
+*/
+
+body.creator-v4 main.v4-shell {
+  max-width: 56rem;
+  margin: 0 auto;
+  padding: clamp(1rem, 3vw, 2rem) clamp(1rem, 4vw, 2.25rem) 3rem;
+}
+
+/* --- HERO --- */
+body.creator-v4 .cv4-hero {
+  position: relative;
+  isolation: isolate;
+  padding: clamp(2.5rem, 8vw, 5rem) clamp(1rem, 3vw, 2rem) clamp(1.75rem, 5vw, 3rem);
+  margin-bottom: clamp(1.5rem, 3vw, 2.25rem);
+  overflow: hidden;
+  border-radius: 20px;
+}
+body.creator-v4 .cv4-stage {
+  position: relative;
+  z-index: 1;
+  max-width: 42rem;
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 520ms var(--ease), transform 520ms var(--ease);
+}
+body.creator-v4 .cv4-stage.is-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+body.creator-v4 .cv4-display {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: clamp(2.6rem, 8vw, 4.6rem);
+  line-height: 1.02;
+  letter-spacing: -0.012em;
+  margin: 0.4rem 0 1rem;
+  color: var(--ink);
+}
+body.creator-v4 .cv4-display .serif-italic {
+  font-style: italic;
+  color: var(--accent);
+}
+body.creator-v4 .cv4-lede {
+  font-size: clamp(1.05rem, 1.7vw, 1.2rem);
+  line-height: 1.6;
+  color: var(--ink-soft);
+  max-width: 38rem;
+  margin: 0;
+}
+body.creator-v4 .cv4-lede em {
+  font-style: italic;
+  color: var(--ink);
+}
+
+/* --- CONTENT --- */
+body.creator-v4 .cv4-content {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(1rem, 2.5vw, 1.5rem);
+}
+body.creator-v4 .cv4-content > * { min-width: 0; }
+
+/* --- CARDS --- */
+body.creator-v4 .cv4-card {
+  position: relative;
+  padding: clamp(1.5rem, 3.5vw, 2.1rem) clamp(1.4rem, 3.5vw, 2.1rem);
+  border-radius: 16px;
+  background: var(--glass);
+  border: 1px solid var(--glass-edge);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 460ms var(--ease), transform 460ms var(--ease);
+}
+body.creator-v4 .cv4-card.is-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+body.creator-v4 .cv4-card-accent {
+  background: color-mix(in oklab, var(--accent) 7%, var(--glass));
+  border-color: color-mix(in oklab, var(--accent) 24%, var(--glass-edge));
+}
+
+body.creator-v4 .cv4-eyebrow-mini {
+  margin: 0 0 0.4rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+body.creator-v4 .cv4-card-title {
+  margin: 0 0 0.85rem;
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: clamp(1.4rem, 2.6vw, 1.75rem);
+  line-height: 1.2;
+  letter-spacing: -0.008em;
+  color: var(--ink);
+}
+
+body.creator-v4 .cv4-card p {
+  margin: 0 0 0.85rem;
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--ink-soft);
+}
+body.creator-v4 .cv4-card p:last-child { margin-bottom: 0; }
+body.creator-v4 .cv4-card p strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+body.creator-v4 .cv4-card p em {
+  font-style: italic;
+  color: var(--ink);
+}
+body.creator-v4 .cv4-card a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in oklab, var(--accent) 40%, transparent);
+  transition: border-color var(--dur-fast) var(--ease);
+}
+body.creator-v4 .cv4-card a:hover { border-bottom-color: var(--accent); }
+
+body.creator-v4 .cv4-mailto {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.96em;
+}
+
+body.creator-v4 .cv4-foot {
+  margin-top: 0.85rem;
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+}
+
+/* --- MOBILE --- */
+@media (max-width: 40rem) {
+  body.creator-v4 .cv4-hero {
+    padding: clamp(1.5rem, 6vw, 2.5rem) 1rem clamp(1.25rem, 4vw, 2rem);
+    border-radius: 14px;
+  }
+  body.creator-v4 .cv4-display { font-size: clamp(2.1rem, 10vw, 3rem); }
+  body.creator-v4 .cv4-card { padding: 1.2rem 1.1rem 1.1rem; border-radius: 14px; }
+  body.creator-v4 .cv4-card-title { font-size: 1.3rem; }
+  body.creator-v4 .cv4-stage,
+  body.creator-v4 .cv4-card {
+    transition-duration: 340ms;
+    transform: translateY(10px);
+  }
+}
+
+/* --- REDUCED MOTION --- */
+@media (prefers-reduced-motion: reduce) {
+  body.creator-v4 .cv4-stage,
+  body.creator-v4 .cv4-card {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  body.creator-v4 .cv4-hero .aurora > span { animation: none !important; }
+  body.creator-v4 .cv4-card a { transition: none; }
+}
