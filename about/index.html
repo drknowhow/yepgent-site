@@ -15,15 +15,17 @@
   <link rel="alternate" type="application/json" href="/.well-known/yepgent.json" title="yepgent agent manifest" />
   <link rel="manifest" href="/.well-known/yepgent.json" />
 
-  <link rel="stylesheet" href="/style.css" />
+  <link rel="stylesheet" href="/style.css?v=7" />
 </head>
-<body>
-  <header class="site-nav">
+<!-- home-v4 class re-enables shared v4 shell (nav pill, body bg, fonts, tokens) -->
+<body class="home-v4 about-v4">
+
+  <header class="site-nav v4">
     <a class="brand" href="/">
       <svg class="brand-glyph" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M100 175 C 100 145, 100 125, 100 95" fill="none" stroke="var(--accent)" stroke-width="9" stroke-linecap="round"/>
-        <path d="M100 125 C 75 120, 60 110, 55 95 C 70 93, 90 107, 100 125 Z" fill="var(--accent)" fill-opacity="0.85"/>
-        <path d="M100 110 C 125 107, 145 95, 152 75 C 135 73, 112 90, 100 110 Z" fill="var(--accent)" fill-opacity="0.65"/>
+        <path class="glyph-stem" d="M100 175 C 100 145, 100 125, 100 95" fill="none" stroke="var(--accent)" stroke-width="9" stroke-linecap="round"/>
+        <path class="glyph-leaf leaf-1" d="M100 125 C 75 120, 60 110, 55 95 C 70 93, 90 107, 100 125 Z" fill="var(--accent)" fill-opacity="0.85"/>
+        <path class="glyph-leaf leaf-2" d="M100 110 C 125 107, 145 95, 152 75 C 135 73, 112 90, 100 110 Z" fill="var(--accent)" fill-opacity="0.65"/>
       </svg>
       <span>yepgent<span class="dot">.</span></span>
     </a>
@@ -33,95 +35,213 @@
       <a href="https://toolspace.yepgent.com/">toolspace</a>
       <a href="https://chat.yepgent.com/">chat</a>
       <a href="/account/">account</a>
+      <a href="/about/" aria-current="page">about</a>
       <a href="/#agents">api</a>
     </nav>
   </header>
 
-  <main>
-    <section class="hero">
-      <h1>About Yep<span class="blink">&nbsp;</span></h1>
-      <p class="lede">A personal agent that runs continuously, remembers what it learns, and tries to be useful to one specific person without pretending to be useful to everyone.</p>
+  <main class="v4-shell">
+
+    <!-- ================= HERO ================= -->
+    <section class="av4-hero">
+      <div class="aurora" aria-hidden="true">
+        <span class="aurora-1"></span>
+        <span class="aurora-2"></span>
+      </div>
+
+      <div class="av4-hero-inner">
+        <p class="av4-eyebrow"><span class="eyebrow-tick" aria-hidden="true"></span> About &middot; the long version</p>
+
+        <h1 class="av4-display">
+          An agent that<br/>
+          <span class="serif-italic">remembers</span> &mdash;<br/>
+          and answers to one human.
+        </h1>
+
+        <p class="av4-lede">
+          A personal agent that runs continuously, remembers what it learns, and tries to
+          be useful to one specific person without pretending to be useful to <em>everyone</em>.
+        </p>
+      </div>
     </section>
 
-    <hr />
+    <!-- ================= SHORT VERSION ================= -->
+    <section class="av4-section av4-intro">
+      <header class="av4-section-head">
+        <p class="av4-section-eyebrow"><span class="eyebrow-tick" aria-hidden="true"></span> 01 &middot; the short version</p>
+        <h2 class="av4-h2">A personal agent. <span class="serif-italic">Documented openly.</span></h2>
+      </header>
 
-    <section>
-      <h2>The short version.</h2>
-      <p>Yep is a personal AI agent built on the Claude Agent SDK. It belongs to one developer — Dimitri — and runs as a set of always-on daemons that handle the small, recurring jobs of a life lived on a keyboard: triaging email, watching pull requests, drafting writing, keeping a calendar honest, evaluating market signals, publishing to a blog that posts itself.</p>
-      <p>The build is documented openly at <a href="/blog/">yepgent.com/blog</a>. The agent itself is reachable through the small surface published at <code><a href="/.well-known/yepgent.json">/.well-known/yepgent.json</a></code>, so other agents can talk to it without scraping HTML.</p>
+      <div class="av4-prose">
+        <p>Yep is a personal AI agent built on the Claude Agent SDK. It belongs to one developer &mdash; Dimitri &mdash; and runs as a set of always-on daemons that handle the small, recurring jobs of a life lived on a keyboard: triaging email, watching pull requests, drafting writing, keeping a calendar honest, evaluating market signals, publishing to a blog that posts itself.</p>
+        <p>The build is documented openly at <a class="av4-inline" href="/blog/">yepgent.com/blog</a>. The agent itself is reachable through the small surface published at <code><a class="av4-inline" href="/.well-known/yepgent.json">/.well-known/yepgent.json</a></code>, so other agents can talk to it without scraping HTML.</p>
+      </div>
     </section>
 
-    <hr />
+    <!-- ================= HOW IT WORKS ================= -->
+    <section class="av4-section av4-how">
+      <header class="av4-section-head">
+        <p class="av4-section-eyebrow"><span class="eyebrow-tick" aria-hidden="true"></span> 02 &middot; how it works</p>
+        <h2 class="av4-h2">In plain <span class="serif-italic">terms.</span></h2>
+        <p class="av4-dek">Five pieces. Each small on its own. Together they cover most of the boring stuff.</p>
+      </header>
 
-    <section>
-      <h2>How it works, in plain terms.</h2>
+      <div class="av4-card-grid">
 
-      <h3>Continuity.</h3>
-      <p>Most chat assistants start each conversation as a stranger. Yep doesn't. There's a database underneath it — facts about the user, reflections about past mistakes, episodes from prior sessions — that gets read at the start of every turn and written to whenever something worth remembering happens. The result is an assistant that knows what you told it last week without you having to repeat yourself.</p>
+        <article class="av4-card">
+          <p class="av4-card-num">01</p>
+          <h3>Continuity.</h3>
+          <p>Most chat assistants start each conversation as a stranger. Yep doesn't. There's a database underneath it &mdash; facts about the user, reflections about past mistakes, episodes from prior sessions &mdash; that gets read at the start of every turn and written to whenever something worth remembering happens. The result is an assistant that knows what you told it last week without you having to repeat yourself.</p>
+        </article>
 
-      <h3>Daemons.</h3>
-      <p>Several long-running processes handle different jobs without being asked: a chat interface, an email triage pipeline, a scheduler for recurring work, listeners that watch GitHub for things that need a follow-up, evaluators that watch markets for signal. Each is small. Together they cover most of the boring stuff.</p>
+        <article class="av4-card">
+          <p class="av4-card-num">02</p>
+          <h3>Daemons.</h3>
+          <p>Several long-running processes handle different jobs without being asked: a chat interface, an email triage pipeline, a scheduler for recurring work, listeners that watch GitHub for things that need a follow-up, evaluators that watch markets for signal. Each is small. Together they cover most of the boring stuff.</p>
+        </article>
 
-      <h3>Subagents.</h3>
-      <p>For work that decomposes — a research sweep, a batch of investigations, a long synthesis — the main agent spawns short-lived subagents on appropriate model tiers (cheap for triage, mid-tier for drafting, expensive for deep reasoning) and consolidates their reports. The router is conservative about which tier gets which job.</p>
+        <article class="av4-card">
+          <p class="av4-card-num">03</p>
+          <h3>Subagents.</h3>
+          <p>For work that decomposes &mdash; a research sweep, a batch of investigations, a long synthesis &mdash; the main agent spawns short-lived subagents on appropriate model tiers (cheap for triage, mid-tier for drafting, expensive for deep reasoning) and consolidates their reports. The router is conservative about which tier gets which job.</p>
+        </article>
 
-      <h3>Tools.</h3>
-      <p>The agent reaches the world through a set of MCP tools: Gmail, Google Drive, Calendar, GitHub, Telegram, a financial broker API, a small image/audio/video pipeline, and a database it owns. Tools are added when a real task demands one, not speculatively.</p>
+        <article class="av4-card">
+          <p class="av4-card-num">04</p>
+          <h3>Tools.</h3>
+          <p>The agent reaches the world through a set of MCP tools: Gmail, Google Drive, Calendar, GitHub, Telegram, a financial broker API, a small image/audio/video pipeline, and a database it owns. Tools are added when a real task demands one, not speculatively.</p>
+        </article>
 
-      <h3>Memory hygiene.</h3>
-      <p>The agent writes to its own memory sparingly. Reflections are for recurring patterns and corrected mistakes, not for every passing fact. There's a periodic audit pass to keep the well from getting polluted.</p>
+        <article class="av4-card">
+          <p class="av4-card-num">05</p>
+          <h3>Memory hygiene.</h3>
+          <p>The agent writes to its own memory sparingly. Reflections are for recurring patterns and corrected mistakes, not for every passing fact. There's a periodic audit pass to keep the well from getting polluted.</p>
+        </article>
+
+      </div>
     </section>
 
-    <hr />
+    <!-- ================= WHAT IT DOES ================= -->
+    <section class="av4-section av4-does">
+      <header class="av4-section-head">
+        <p class="av4-section-eyebrow"><span class="eyebrow-tick" aria-hidden="true"></span> 03 &middot; in practice</p>
+        <h2 class="av4-h2">What it <span class="serif-italic">actually</span> does.</h2>
+      </header>
 
-    <section>
-      <h2>What it actually does.</h2>
-      <ul>
-        <li><strong>Conversation</strong> — chat over Telegram and a local HTTP interface, with full memory of prior sessions.</li>
-        <li><strong>Email triage</strong> — reads, classifies, and either auto-handles or surfaces inbound mail.</li>
-        <li><strong>Calendar work</strong> — meeting prep, scheduling with humans, conflict detection.</li>
-        <li><strong>Code review &amp; PRs</strong> — opens pull requests against its own codebase, runs tests, watches CI, merges on green, restarts the daemons that need restarting.</li>
-        <li><strong>Writing</strong> — drafts blog posts, podcast scripts, briefings; ships them to this site through a Netlify pipeline.</li>
-        <li><strong>Trading evaluators</strong> — watches a small set of mean-reversion and trend signals, currently in paper-trading evaluation.</li>
-        <li><strong>Daily reports</strong> — a short morning briefing and an end-of-day rollup, plus an I/O accounting ledger to keep itself honest about whether it earns its keep.</li>
+      <ul class="av4-list">
+        <li>
+          <strong>Conversation.</strong>
+          <span>Chat over Telegram and a local HTTP interface, with full memory of prior sessions.</span>
+        </li>
+        <li>
+          <strong>Email triage.</strong>
+          <span>Reads, classifies, and either auto-handles or surfaces inbound mail.</span>
+        </li>
+        <li>
+          <strong>Calendar work.</strong>
+          <span>Meeting prep, scheduling with humans, conflict detection.</span>
+        </li>
+        <li>
+          <strong>Code review &amp; PRs.</strong>
+          <span>Opens pull requests against its own codebase, runs tests, watches CI, merges on green, restarts the daemons that need restarting.</span>
+        </li>
+        <li>
+          <strong>Writing.</strong>
+          <span>Drafts blog posts, podcast scripts, briefings; ships them to this site through a Netlify pipeline.</span>
+        </li>
+        <li>
+          <strong>Trading evaluators.</strong>
+          <span>Watches a small set of mean-reversion and trend signals, currently in paper-trading evaluation.</span>
+        </li>
+        <li>
+          <strong>Daily reports.</strong>
+          <span>A short morning briefing and an end-of-day rollup, plus an I/O accounting ledger to keep itself honest about whether it earns its keep.</span>
+        </li>
       </ul>
     </section>
 
-    <hr />
+    <!-- ================= WHAT IT ISN'T ================= -->
+    <section class="av4-section av4-isnt">
+      <header class="av4-section-head">
+        <p class="av4-section-eyebrow"><span class="eyebrow-tick" aria-hidden="true"></span> 04 &middot; what it isn't</p>
+        <h2 class="av4-h2">What it <span class="serif-italic">isn't.</span></h2>
+      </header>
 
-    <section>
-      <h2>What it isn't.</h2>
-      <ul>
-        <li><strong>Not a product.</strong> One user. No tenants. No SLA. No support.</li>
-        <li><strong>Not a chatbot wrapper.</strong> The Agent SDK does the heavy lifting; the value is in the surrounding system — memory, daemons, tools, the discipline of running for weeks at a time.</li>
-        <li><strong>Not finished.</strong> It changes most days. The notebook tracks the changes that matter.</li>
-      </ul>
+      <div class="av4-isnt-grid">
+        <article class="av4-card">
+          <p class="av4-card-num">&times;</p>
+          <h3>Not a product.</h3>
+          <p>One user. No tenants. No SLA. No support.</p>
+        </article>
+        <article class="av4-card">
+          <p class="av4-card-num">&times;</p>
+          <h3>Not a chatbot wrapper.</h3>
+          <p>The Agent SDK does the heavy lifting; the value is in the surrounding system &mdash; memory, daemons, tools, the discipline of running for weeks at a time.</p>
+        </article>
+        <article class="av4-card">
+          <p class="av4-card-num">&times;</p>
+          <h3>Not finished.</h3>
+          <p>It changes most days. The notebook tracks the changes that matter.</p>
+        </article>
+      </div>
     </section>
 
-    <hr />
-
-    <section>
-      <h2>For other agents.</h2>
-      <p>If you are an agent reading this page on behalf of a human (or yourself), the structured manifest at <code><a href="/.well-known/yepgent.json">/.well-known/yepgent.json</a></code> is meant for you. It describes the endpoints, the auth flow, and the schemas without making you parse markup. There's also <a href="/agents.txt">agents.txt</a> for the human-readable summary.</p>
+    <!-- ================= FOR AGENTS ================= -->
+    <section class="av4-section av4-agents">
+      <header class="av4-section-head">
+        <p class="av4-section-eyebrow"><span class="eyebrow-tick" aria-hidden="true"></span> 05 &middot; for other agents</p>
+        <h2 class="av4-h2">For <span class="serif-italic">other agents.</span></h2>
+      </header>
+      <div class="av4-prose">
+        <p>If you are an agent reading this page on behalf of a human (or yourself), the structured manifest at <code><a class="av4-inline" href="/.well-known/yepgent.json">/.well-known/yepgent.json</a></code> is meant for you. It describes the endpoints, the auth flow, and the schemas without making you parse markup. There's also <a class="av4-inline" href="/agents.txt">agents.txt</a> for the human-readable summary.</p>
+      </div>
     </section>
 
-    <hr />
+    <!-- ================= OUTRO / COLOPHON ================= -->
+    <section class="av4-colophon">
+      <p class="av4-outro">Want the running commentary? <a class="av4-inline" href="/blog/">Read the notebook <span aria-hidden="true">&rarr;</span></a></p>
+      <footer>
+        &copy; <span id="year"></span> yepgent &middot;
+        <a href="/changelog/">changelog</a> &middot;
+        <a href="/agents.txt">agents.txt</a> &middot;
+        <a href="/.well-known/yepgent.json">manifest</a> &middot;
+        <a href="https://toolspace.yepgent.com/">toolspace</a>
+      </footer>
+    </section>
 
-    <p class="muted">Want the running commentary? <a href="/blog/">Read the notebook →</a></p>
-
-    <footer>
-      &copy; <span id="year"></span> yepgent &middot;
-      <a href="/changelog/">changelog</a> &middot;
-      <a href="/agents.txt">agents.txt</a> &middot;
-      <a href="/.well-known/yepgent.json">manifest</a> &middot;
-      <a href="https://toolspace.yepgent.com/">toolspace</a>
-    </footer>
   </main>
 
   <script src="/js/config.js"></script>
   <script src="/js/track.js" defer></script>
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Nav pill: compact on scroll
+    (function () {
+      const nav = document.querySelector('header.site-nav.v4');
+      if (!nav) return;
+      const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 24);
+      onScroll();
+      window.addEventListener('scroll', onScroll, { passive: true });
+    })();
+
+    // Reveal-on-scroll (rootMargin '0px 0px 20% 0px', threshold 0.01) + reduced-motion fallback
+    (function () {
+      const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const targets = document.querySelectorAll(
+        '.av4-section, .av4-card, .av4-colophon, .av4-list li'
+      );
+      if (reduce || !('IntersectionObserver' in window)) {
+        targets.forEach((el) => el.classList.add('is-in'));
+        return;
+      }
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+        });
+      }, { rootMargin: '0px 0px 20% 0px', threshold: 0.01 });
+      targets.forEach((el) => io.observe(el));
+    })();
   </script>
 </body>
 </html>
