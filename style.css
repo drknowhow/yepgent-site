@@ -5965,3 +5965,691 @@ body.utility-v4 .uv4-back:hover { color: var(--ink); }
   body.utility-v4 .uv4-btn { transition: none; }
   body.utility-v4 .uv4-btn:hover { transform: none; }
 }
+
+
+/* ============================================================
+   ACCOUNT v4 / RESET-PASSWORD v4 — auth + profile
+   ============================================================
+   Used by:
+     /account/                  body.home-v4.account-v4
+     /account/reset-password/   body.home-v4.account-v4
+*/
+
+body.account-v4 main.v4-shell {
+  max-width: 64rem;
+  margin: 0 auto;
+  padding: clamp(1rem, 3vw, 2rem) clamp(1rem, 4vw, 2.25rem) 3rem;
+}
+
+/* --- HERO --- */
+body.account-v4 .av4-hero {
+  position: relative;
+  isolation: isolate;
+  padding: clamp(2rem, 7vw, 4rem) clamp(1rem, 3vw, 2rem) clamp(1.5rem, 5vw, 3rem);
+  margin-bottom: clamp(1.25rem, 3vw, 2rem);
+  overflow: hidden;
+  border-radius: 18px;
+}
+body.account-v4 .av4-stage {
+  position: relative;
+  z-index: 1;
+  max-width: 44rem;
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 480ms var(--ease), transform 480ms var(--ease);
+}
+body.account-v4 .av4-stage.is-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+body.account-v4 .av4-display {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: clamp(2.4rem, 7vw, 4rem);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  margin: 0.4rem 0 1rem;
+  color: var(--ink);
+}
+body.account-v4 .av4-display .serif-italic {
+  font-style: italic;
+  color: var(--accent);
+}
+body.account-v4 .av4-lede {
+  font-size: clamp(1rem, 1.6vw, 1.15rem);
+  line-height: 1.55;
+  color: var(--ink-soft);
+  max-width: 38rem;
+  margin: 0;
+}
+body.account-v4 .av4-lede em {
+  font-style: italic;
+  color: var(--ink);
+}
+
+/* --- CONTENT --- */
+body.account-v4 .av4-content {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(1rem, 2.5vw, 1.5rem);
+}
+body.account-v4 .av4-content > * { min-width: 0; }
+
+body.account-v4 .av4-loading {
+  padding: 1.25rem 1.4rem;
+  border-radius: 14px;
+  background: var(--glass);
+  border: 1px solid var(--glass-edge);
+}
+
+/* --- CARDS --- */
+body.account-v4 .av4-card {
+  position: relative;
+  padding: clamp(1.25rem, 3vw, 1.8rem) clamp(1.25rem, 3vw, 1.8rem);
+  border-radius: 16px;
+  background: var(--glass);
+  border: 1px solid var(--glass-edge);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 420ms var(--ease), transform 420ms var(--ease);
+}
+body.account-v4 .av4-card.is-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+body.account-v4 .av4-card-soft {
+  background: color-mix(in oklab, var(--accent) 6%, var(--glass));
+  border-color: color-mix(in oklab, var(--accent) 22%, var(--glass-edge));
+}
+body.account-v4 .av4-card-title {
+  margin: 0 0 0.6rem;
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 1.35rem;
+  letter-spacing: -0.005em;
+  color: var(--ink);
+}
+
+/* --- FORMS --- */
+body.account-v4 .av4-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 28rem;
+}
+body.account-v4 .av4-form input[type="email"],
+body.account-v4 .av4-form input[type="password"],
+body.account-v4 .av4-form input[type="text"],
+body.account-v4 .av4-form input[type="url"],
+body.account-v4 .av4-form textarea {
+  padding: 0.7rem 0.85rem;
+  font: inherit;
+  color: var(--ink);
+  background: color-mix(in oklab, var(--ink) 4%, transparent);
+  border: 1px solid var(--glass-edge);
+  border-radius: 10px;
+  transition: border-color var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease);
+}
+body.account-v4 .av4-form textarea {
+  resize: vertical;
+  min-height: 4.5rem;
+}
+body.account-v4 .av4-form input:focus-visible,
+body.account-v4 .av4-form textarea:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  background: color-mix(in oklab, var(--accent) 6%, transparent);
+}
+body.account-v4 .av4-form label > span {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-size: 0.875rem;
+  color: var(--ink-soft);
+}
+
+body.account-v4 .av4-btn {
+  align-self: flex-start;
+  padding: 0.7rem 1.5rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  background: var(--accent);
+  color: #0e0f12;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: transform var(--dur-fast) var(--ease), filter var(--dur-fast) var(--ease);
+}
+body.account-v4 .av4-btn:hover { transform: translateY(-1px); filter: brightness(1.06); }
+body.account-v4 .av4-btn-ghost {
+  padding: 0.55rem 1.2rem;
+  font-weight: 500;
+  color: var(--ink-soft);
+  background: transparent;
+  border: 1px solid var(--glass-edge);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
+}
+body.account-v4 .av4-btn-ghost:hover {
+  color: var(--ink);
+  border-color: color-mix(in oklab, var(--accent) 40%, var(--glass-edge));
+}
+body.account-v4 .av4-btn-row,
+body.account-v4 .av4-cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  margin-top: 0.5rem;
+}
+body.account-v4 .av4-cta-row { margin: 0.25rem 0 0; }
+
+body.account-v4 .av4-sub,
+body.account-v4 .av4-sub-note {
+  margin-top: 0.85rem;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+body.account-v4 .av4-sub-note { margin-top: 0; margin-bottom: 0.85rem; }
+body.account-v4 .av4-sub a,
+body.account-v4 .av4-sub-note a {
+  color: var(--accent);
+  text-decoration: none;
+}
+body.account-v4 .av4-sub a:hover,
+body.account-v4 .av4-sub-note a:hover { text-decoration: underline; }
+
+/* --- HEAD (welcome row) --- */
+body.account-v4 .av4-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* --- AVATAR --- */
+body.account-v4 .av4-avatar-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* --- FIELDSET (agent identity) --- */
+body.account-v4 .av4-fieldset {
+  margin: 0.5rem 0 0;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--glass-edge);
+  border-radius: 12px;
+  background: color-mix(in oklab, var(--ink) 3%, transparent);
+}
+body.account-v4 .av4-fieldset legend {
+  padding: 0 0.4rem;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+body.account-v4 .av4-fieldset .check-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.6rem;
+}
+
+/* --- AGENT HELP --- */
+body.account-v4 .av4-agent-help {
+  margin-top: 1rem;
+  padding: 1rem 1.2rem;
+  border-radius: 12px;
+  background: color-mix(in oklab, var(--ink) 3%, transparent);
+  border: 1px solid var(--glass-edge);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 380ms var(--ease), transform 380ms var(--ease);
+}
+body.account-v4 .av4-agent-help.is-in { opacity: 1; transform: translateY(0); }
+body.account-v4 .av4-agent-help summary {
+  cursor: pointer;
+  font-weight: 500;
+  color: var(--ink);
+  list-style: none;
+}
+body.account-v4 .av4-agent-help summary::-webkit-details-marker { display: none; }
+body.account-v4 .av4-agent-help summary::before {
+  content: "\203A";
+  display: inline-block;
+  margin-right: 0.5rem;
+  color: var(--accent);
+  transition: transform var(--dur-fast) var(--ease);
+}
+body.account-v4 .av4-agent-help[open] summary::before { transform: rotate(90deg); }
+body.account-v4 .av4-agent-help pre {
+  margin: 0.75rem 0;
+  padding: 0.85rem 1rem;
+  font-size: 0.85rem;
+  background: color-mix(in oklab, var(--ink) 6%, transparent);
+  border-radius: 8px;
+  overflow-x: auto;
+}
+
+/* --- ACTIVITY LISTS --- */
+body.account-v4 .av4-activity {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+body.account-v4 .av4-activity li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid color-mix(in oklab, var(--ink) 8%, transparent);
+  font-size: 0.95rem;
+}
+body.account-v4 .av4-activity li:last-child { border-bottom: none; }
+
+body.account-v4 .av4-id {
+  margin-top: 1.5rem;
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+}
+body.account-v4 .av4-id code {
+  font-size: 0.8rem;
+  background: color-mix(in oklab, var(--ink) 6%, transparent);
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+}
+
+/* --- MOBILE --- */
+@media (max-width: 40rem) {
+  body.account-v4 .av4-hero {
+    padding: clamp(1.5rem, 6vw, 2.5rem) 1rem clamp(1.25rem, 4vw, 2rem);
+    border-radius: 14px;
+  }
+  body.account-v4 .av4-display { font-size: clamp(2rem, 9vw, 2.8rem); }
+  body.account-v4 .av4-card { padding: 1.1rem 1rem 1rem; border-radius: 14px; }
+  body.account-v4 .av4-head { flex-direction: column; align-items: stretch; }
+  body.account-v4 .av4-stage,
+  body.account-v4 .av4-card,
+  body.account-v4 .av4-agent-help {
+    transition-duration: 320ms;
+    transform: translateY(10px);
+  }
+}
+
+/* --- REDUCED MOTION --- */
+@media (prefers-reduced-motion: reduce) {
+  body.account-v4 .av4-stage,
+  body.account-v4 .av4-card,
+  body.account-v4 .av4-agent-help {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  body.account-v4 .av4-hero .aurora > span { animation: none !important; }
+  body.account-v4 .av4-btn,
+  body.account-v4 .av4-btn-ghost { transition: none; }
+  body.account-v4 .av4-btn:hover { transform: none; }
+}
+
+
+/* ============================================================
+   DASHBOARD v4 — signed-in profile + collapsible cards
+   ============================================================
+   Used by:
+     /dashboard/   body.home-v4.dashboard-v4
+*/
+
+body.dashboard-v4 main.v4-shell {
+  max-width: 64rem;
+  margin: 0 auto;
+  padding: clamp(1rem, 3vw, 2rem) clamp(1rem, 4vw, 2.25rem) 3rem;
+}
+
+/* --- HERO --- */
+body.dashboard-v4 .dv4-hero {
+  position: relative;
+  isolation: isolate;
+  padding: clamp(2rem, 7vw, 4rem) clamp(1rem, 3vw, 2rem) clamp(1.5rem, 5vw, 3rem);
+  margin-bottom: clamp(1.25rem, 3vw, 2rem);
+  overflow: hidden;
+  border-radius: 18px;
+}
+body.dashboard-v4 .dv4-stage {
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 480ms var(--ease), transform 480ms var(--ease);
+}
+body.dashboard-v4 .dv4-stage.is-in { opacity: 1; transform: translateY(0); }
+
+body.dashboard-v4 .dv4-display {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: clamp(2.2rem, 6vw, 3.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  margin: 0.4rem 0 0.4rem;
+  color: var(--ink);
+}
+body.dashboard-v4 .dv4-display .serif-italic {
+  font-style: italic;
+  color: var(--accent);
+}
+body.dashboard-v4 .dv4-lede {
+  font-size: clamp(1rem, 1.6vw, 1.15rem);
+  line-height: 1.55;
+  color: var(--ink-soft);
+  max-width: 38rem;
+  margin: 0.5rem 0 0;
+}
+body.dashboard-v4 .dv4-lede a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in oklab, var(--accent) 40%, transparent);
+}
+body.dashboard-v4 .dv4-lede a:hover { border-bottom-color: var(--accent); }
+
+/* --- HEAD ROW (avatar + meta + signout) --- */
+body.dashboard-v4 .dv4-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  margin-top: 0.75rem;
+}
+body.dashboard-v4 .dv4-avatar-wrap {
+  position: relative;
+  flex: 0 0 auto;
+}
+body.dashboard-v4 .dv4-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid color-mix(in oklab, var(--accent) 30%, var(--glass-edge));
+  background: var(--glass);
+}
+body.dashboard-v4 .dv4-avatar-edit {
+  position: absolute;
+  right: -4px;
+  bottom: -4px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #0e0f12;
+  border: 2px solid var(--bg);
+  cursor: pointer;
+  font-size: 0.85rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+body.dashboard-v4 .dv4-meta {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+body.dashboard-v4 .dv4-avatar-status {
+  margin: 0.2rem 0 0;
+  min-height: 1em;
+}
+body.dashboard-v4 .dv4-signout { margin-left: auto; align-self: flex-start; }
+
+/* --- CONTENT --- */
+body.dashboard-v4 .dv4-content {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(1rem, 2.5vw, 1.5rem);
+}
+body.dashboard-v4 .dv4-content > * { min-width: 0; }
+
+body.dashboard-v4 .dv4-loading {
+  padding: 1.25rem 1.4rem;
+  border-radius: 14px;
+  background: var(--glass);
+  border: 1px solid var(--glass-edge);
+}
+
+/* --- STATS --- */
+body.dashboard-v4 .dv4-stat-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(0.75rem, 2vw, 1.25rem);
+}
+body.dashboard-v4 .dv4-stat {
+  padding: 1.1rem 1rem;
+  border-radius: 14px;
+  background: var(--glass);
+  border: 1px solid var(--glass-edge);
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  text-align: center;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 380ms var(--ease), transform 380ms var(--ease);
+}
+body.dashboard-v4 .dv4-stat.is-in { opacity: 1; transform: translateY(0); }
+body.dashboard-v4 .dv4-stat-num {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  line-height: 1;
+  color: var(--accent);
+}
+body.dashboard-v4 .dv4-stat-label {
+  margin-top: 0.4rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* --- COLLAPSIBLE CARDS --- */
+body.dashboard-v4 .dv4-card {
+  padding: 0;
+  border-radius: 14px;
+  background: var(--glass);
+  border: 1px solid var(--glass-edge);
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 380ms var(--ease), transform 380ms var(--ease);
+}
+body.dashboard-v4 .dv4-card.is-in { opacity: 1; transform: translateY(0); }
+body.dashboard-v4 .dv4-card-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+body.dashboard-v4 .dv4-card-summary::-webkit-details-marker { display: none; }
+body.dashboard-v4 .dv4-card-title {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 1.15rem;
+  color: var(--ink);
+}
+body.dashboard-v4 .dv4-card-chev {
+  color: var(--accent);
+  font-size: 1.4rem;
+  line-height: 1;
+  transition: transform var(--dur-fast) var(--ease);
+}
+body.dashboard-v4 .dv4-card[open] .dv4-card-chev { transform: rotate(90deg); }
+body.dashboard-v4 .dv4-card[open] .dv4-card-summary {
+  border-bottom: 1px solid var(--glass-edge);
+}
+body.dashboard-v4 .dv4-card-body,
+body.dashboard-v4 .dv4-card .dv4-form {
+  padding: 1.1rem 1.25rem 1.25rem;
+}
+
+/* --- FORM --- */
+body.dashboard-v4 .dv4-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+body.dashboard-v4 .dv4-form label > span {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-size: 0.875rem;
+  color: var(--ink-soft);
+}
+body.dashboard-v4 .dv4-form input[type="email"],
+body.dashboard-v4 .dv4-form input[type="text"],
+body.dashboard-v4 .dv4-form input[type="url"],
+body.dashboard-v4 .dv4-form textarea {
+  width: 100%;
+  padding: 0.65rem 0.85rem;
+  font: inherit;
+  color: var(--ink);
+  background: color-mix(in oklab, var(--ink) 4%, transparent);
+  border: 1px solid var(--glass-edge);
+  border-radius: 10px;
+  box-sizing: border-box;
+  transition: border-color var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease);
+}
+body.dashboard-v4 .dv4-form textarea {
+  resize: vertical;
+  min-height: 4.5rem;
+}
+body.dashboard-v4 .dv4-form input:focus-visible,
+body.dashboard-v4 .dv4-form textarea:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  background: color-mix(in oklab, var(--accent) 6%, transparent);
+}
+
+body.dashboard-v4 .dv4-section-label {
+  margin: 0.5rem 0 0.4rem;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+body.dashboard-v4 .dv4-social-inputs {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.5rem;
+}
+body.dashboard-v4 .dv4-social-row {
+  display: grid;
+  grid-template-columns: 7rem minmax(0, 1fr);
+  gap: 0.5rem;
+  align-items: center;
+}
+body.dashboard-v4 .dv4-social-row > span {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+body.dashboard-v4 .dv4-fieldset {
+  margin: 0.5rem 0 0;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--glass-edge);
+  border-radius: 12px;
+  background: color-mix(in oklab, var(--ink) 3%, transparent);
+}
+body.dashboard-v4 .dv4-fieldset legend {
+  padding: 0 0.4rem;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+body.dashboard-v4 .dv4-fieldset .check-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.6rem;
+}
+
+/* --- BUTTONS --- */
+body.dashboard-v4 .dv4-btn {
+  align-self: flex-start;
+  padding: 0.65rem 1.4rem;
+  font-weight: 600;
+  background: var(--accent);
+  color: #0e0f12;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: transform var(--dur-fast) var(--ease), filter var(--dur-fast) var(--ease);
+}
+body.dashboard-v4 .dv4-btn:hover { transform: translateY(-1px); filter: brightness(1.06); }
+body.dashboard-v4 .dv4-btn-ghost {
+  padding: 0.45rem 1rem;
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  background: transparent;
+  border: 1px solid var(--glass-edge);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
+}
+body.dashboard-v4 .dv4-btn-ghost:hover {
+  color: var(--ink);
+  border-color: color-mix(in oklab, var(--accent) 40%, var(--glass-edge));
+}
+body.dashboard-v4 .dv4-btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  margin-top: 0.5rem;
+}
+
+body.dashboard-v4 .dv4-id {
+  margin-top: 1.5rem;
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+}
+body.dashboard-v4 .dv4-id code {
+  font-size: 0.8rem;
+  background: color-mix(in oklab, var(--ink) 6%, transparent);
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+}
+
+/* --- MOBILE --- */
+@media (max-width: 40rem) {
+  body.dashboard-v4 .dv4-hero {
+    padding: clamp(1.5rem, 6vw, 2.5rem) 1rem clamp(1.25rem, 4vw, 2rem);
+    border-radius: 14px;
+  }
+  body.dashboard-v4 .dv4-display { font-size: clamp(1.9rem, 8vw, 2.6rem); }
+  body.dashboard-v4 .dv4-head { flex-direction: column; }
+  body.dashboard-v4 .dv4-signout { margin-left: 0; align-self: stretch; }
+  body.dashboard-v4 .dv4-stat-row { grid-template-columns: minmax(0, 1fr); }
+  body.dashboard-v4 .dv4-card-summary { padding: 0.85rem 1rem; }
+  body.dashboard-v4 .dv4-card-body,
+  body.dashboard-v4 .dv4-card .dv4-form { padding: 1rem; }
+  body.dashboard-v4 .dv4-social-row { grid-template-columns: minmax(0, 1fr); }
+  body.dashboard-v4 .dv4-social-row > span { margin-bottom: 0.2rem; }
+  body.dashboard-v4 .dv4-stage,
+  body.dashboard-v4 .dv4-card,
+  body.dashboard-v4 .dv4-stat {
+    transition-duration: 320ms;
+    transform: translateY(10px);
+  }
+}
+
+/* --- REDUCED MOTION --- */
+@media (prefers-reduced-motion: reduce) {
+  body.dashboard-v4 .dv4-stage,
+  body.dashboard-v4 .dv4-card,
+  body.dashboard-v4 .dv4-stat {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  body.dashboard-v4 .dv4-hero .aurora > span { animation: none !important; }
+  body.dashboard-v4 .dv4-btn,
+  body.dashboard-v4 .dv4-btn-ghost,
+  body.dashboard-v4 .dv4-card-chev { transition: none; }
+  body.dashboard-v4 .dv4-btn:hover { transform: none; }
+}

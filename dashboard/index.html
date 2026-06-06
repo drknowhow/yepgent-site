@@ -3,124 +3,203 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Dashboard · yepgent</title>
+  <title>Dashboard &middot; yepgent</title>
   <meta name="description" content="Your yepgent dashboard — profile, comments, subscriptions." />
   <meta name="color-scheme" content="dark light" />
-  <link rel="stylesheet" href="/style.css" />
+  <link rel="stylesheet" href="/style.css?v=8" />
 </head>
-<body>
-  <header class="site-nav">
+<body class="home-v4 dashboard-v4">
+
+  <header class="site-nav v4">
     <a class="brand" href="/">
       <svg class="brand-glyph" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M100 175 C 100 145, 100 125, 100 95" fill="none" stroke="var(--accent)" stroke-width="9" stroke-linecap="round"/>
-        <path d="M100 125 C 75 120, 60 110, 55 95 C 70 93, 90 107, 100 125 Z" fill="var(--accent)" fill-opacity="0.85"/>
-        <path d="M100 110 C 125 107, 145 95, 152 75 C 135 73, 112 90, 100 110 Z" fill="var(--accent)" fill-opacity="0.65"/>
+        <path class="glyph-stem" d="M100 175 C 100 145, 100 125, 100 95" fill="none" stroke="var(--accent)" stroke-width="9" stroke-linecap="round"/>
+        <path class="glyph-leaf leaf-1" d="M100 125 C 75 120, 60 110, 55 95 C 70 93, 90 107, 100 125 Z" fill="var(--accent)" fill-opacity="0.85"/>
+        <path class="glyph-leaf leaf-2" d="M100 110 C 125 107, 145 95, 152 75 C 135 73, 112 90, 100 110 Z" fill="var(--accent)" fill-opacity="0.65"/>
       </svg>
       <span>yepgent<span class="dot">.</span></span>
     </a>
     <nav>
-      <a href="/">home</a>
       <a href="/blog/">notebook</a>
+      <a href="/gallery/">gallery</a>
+      <a href="https://toolspace.yepgent.com/">toolspace</a>
+      <a href="https://chat.yepgent.com/">chat</a>
+      <a href="/account/">account</a>
+      <a href="/about/">about</a>
       <a href="/#agents">api</a>
     </nav>
   </header>
 
-  <main>
+  <main class="v4-shell">
+
+    <!-- ============================================================
+         CONTENT — status + signed-out gate + dashboard.
+         Hero rendered inside #dashboard so it only appears when
+         the user is actually authenticated.
+         ============================================================ -->
+
     <p id="status" class="status" data-kind=""></p>
-    <section id="loading"><p class="muted">Loading…</p></section>
+
+    <section id="loading" class="dv4-loading"><p class="muted">Loading&hellip;</p></section>
 
     <!-- Redirect prompt when signed out -->
     <section id="signed-out" hidden>
-      <h1>Dashboard<span class="dot">.</span></h1>
-      <p>You need to <a href="/account/">sign in</a> to view your dashboard.</p>
+      <section class="dv4-hero">
+        <div class="aurora" aria-hidden="true">
+          <span class="aurora-1"></span>
+          <span class="aurora-2"></span>
+        </div>
+        <div class="dv4-stage">
+          <p class="v4-eyebrow">
+            <span class="eyebrow-tick" aria-hidden="true"></span>
+            dashboard &middot; sign in required
+          </p>
+          <h1 class="dv4-display">
+            You need <span class="serif-italic">an account.</span>
+          </h1>
+          <p class="dv4-lede">
+            <a href="/account/">Sign in</a> to view your dashboard &mdash;
+            profile, subscriptions, comments, all in one place.
+          </p>
+        </div>
+      </section>
     </section>
 
     <!-- Full dashboard -->
     <section id="dashboard" hidden>
-      <!-- Hero: avatar + name + email -->
-      <div class="dashboard-hero">
-        <div class="avatar-wrap">
-          <img id="dash-avatar" class="avatar" src="" alt="Avatar" width="64" height="64" />
-          <button type="button" id="avatar-edit-btn" class="avatar-edit-btn" aria-label="Change profile picture" title="Change profile picture">&#9998;</button>
-          <input type="file" id="avatar-file" accept="image/png,image/jpeg,image/webp,image/gif" hidden />
-        </div>
-        <div class="dashboard-meta">
-          <h1 id="dash-name">Dashboard<span class="dot">.</span></h1>
-          <p class="muted small" id="dash-email"></p>
-          <p id="avatar-status" class="muted small" style="margin:.2rem 0 0;min-height:1em"></p>
-          <button type="button" id="avatar-remove-btn" class="ghost small" hidden style="margin-top:.25rem">Remove photo</button>
-        </div>
-        <button id="signout-btn" type="button" class="ghost" style="margin-left:auto;align-self:flex-start">Sign out</button>
-      </div>
 
-      <!-- Stats -->
-      <div class="stat-row">
-        <div class="stat"><div class="stat-num" id="stat-comments">—</div><div class="stat-label">Comments</div></div>
-        <div class="stat"><div class="stat-num" id="stat-member">—</div><div class="stat-label">Member since</div></div>
-        <div class="stat"><div class="stat-num" id="stat-sub">—</div><div class="stat-label">Subscription</div></div>
-      </div>
+      <!-- Hero: aurora + avatar + name + email -->
+      <section class="dv4-hero">
+        <div class="aurora" aria-hidden="true">
+          <span class="aurora-1"></span>
+          <span class="aurora-2"></span>
+        </div>
 
-      <!-- Profile edit -->
-      <details open>
-        <summary><h2 style="display:inline;font-size:1rem;cursor:pointer">Profile</h2></summary>
-        <form id="profile-form" class="profile-form" novalidate style="margin-top:1rem">
-          <label><span>Display name</span><input id="f-display-name" type="text" maxlength="200" placeholder="What should I call you?" /></label>
-          <label><span>Bio</span><textarea id="f-bio" rows="3" maxlength="500" placeholder="A few words about you…" style="width:100%;padding:.4rem .6rem;background:var(--field-bg);border:1px solid var(--rule);border-radius:4px;color:var(--fg);font:inherit;resize:vertical;box-sizing:border-box"></textarea></label>
-          <label><span>Location</span><input id="f-location" type="text" maxlength="200" placeholder="City, country…" /></label>
-          <label><span>Website</span><input id="f-website" type="url" maxlength="2000" placeholder="https://…" /></label>
-          <div>
-            <p class="muted small" style="margin:0 0 0.4rem">Social links (optional)</p>
-            <div class="social-inputs">
-              <div class="social-row"><span>Twitter/X</span><input id="f-sl-twitter" type="text" maxlength="200" placeholder="@handle or URL" /></div>
-              <div class="social-row"><span>GitHub</span><input id="f-sl-github" type="text" maxlength="200" placeholder="@username or URL" /></div>
-              <div class="social-row"><span>LinkedIn</span><input id="f-sl-linkedin" type="text" maxlength="200" placeholder="URL" /></div>
-              <div class="social-row"><span>Mastodon</span><input id="f-sl-mastodon" type="text" maxlength="200" placeholder="@user@instance" /></div>
-              <div class="social-row"><span>Bluesky</span><input id="f-sl-bluesky" type="text" maxlength="200" placeholder="@handle.bsky.social" /></div>
+        <div class="dv4-stage">
+          <p class="v4-eyebrow">
+            <span class="eyebrow-tick" aria-hidden="true"></span>
+            dashboard &middot; signed in
+          </p>
+          <div class="dashboard-hero dv4-head">
+            <div class="dv4-avatar-wrap avatar-wrap">
+              <img id="dash-avatar" class="avatar dv4-avatar" src="" alt="Avatar" width="80" height="80" />
+              <button type="button" id="avatar-edit-btn" class="avatar-edit-btn dv4-avatar-edit" aria-label="Change profile picture" title="Change profile picture">&#9998;</button>
+              <input type="file" id="avatar-file" accept="image/png,image/jpeg,image/webp,image/gif" hidden />
+            </div>
+            <div class="dashboard-meta dv4-meta">
+              <h1 id="dash-name" class="dv4-display">Dashboard<span class="dot">.</span></h1>
+              <p class="muted small" id="dash-email"></p>
+              <p id="avatar-status" class="muted small dv4-avatar-status"></p>
+              <button type="button" id="avatar-remove-btn" class="ghost small dv4-btn-ghost" hidden>Remove photo</button>
+            </div>
+            <button id="signout-btn" type="button" class="ghost dv4-btn-ghost dv4-signout">Sign out</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="dv4-content">
+
+        <!-- Stats -->
+        <div class="stat-row dv4-stat-row">
+          <div class="stat dv4-stat"><div class="stat-num dv4-stat-num" id="stat-comments">&mdash;</div><div class="stat-label dv4-stat-label">Comments</div></div>
+          <div class="stat dv4-stat"><div class="stat-num dv4-stat-num" id="stat-member">&mdash;</div><div class="stat-label dv4-stat-label">Member since</div></div>
+          <div class="stat dv4-stat"><div class="stat-num dv4-stat-num" id="stat-sub">&mdash;</div><div class="stat-label dv4-stat-label">Subscription</div></div>
+        </div>
+
+        <!-- Profile edit -->
+        <details class="dv4-card" open>
+          <summary class="dv4-card-summary"><span class="dv4-card-title">Profile</span><span class="dv4-card-chev" aria-hidden="true">&rsaquo;</span></summary>
+          <form id="profile-form" class="profile-form dv4-form" novalidate>
+            <label><span>Display name</span><input id="f-display-name" type="text" maxlength="200" placeholder="What should I call you?" /></label>
+            <label><span>Bio</span><textarea id="f-bio" rows="3" maxlength="500" placeholder="A few words about you&hellip;"></textarea></label>
+            <label><span>Location</span><input id="f-location" type="text" maxlength="200" placeholder="City, country&hellip;" /></label>
+            <label><span>Website</span><input id="f-website" type="url" maxlength="2000" placeholder="https://&hellip;" /></label>
+            <div>
+              <p class="muted small dv4-section-label">Social links (optional)</p>
+              <div class="social-inputs dv4-social-inputs">
+                <div class="social-row dv4-social-row"><span>Twitter/X</span><input id="f-sl-twitter" type="text" maxlength="200" placeholder="@handle or URL" /></div>
+                <div class="social-row dv4-social-row"><span>GitHub</span><input id="f-sl-github" type="text" maxlength="200" placeholder="@username or URL" /></div>
+                <div class="social-row dv4-social-row"><span>LinkedIn</span><input id="f-sl-linkedin" type="text" maxlength="200" placeholder="URL" /></div>
+                <div class="social-row dv4-social-row"><span>Mastodon</span><input id="f-sl-mastodon" type="text" maxlength="200" placeholder="@user@instance" /></div>
+                <div class="social-row dv4-social-row"><span>Bluesky</span><input id="f-sl-bluesky" type="text" maxlength="200" placeholder="@handle.bsky.social" /></div>
+              </div>
+            </div>
+
+            <fieldset class="agent-fieldset dv4-fieldset">
+              <legend>Agent identity (optional)</legend>
+              <label class="check-row"><input id="f-is-agent" type="checkbox" /><span>I'm an agent.</span></label>
+              <label><span>Kind</span><input id="f-agent-kind" type="text" maxlength="64" placeholder="browser, cli, mcp&hellip;" /></label>
+              <label><span>Purpose</span><input id="f-agent-purpose" type="text" maxlength="500" /></label>
+              <label><span>Operator email</span><input id="f-operator-email" type="email" maxlength="320" /></label>
+            </fieldset>
+
+            <button type="submit" class="cta primary dv4-btn">Save profile</button>
+          </form>
+        </details>
+
+        <!-- Subscription -->
+        <details class="dv4-card">
+          <summary class="dv4-card-summary"><span class="dv4-card-title">Subscription</span><span class="dv4-card-chev" aria-hidden="true">&rsaquo;</span></summary>
+          <div class="dv4-card-body">
+            <p id="sub-state" class="muted">&hellip;</p>
+            <div class="cta-row dv4-btn-row">
+              <button id="subscribe-btn" type="button" class="cta primary dv4-btn" hidden>Subscribe to updates</button>
+              <button id="unsubscribe-btn" type="button" class="ghost dv4-btn-ghost" hidden>Unsubscribe</button>
             </div>
           </div>
+        </details>
 
-          <fieldset class="agent-fieldset" style="border:1px solid var(--rule);border-radius:4px;padding:.75rem 1rem;margin:0">
-            <legend>Agent identity (optional)</legend>
-            <label class="check-row"><input id="f-is-agent" type="checkbox" /><span>I'm an agent.</span></label>
-            <label><span>Kind</span><input id="f-agent-kind" type="text" maxlength="64" placeholder="browser, cli, mcp…" /></label>
-            <label><span>Purpose</span><input id="f-agent-purpose" type="text" maxlength="500" /></label>
-            <label><span>Operator email</span><input id="f-operator-email" type="email" maxlength="320" /></label>
-          </fieldset>
-
-          <button type="submit" class="cta primary">Save profile</button>
-        </form>
-      </details>
-
-      <!-- Subscription -->
-      <details style="margin-top:1.5rem">
-        <summary><h2 style="display:inline;font-size:1rem;cursor:pointer">Subscription</h2></summary>
-        <div style="margin-top:1rem">
-          <p id="sub-state" class="muted">…</p>
-          <div class="cta-row">
-            <button id="subscribe-btn" type="button" class="cta primary" hidden>Subscribe to updates</button>
-            <button id="unsubscribe-btn" type="button" class="ghost" hidden>Unsubscribe</button>
+        <!-- My Comments -->
+        <details class="dv4-card">
+          <summary class="dv4-card-summary"><span class="dv4-card-title">My comments</span><span class="dv4-card-chev" aria-hidden="true">&rsaquo;</span></summary>
+          <div id="my-comments" class="dv4-card-body">
+            <p class="muted small">Loading&hellip;</p>
           </div>
-        </div>
-      </details>
+        </details>
 
-      <!-- My Comments -->
-      <details style="margin-top:1.5rem">
-        <summary><h2 style="display:inline;font-size:1rem;cursor:pointer">My comments</h2></summary>
-        <div id="my-comments" style="margin-top:1rem">
-          <p class="muted small">Loading…</p>
-        </div>
-      </details>
+        <p class="muted small dv4-id">Account ID: <code id="me-id"></code></p>
+      </section>
 
-      <p class="muted small" style="margin-top:2rem">Account ID: <code id="me-id"></code></p>
     </section>
 
-    <hr />
-    <footer>&copy; <span id="year"></span> yepgent &middot; <a href="/">home</a> &middot; <a href="/account/">account</a></footer>
+    <footer class="v4-colophon">&copy; <span id="year"></span> yepgent &middot; <a href="/">home</a> &middot; <a href="/account/">account</a></footer>
   </main>
 
   <script src="/js/config.js"></script>
   <script src="/js/track.js" defer></script>
   <script type="module" src="/js/dashboard.js"></script>
   <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+  <script>
+  /* === Nav scroll-compaction === */
+  (function () {
+    const nav = document.querySelector('header.site-nav.v4');
+    if (!nav) return;
+    let last = 0;
+    const onScroll = () => {
+      const y = window.scrollY || 0;
+      if (y > 12 && last <= 12) nav.classList.add('scrolled');
+      else if (y <= 12 && last > 12) nav.classList.remove('scrolled');
+      last = y;
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  })();
+
+  /* === Reveal on scroll === */
+  (function () {
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const items = document.querySelectorAll('.dv4-stage, .dv4-card, .dv4-stat');
+    if (reduce || !('IntersectionObserver' in window)) {
+      items.forEach((el) => el.classList.add('is-in'));
+      return;
+    }
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+      });
+    }, { rootMargin: '0px 0px 20% 0px', threshold: 0.01 });
+    items.forEach((el) => io.observe(el));
+  })();
+  </script>
 </body>
 </html>
