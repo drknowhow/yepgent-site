@@ -3239,3 +3239,422 @@ body.home-v4 .v4-colophon footer { font-size: 0.88rem; }
 @media (hover: none), (pointer: coarse) {
   body.home-v4 .cursor-orb { display: none; }
 }
+
+/* =================================================================
+   INTEREST PAGE — v4 design system, scoped to body.interest-v4
+   Re-uses home-v4 shell (nav pill, body bg, design tokens)
+   ================================================================= */
+
+/* Aurora positioning inside iv4 hero (homepage scopes via .v4-hero) */
+body.interest-v4 .iv4-hero .aurora {
+  position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  overflow: clip;
+}
+
+/* No cursor-orb on interest — it's a quieter page */
+body.interest-v4 .cursor-orb { display: none; }
+
+/* HERO */
+body.interest-v4 .iv4-hero {
+  position: relative;
+  min-height: min(92svh, 880px);
+  padding: clamp(2.5rem, 7vw, 6rem) clamp(1.25rem, 5vw, 4rem) clamp(3rem, 6vw, 5rem);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  place-items: center;
+  isolation: isolate;
+  overflow: clip;
+}
+body.interest-v4 .iv4-hero > * { min-width: 0; }
+
+body.interest-v4 .iv4-hero-inner {
+  position: relative;
+  width: 100%;
+  max-width: 56rem;
+  text-align: left;
+}
+
+body.interest-v4 .iv4-eyebrow {
+  display: inline-flex; align-items: center; gap: 0.55rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--ink-soft);
+  margin: 0 0 1.4rem;
+}
+
+body.interest-v4 .iv4-display {
+  font-family: var(--serif, "Iowan Old Style", Georgia, serif);
+  font-weight: 400;
+  letter-spacing: -0.012em;
+  font-size: clamp(2.6rem, 6.5vw, 5.6rem);
+  line-height: 1.02;
+  margin: 0 0 1.6rem;
+  color: var(--ink);
+  text-wrap: balance;
+}
+body.interest-v4 .iv4-display .iv4-emph {
+  font-style: italic;
+  color: var(--accent);
+}
+
+body.interest-v4 .iv4-lede {
+  font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+  line-height: 1.55;
+  color: var(--ink);
+  max-width: 44rem;
+  margin: 0 0 1rem;
+}
+
+body.interest-v4 .iv4-prose {
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--ink-soft);
+  max-width: 44rem;
+  margin: 0 0 2rem;
+}
+
+body.interest-v4 .iv4-cta-row {
+  display: flex; flex-wrap: wrap; gap: 0.7rem; align-items: center;
+  margin-top: 0.5rem;
+}
+body.interest-v4 .iv4-cta {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.85rem 1.4rem;
+  border-radius: var(--r-pill, 999px);
+  font-size: 0.95rem; font-weight: 500;
+  text-decoration: none;
+  transition: transform 180ms var(--ease), background-color 180ms var(--ease),
+              border-color 180ms var(--ease), color 180ms var(--ease);
+}
+body.interest-v4 .iv4-cta.primary {
+  background: var(--accent);
+  color: var(--bg);
+  border: 1px solid var(--accent);
+  box-shadow:
+    0 8px 24px -10px color-mix(in oklab, var(--accent) 60%, transparent),
+    0 0 0 1px color-mix(in oklab, var(--accent) 15%, transparent);
+}
+body.interest-v4 .iv4-cta.primary:hover {
+  transform: translateY(-1px);
+  background: var(--accent-strong);
+  border-color: var(--accent-strong);
+}
+body.interest-v4 .iv4-cta.ghost {
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid color-mix(in oklab, var(--fg) 18%, transparent);
+}
+body.interest-v4 .iv4-cta.ghost:hover {
+  border-color: var(--accent-edge);
+  color: var(--accent);
+}
+
+/* Shared section eyebrow/title pattern */
+body.interest-v4 .iv4-section-eyebrow {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 0.85rem;
+}
+body.interest-v4 .iv4-section-title {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(1.9rem, 3.6vw, 3.2rem);
+  line-height: 1.1;
+  letter-spacing: -0.008em;
+  color: var(--ink);
+  margin: 0 0 1rem;
+  max-width: 32rem;
+  text-wrap: balance;
+}
+body.interest-v4 .iv4-section-prose {
+  font-size: 1rem;
+  color: var(--ink-soft);
+  line-height: 1.55;
+  max-width: 42rem;
+  margin: 0;
+}
+body.interest-v4 .iv4-section-prose code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.92em;
+  padding: 0.1em 0.4em;
+  border-radius: 4px;
+  background: color-mix(in oklab, var(--fg) 7%, transparent);
+  color: var(--ink);
+}
+
+/* CAPABILITIES */
+body.interest-v4 .iv4-cap {
+  padding: clamp(4rem, 8vw, 7rem) clamp(1.25rem, 5vw, 4rem);
+  max-width: 80rem;
+  margin: 0 auto;
+  opacity: 0; transform: translateY(20px);
+  transition: opacity 600ms var(--ease), transform 600ms var(--ease);
+}
+body.interest-v4 .iv4-cap.is-in { opacity: 1; transform: none; }
+
+body.interest-v4 .iv4-cap-head {
+  max-width: 48rem;
+  margin: 0 0 3rem;
+}
+
+body.interest-v4 .iv4-cap-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  gap: clamp(1rem, 2vw, 1.5rem);
+}
+
+body.interest-v4 .iv4-cap-card {
+  position: relative;
+  padding: 1.6rem 1.5rem 1.7rem;
+  border-radius: 1.1rem;
+  background: color-mix(in oklab, var(--bg) 82%, transparent);
+  border: 1px solid color-mix(in oklab, var(--fg) 10%, transparent);
+  backdrop-filter: blur(6px) saturate(1.1);
+  -webkit-backdrop-filter: blur(6px) saturate(1.1);
+  opacity: 0; transform: translateY(14px);
+  transition: opacity 500ms var(--ease), transform 500ms var(--ease),
+              border-color 220ms var(--ease), background 220ms var(--ease);
+}
+body.interest-v4 .iv4-cap-card.is-in { opacity: 1; transform: none; }
+body.interest-v4 .iv4-cap-card:hover {
+  border-color: var(--accent-edge);
+  background: color-mix(in oklab, var(--bg) 88%, transparent);
+}
+body.interest-v4 .iv4-cap-icon {
+  width: 28px; height: 28px;
+  color: var(--accent);
+  margin-bottom: 0.95rem;
+  display: block;
+}
+body.interest-v4 .iv4-cap-card h3 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 1.18rem;
+  line-height: 1.3;
+  color: var(--ink);
+  margin: 0 0 0.45rem;
+  letter-spacing: -0.004em;
+}
+body.interest-v4 .iv4-cap-card p {
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+/* DIPTYCH */
+body.interest-v4 .iv4-diptych {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  gap: clamp(2rem, 5vw, 5rem);
+  align-items: start;
+  max-width: 78rem;
+  margin: 0 auto;
+  padding: clamp(3rem, 7vw, 6rem) clamp(1.25rem, 5vw, 4rem);
+  opacity: 0; transform: translateY(20px);
+  transition: opacity 600ms var(--ease), transform 600ms var(--ease);
+}
+body.interest-v4 .iv4-diptych.is-in { opacity: 1; transform: none; }
+body.interest-v4 .iv4-diptych-eyebrow {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 1rem;
+}
+body.interest-v4 .iv4-quote {
+  margin: 0;
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.4rem, 2.6vw, 2.1rem);
+  line-height: 1.3;
+  color: var(--ink);
+  border-left: 2px solid var(--accent);
+  padding-left: 1.4rem;
+  letter-spacing: -0.004em;
+  text-wrap: balance;
+}
+body.interest-v4 .iv4-quote p { margin: 0; }
+body.interest-v4 .iv4-diptych-right p {
+  font-size: 1.02rem;
+  line-height: 1.65;
+  color: var(--ink-soft);
+  margin: 0 0 1rem;
+  max-width: 36rem;
+}
+body.interest-v4 .iv4-diptych-right p:last-child { margin-bottom: 0; }
+
+/* FORM SECTION */
+body.interest-v4 .iv4-form-section {
+  max-width: 56rem;
+  margin: 0 auto;
+  padding: clamp(3rem, 7vw, 6rem) clamp(1.25rem, 5vw, 4rem) clamp(4rem, 8vw, 7rem);
+  opacity: 0; transform: translateY(20px);
+  transition: opacity 600ms var(--ease), transform 600ms var(--ease);
+}
+body.interest-v4 .iv4-form-section.is-in { opacity: 1; transform: none; }
+
+body.interest-v4 .iv4-form-head {
+  margin: 0 0 2rem;
+}
+
+body.interest-v4 .iv4-form-card {
+  padding: clamp(1.5rem, 3vw, 2.4rem);
+  border-radius: 1.25rem;
+  background: color-mix(in oklab, var(--bg) 88%, transparent);
+  border: 1px solid color-mix(in oklab, var(--fg) 12%, transparent);
+  backdrop-filter: blur(10px) saturate(1.15);
+  -webkit-backdrop-filter: blur(10px) saturate(1.15);
+  box-shadow:
+    0 30px 80px -40px color-mix(in oklab, var(--accent) 30%, transparent),
+    0 1px 0 0 color-mix(in oklab, var(--fg) 6%, transparent) inset;
+}
+
+/* Re-style the existing .interest-form fields for the card surface */
+body.interest-v4 .iv4-form .field-label {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-soft);
+}
+body.interest-v4 .iv4-form input[type="text"],
+body.interest-v4 .iv4-form input[type="email"],
+body.interest-v4 .iv4-form select,
+body.interest-v4 .iv4-form textarea {
+  background: color-mix(in oklab, var(--bg) 60%, transparent);
+  border: 1px solid color-mix(in oklab, var(--fg) 14%, transparent);
+  border-radius: 0.6rem;
+  color: var(--ink);
+  padding: 0.65rem 0.8rem;
+  font-size: 0.98rem;
+  transition: border-color 160ms var(--ease), box-shadow 160ms var(--ease),
+              background 160ms var(--ease);
+}
+body.interest-v4 .iv4-form input:focus,
+body.interest-v4 .iv4-form select:focus,
+body.interest-v4 .iv4-form textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+  background: color-mix(in oklab, var(--bg) 75%, transparent);
+}
+body.interest-v4 .iv4-form .radio {
+  display: inline-flex; align-items: center; gap: 0.45rem;
+  padding: 0.4rem 0.75rem;
+  margin: 0.25rem 0.4rem 0.25rem 0;
+  border-radius: var(--r-pill);
+  border: 1px solid color-mix(in oklab, var(--fg) 12%, transparent);
+  font-size: 0.9rem;
+  color: var(--ink);
+  cursor: pointer;
+  transition: border-color 140ms var(--ease), background 140ms var(--ease);
+}
+body.interest-v4 .iv4-form .radio:hover {
+  border-color: var(--accent-edge);
+  background: var(--accent-soft);
+}
+body.interest-v4 .iv4-form .radio input[type="radio"] {
+  accent-color: var(--accent);
+}
+body.interest-v4 .iv4-form label.checkbox {
+  display: flex; align-items: flex-start; gap: 0.55rem;
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+  margin: 0.5rem 0 0.25rem;
+}
+body.interest-v4 .iv4-form label.checkbox input[type="checkbox"] {
+  accent-color: var(--accent);
+  margin-top: 3px;
+}
+body.interest-v4 .iv4-form button[type="submit"] {
+  align-self: flex-start;
+  margin-top: 0.5rem;
+  padding: 0.85rem 1.6rem;
+  border: 1px solid var(--accent);
+  border-radius: var(--r-pill);
+  background: var(--accent);
+  color: var(--bg);
+  font-size: 0.98rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: transform 160ms var(--ease), background 160ms var(--ease);
+  box-shadow: 0 8px 24px -12px color-mix(in oklab, var(--accent) 60%, transparent);
+}
+body.interest-v4 .iv4-form button[type="submit"]:hover {
+  transform: translateY(-1px);
+  background: var(--accent-strong);
+}
+body.interest-v4 .iv4-form button[type="submit"]:active { transform: translateY(0); }
+
+body.interest-v4 #interest-msg.status {
+  margin-top: 1rem;
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+}
+body.interest-v4 #interest-msg.status[data-kind="ok"] { color: var(--accent); }
+body.interest-v4 #interest-msg.status[data-kind="error"] { color: #e2545a; }
+
+/* COLOPHON */
+body.interest-v4 .iv4-colophon {
+  padding: clamp(2rem, 5vw, 4rem) clamp(1.25rem, 5vw, 4rem) clamp(3rem, 6vw, 5rem);
+  max-width: 80rem;
+  margin: 0 auto;
+  border-top: 1px solid color-mix(in oklab, var(--fg) 8%, transparent);
+  opacity: 0; transform: translateY(12px);
+  transition: opacity 600ms var(--ease), transform 600ms var(--ease);
+}
+body.interest-v4 .iv4-colophon.is-in { opacity: 1; transform: none; }
+body.interest-v4 .iv4-colophon footer {
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+  text-align: center;
+}
+body.interest-v4 .iv4-colophon a {
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in oklab, var(--fg) 18%, transparent);
+}
+body.interest-v4 .iv4-colophon a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+/* MOBILE */
+@media (max-width: 48rem) {
+  body.interest-v4 .iv4-diptych {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
+  }
+  body.interest-v4 .iv4-quote {
+    font-size: 1.3rem;
+    padding-left: 1.1rem;
+  }
+}
+@media (max-width: 40rem) {
+  body.interest-v4 .iv4-hero {
+    padding-top: clamp(2rem, 7vw, 4rem);
+    min-height: auto;
+  }
+  body.interest-v4 .iv4-cap,
+  body.interest-v4 .iv4-diptych,
+  body.interest-v4 .iv4-form-section {
+    transition-duration: 320ms;
+    transform: translateY(10px);
+  }
+  body.interest-v4 .iv4-cap-card {
+    transition-duration: 280ms;
+  }
+  body.interest-v4 .iv4-cta-row { width: 100%; }
+  body.interest-v4 .iv4-cta { width: 100%; justify-content: center; }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  body.interest-v4 .iv4-cap,
+  body.interest-v4 .iv4-diptych,
+  body.interest-v4 .iv4-form-section,
+  body.interest-v4 .iv4-colophon,
+  body.interest-v4 .iv4-cap-card {
+    opacity: 1 !important; transform: none !important;
+  }
+  body.interest-v4 .aurora > span { animation: none !important; }
+}
