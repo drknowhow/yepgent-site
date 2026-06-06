@@ -16,9 +16,9 @@ has no API for templates &mdash; dashboard only).
 
 ## Design
 
-- Dark theme matching `style.css` (`--bg #0e0f12`, `--accent #7cf5c4`,
-  `--rule #1f2127`). Inline styles only &mdash; many email clients
-  strip `<style>` blocks.
+- Dark theme matching `style.css` v4 canon (`--bg #0e0f12`,
+  `--accent #1db981`, `--rule #1f2127`). Inline styles only &mdash;
+  many email clients strip `<style>` blocks.
 - Table-based layout, 560px max width, fluid on mobile via the one
   `<style>` block we keep for media queries (Apple Mail / Gmail honor
   it; Outlook ignores it but the desktop width still renders fine).
