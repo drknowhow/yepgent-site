@@ -7016,21 +7016,30 @@ html.motion-on body.home-v4 .v4-privacy.is-in,
 html.motion-on body.home-v4 .v4-colophon.is-in,
 html.motion-on body.home-v4 .cap-card.is-in { opacity: 1 !important; transform: none !important; }
 
-/* Verb rotator under motion-on: restore the absolute-positioned stack
-   so the JS can fade verbs in/out cleanly (the gate had reset them to
-   inline static). */
+/* Verb rotator under motion-on: restore the original grid-stacked
+   crossfade (line ~2624 baseline). The reduce-motion gate had reset
+   the verbs to `position: static` + flow, which renders all four
+   horizontally. The original uses `display: inline-grid` +
+   `grid-template-areas: "stack"` so every verb occupies the same
+   grid cell — opacity-only crossfade, baseline locked under "that".
+   No transform — that was the optical-shift bug. */
+html.motion-on body.home-v4 .v4-verbs {
+  display: inline-grid;
+  grid-template-areas: "stack";
+  vertical-align: baseline;
+  position: relative;
+  line-height: inherit;
+}
 html.motion-on body.home-v4 .v4-verbs .v {
-  position: absolute;
-  inset: 0;
-  display: inline-block;
+  grid-area: stack;
+  position: static;
   opacity: 0;
-  transform: translateY(8px);
-  transition: opacity 0.38s var(--ease), transform 0.38s var(--ease);
-}
-html.motion-on body.home-v4 .v4-verbs .v[data-on] {
-  opacity: 1;
   transform: none;
+  transition: opacity 380ms var(--ease);
+  white-space: nowrap;
+  pointer-events: none;
 }
+html.motion-on body.home-v4 .v4-verbs .v[data-on] { opacity: 1; }
 
 /* =================================================================
    Manual reduce override — html.motion-off forces calm even when the

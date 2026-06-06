@@ -8,20 +8,20 @@
   <meta name="color-scheme" content="dark light" />
 
   <script>
-    /* Boot: apply theme + motion choice from localStorage before stylesheet
-       evaluates. No FOUC. Defaults: theme follows OS prefers-color-scheme,
-       motion is FORCED ON (the OS reduce-motion gate had been killing the
-       v4 animation layer for users with Windows "Animation effects" off). */
+    /* Boot: apply theme choice from localStorage before stylesheet evaluates.
+       No FOUC. Motion is ALWAYS forced ON — the OS reduce-motion gate had
+       been killing the v4 animation layer for users with Windows "Animation
+       effects" off, and there's no user-facing toggle for it. */
     (function () {
       var h = document.documentElement;
       h.classList.remove('no-js');
+      h.classList.add('motion-on');
       try {
         var t = localStorage.getItem('yep_theme');           // 'light' | 'dark' | null
-        var m = localStorage.getItem('yep_motion');          // 'on'    | 'off'  | null
         if (t === 'light' || t === 'dark') h.setAttribute('data-theme', t);
-        if (m === 'off') h.classList.add('motion-off');
-        else h.classList.add('motion-on');                   // default ON
-      } catch (e) { h.classList.add('motion-on'); }
+        // Clear any legacy motion-off pref so the toggle removal takes effect.
+        if (localStorage.getItem('yep_motion')) localStorage.removeItem('yep_motion');
+      } catch (e) { /* noop */ }
     })();
   </script>
 
@@ -105,10 +105,6 @@
         <button type="button" id="theme-toggle" aria-label="Toggle light/dark theme" title="Toggle theme">
           <span class="icon icon-off" aria-hidden="true">☾</span>
           <span class="icon icon-on"  aria-hidden="true">☼</span>
-        </button>
-        <button type="button" id="motion-toggle" class="is-on" aria-label="Toggle animations" title="Toggle animations" aria-pressed="true">
-          <span class="icon icon-off" aria-hidden="true">⏸</span>
-          <span class="icon icon-on"  aria-hidden="true">▶</span>
         </button>
       </span>
     </nav>
@@ -477,11 +473,11 @@ shipped the fix, logged the why")</pre>
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    /* ───────── theme + motion toggles ───────── */
+    /* ───────── theme toggle ───────── */
     (function () {
       const h = document.documentElement;
       const themeBtn = document.getElementById('theme-toggle');
-      const motionBtn = document.getElementById('motion-toggle');
+      if (!themeBtn) return;
 
       const currentTheme = () => {
         const stored = h.getAttribute('data-theme');
@@ -489,34 +485,16 @@ shipped the fix, logged the why")</pre>
         return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
       };
       const applyThemeBtn = () => {
-        if (!themeBtn) return;
         const isLight = currentTheme() === 'light';
         themeBtn.classList.toggle('is-on', isLight);
         themeBtn.setAttribute('aria-pressed', isLight ? 'true' : 'false');
       };
-      const applyMotionBtn = () => {
-        if (!motionBtn) return;
-        const isOn = h.classList.contains('motion-on');
-        motionBtn.classList.toggle('is-on', isOn);
-        motionBtn.setAttribute('aria-pressed', isOn ? 'true' : 'false');
-      };
       applyThemeBtn();
-      applyMotionBtn();
-
-      if (themeBtn) themeBtn.addEventListener('click', () => {
+      themeBtn.addEventListener('click', () => {
         const next = currentTheme() === 'light' ? 'dark' : 'light';
         h.setAttribute('data-theme', next);
         try { localStorage.setItem('yep_theme', next); } catch (e) {}
         applyThemeBtn();
-      });
-      if (motionBtn) motionBtn.addEventListener('click', () => {
-        const wasOn = h.classList.contains('motion-on');
-        h.classList.toggle('motion-on', !wasOn);
-        h.classList.toggle('motion-off', wasOn);
-        try { localStorage.setItem('yep_motion', wasOn ? 'off' : 'on'); } catch (e) {}
-        applyMotionBtn();
-        // Reload so all keyframes + IO observers reinitialize cleanly.
-        setTimeout(() => location.reload(), 80);
       });
     })();
 
@@ -576,15 +554,24 @@ shipped the fix, logged the why")</pre>
         }, { passive: true });
       }
 
-      /* Verb rotator */
+      /* Verb rotator — sequential fade so two verbs of different widths
+         never render visible at the same time (was bleeding letters during
+         crossfade overlap). 380ms transition matches the CSS; we wait
+         420ms before fading in the next verb. */
       const verbs = document.querySelectorAll('.v4-verbs .v');
       if (verbs.length && !reduce) {
         let i = 0;
-        setInterval(() => {
+        const FADE = 420;       // > CSS transition (380ms)
+        const HOLD = 2000;      // visible time per verb
+        const cycle = () => {
           verbs[i].removeAttribute('data-on');
-          i = (i + 1) % verbs.length;
-          verbs[i].setAttribute('data-on', '1');
-        }, 2200);
+          setTimeout(() => {
+            i = (i + 1) % verbs.length;
+            verbs[i].setAttribute('data-on', '1');
+            setTimeout(cycle, HOLD);
+          }, FADE);
+        };
+        setTimeout(cycle, HOLD);
       }
 
       /* Capability cards: pointer-tracked accent glow + soft tilt */
