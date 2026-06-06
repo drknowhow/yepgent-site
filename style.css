@@ -5726,3 +5726,242 @@ body.gallery-v4 .gv4-colophon .links a:hover {
   body.gallery-v4 .gv4-card:hover .gv4-img-wrap img,
   body.gallery-v4 .gv4-card:hover .gv4-video-poster img { transform: none !important; }
 }
+
+
+
+
+/* =================================================================
+   UTILITY-V4 â€” thanks.html + unsubscribe/index.html
+   Terminal single-message screens. Aurora hero, serif headline,
+   one glass card for the next-action link or the unsubscribe button.
+   No sticky pins, no filter UI. Mobile shrinks; reduced-motion stills.
+   ================================================================= */
+
+body.utility-v4 main.v4-shell { max-width: 100%; }
+
+/* --- HERO --- */
+body.utility-v4 .uv4-hero {
+  position: relative;
+  min-height: min(78svh, 760px);
+  padding: clamp(2.5rem, 7vw, 5rem) clamp(1.25rem, 5vw, 4rem) clamp(2rem, 4vw, 3rem);
+  isolation: isolate;
+  overflow: clip;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+body.utility-v4 .uv4-hero > * { min-width: 0; }
+body.utility-v4 .uv4-hero .aurora {
+  position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  overflow: clip;
+}
+body.utility-v4 .uv4-hero .aurora .aurora-1,
+body.utility-v4 .uv4-hero .aurora .aurora-2 {
+  position: absolute; display: block; border-radius: 50%;
+  filter: blur(75px); mix-blend-mode: screen;
+}
+body.utility-v4 .uv4-hero .aurora .aurora-1 {
+  top: -25%; left: -12%; width: 52vw; height: 52vw;
+  background: conic-gradient(from 120deg at 50% 50%,
+    color-mix(in oklab, var(--accent) 28%, transparent),
+    transparent 35%,
+    color-mix(in oklab, var(--accent) 18%, transparent) 60%,
+    transparent 80%);
+  opacity: 0.55;
+  animation: v4-drift1 22s ease-in-out infinite alternate;
+}
+body.utility-v4 .uv4-hero .aurora .aurora-2 {
+  top: -18%; right: -16%; width: 46vw; height: 46vw;
+  background: conic-gradient(from 320deg at 50% 50%,
+    color-mix(in oklab, var(--accent-strong) 22%, transparent),
+    transparent 30%,
+    color-mix(in oklab, var(--accent) 12%, transparent) 55%,
+    transparent 80%);
+  opacity: 0.5;
+  animation: v4-drift2 26s ease-in-out infinite alternate;
+}
+@media (prefers-color-scheme: light) {
+  body.utility-v4 .uv4-hero .aurora > span { mix-blend-mode: multiply; opacity: 0.4; }
+}
+
+/* --- STAGE (centered editorial column) --- */
+body.utility-v4 .uv4-stage {
+  max-width: 44rem;
+  width: 100%;
+  margin: 0 auto;
+  text-align: left;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 520ms var(--ease), transform 520ms var(--ease);
+}
+body.utility-v4 .uv4-stage.is-in { opacity: 1; transform: none; }
+
+body.utility-v4 .uv4-display {
+  font-family: var(--serif);
+  font-size: clamp(2.4rem, 6vw, 4.6rem);
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  font-weight: 500;
+  margin: 0.5rem 0 1rem;
+  color: var(--ink);
+  max-width: 18ch;
+}
+body.utility-v4 .uv4-display .serif-italic {
+  font-style: italic;
+  color: var(--accent);
+}
+body.utility-v4 .uv4-display .dot { color: var(--accent); }
+
+body.utility-v4 .uv4-lede {
+  max-width: 36rem;
+  margin: 0 0 1.75rem;
+  font-size: clamp(1.02rem, 1.2vw + 0.7rem, 1.2rem);
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+body.utility-v4 .uv4-lede em {
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--ink);
+}
+
+/* --- CARD (glass next-action / unsubscribe surface) --- */
+body.utility-v4 .uv4-card {
+  margin-top: 1.25rem;
+  padding: 1.4rem 1.4rem 1.25rem;
+  background: var(--glass);
+  -webkit-backdrop-filter: blur(12px) saturate(1.3);
+          backdrop-filter: blur(12px) saturate(1.3);
+  border: 1px solid var(--glass-edge);
+  border-radius: 14px;
+  box-shadow:
+    0 1px 0 color-mix(in oklab, white 4%, transparent) inset,
+    0 12px 28px color-mix(in oklab, var(--accent) 6%, var(--shadow-tint));
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 520ms var(--ease), transform 520ms var(--ease);
+  transition-delay: 80ms;
+}
+body.utility-v4 .uv4-card.is-in { opacity: 1; transform: none; }
+
+body.utility-v4 .uv4-card-body,
+body.utility-v4 .uv4-card-foot {
+  margin: 0;
+  font-size: 0.98rem;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+body.utility-v4 .uv4-card-body { color: var(--ink); }
+body.utility-v4 .uv4-card-foot {
+  margin-top: 0.85rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.9rem;
+}
+
+body.utility-v4 .uv4-card a,
+body.utility-v4 .uv4-card-link {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklab, var(--accent) 45%, transparent);
+  text-underline-offset: 3px;
+  transition: color var(--dur-fast) var(--ease),
+              text-decoration-color var(--dur-fast) var(--ease);
+}
+body.utility-v4 .uv4-card a:hover,
+body.utility-v4 .uv4-card-link:hover {
+  color: var(--accent-strong);
+  text-decoration-color: var(--accent-strong);
+}
+
+/* --- UNSUBSCRIBE BUTTON --- */
+body.utility-v4 .uv4-btn {
+  display: inline-block;
+  margin: 0 0 0.25rem;
+  padding: 0.75rem 1.4rem;
+  font: 600 0.95rem/1 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  letter-spacing: 0.01em;
+  color: var(--bg);
+  background: var(--accent);
+  border: 1px solid color-mix(in oklab, var(--accent) 70%, var(--accent-strong));
+  border-radius: var(--r-pill);
+  cursor: pointer;
+  transition:
+    background var(--dur-fast) var(--ease),
+    transform var(--dur-fast) var(--ease),
+    box-shadow var(--dur-fast) var(--ease);
+  box-shadow: 0 6px 18px color-mix(in oklab, var(--accent) 25%, var(--shadow-tint));
+}
+body.utility-v4 .uv4-btn:hover {
+  background: var(--accent-strong);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px color-mix(in oklab, var(--accent) 32%, var(--shadow-tint));
+}
+body.utility-v4 .uv4-btn:active { transform: translateY(0); }
+body.utility-v4 .uv4-btn:focus-visible {
+  outline: 2px solid var(--accent-edge);
+  outline-offset: 3px;
+}
+body.utility-v4 .uv4-btn:disabled {
+  opacity: 0.55;
+  cursor: default;
+  transform: none;
+  box-shadow: none;
+}
+
+/* --- STATUS MESSAGE --- */
+body.utility-v4 .uv4-msg {
+  display: block;
+  min-height: 1.4rem;
+  margin-top: 0.85rem;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: var(--ink-soft);
+}
+body.utility-v4 .uv4-msg.ok  { color: var(--accent-strong); }
+body.utility-v4 .uv4-msg.err { color: color-mix(in oklab, #c44 75%, var(--ink)); }
+
+/* --- BACK LINK --- */
+body.utility-v4 .uv4-back {
+  display: inline-block;
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  text-decoration: none;
+  transition: color var(--dur-fast) var(--ease);
+}
+body.utility-v4 .uv4-back:hover { color: var(--ink); }
+
+/* --- MOBILE --- */
+@media (max-width: 40rem) {
+  body.utility-v4 .uv4-hero {
+    min-height: auto;
+    padding: clamp(1.5rem, 6vw, 2.5rem) 1.1rem clamp(1.25rem, 4vw, 2rem);
+  }
+  body.utility-v4 .uv4-display {
+    font-size: clamp(2rem, 9vw, 2.8rem);
+    max-width: none;
+  }
+  body.utility-v4 .uv4-card {
+    padding: 1.1rem 1rem 1rem;
+    border-radius: 12px;
+  }
+  body.utility-v4 .uv4-stage,
+  body.utility-v4 .uv4-card {
+    transition-duration: 320ms;
+    transform: translateY(10px);
+  }
+}
+
+/* --- REDUCED MOTION --- */
+@media (prefers-reduced-motion: reduce) {
+  body.utility-v4 .uv4-stage,
+  body.utility-v4 .uv4-card {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  body.utility-v4 .uv4-hero .aurora > span { animation: none !important; }
+  body.utility-v4 .uv4-btn { transition: none; }
+  body.utility-v4 .uv4-btn:hover { transform: none; }
+}

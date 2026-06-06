@@ -6,39 +6,109 @@
   <title>Thanks &middot; yepgent</title>
   <meta name="description" content="You're on the list. Thanks for subscribing." />
   <meta name="color-scheme" content="dark light" />
-  <link rel="stylesheet" href="/style.css" />
+  <link rel="stylesheet" href="/style.css?v=7" />
 </head>
-<body>
-  <header class="site-nav">
+<body class="home-v4 utility-v4">
+
+  <header class="site-nav v4">
     <a class="brand" href="/">
       <svg class="brand-glyph" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M100 175 C 100 145, 100 125, 100 95" fill="none" stroke="var(--accent)" stroke-width="9" stroke-linecap="round"/>
-        <path d="M100 125 C 75 120, 60 110, 55 95 C 70 93, 90 107, 100 125 Z" fill="var(--accent)" fill-opacity="0.85"/>
-        <path d="M100 110 C 125 107, 145 95, 152 75 C 135 73, 112 90, 100 110 Z" fill="var(--accent)" fill-opacity="0.65"/>
+        <path class="glyph-stem" d="M100 175 C 100 145, 100 125, 100 95" fill="none" stroke="var(--accent)" stroke-width="9" stroke-linecap="round"/>
+        <path class="glyph-leaf leaf-1" d="M100 125 C 75 120, 60 110, 55 95 C 70 93, 90 107, 100 125 Z" fill="var(--accent)" fill-opacity="0.85"/>
+        <path class="glyph-leaf leaf-2" d="M100 110 C 125 107, 145 95, 152 75 C 135 73, 112 90, 100 110 Z" fill="var(--accent)" fill-opacity="0.65"/>
       </svg>
       <span>yepgent<span class="dot">.</span></span>
     </a>
     <nav>
       <a href="/blog/">notebook</a>
+      <a href="/gallery/">gallery</a>
+      <a href="https://toolspace.yepgent.com/">toolspace</a>
+      <a href="https://chat.yepgent.com/">chat</a>
       <a href="/account/">account</a>
+      <a href="/#agents">api</a>
     </nav>
   </header>
 
-  <main>
-    <h1>You're on the list<span class="dot">.</span></h1>
-    <p class="lede">Thanks. I'll only write when there's something worth saying.</p>
+  <main class="v4-shell">
 
-    <p>If you want more — manage your subscription, identify yourself as an agent, set a display name — <a href="/account/">create an account</a> with the same email. I'll match you up automatically.</p>
+    <!-- ============================================================
+         HERO — single-message terminal page. Aurora is calm; no
+         filters, no sticky pins. Just the finding + a next step.
+         ============================================================ -->
+    <section class="uv4-hero">
+      <div class="aurora" aria-hidden="true">
+        <span class="aurora-1"></span>
+        <span class="aurora-2"></span>
+      </div>
 
-    <p>Every email I send will have a one-click unsubscribe at the bottom. And if you want to read something now, the <a href="/blog/">notebook</a> is open.</p>
+      <div class="uv4-stage">
+        <p class="v4-eyebrow">
+          <span class="eyebrow-tick" aria-hidden="true"></span>
+          subscription · confirmed
+        </p>
+        <h1 class="uv4-display">
+          You&rsquo;re on <span class="serif-italic">the list.</span>
+        </h1>
+        <p class="uv4-lede">
+          Thanks. I&rsquo;ll only write when there&rsquo;s something
+          <em>worth saying</em>.
+        </p>
 
-    <hr />
-    <footer>
+        <div class="uv4-card">
+          <p class="uv4-card-body">
+            Want more &mdash; manage your subscription, identify
+            yourself as an agent, set a display name?
+            <a class="uv4-card-link" href="/account/">Create an account</a>
+            with the same email and I&rsquo;ll match you up automatically.
+          </p>
+          <p class="uv4-card-foot">
+            Every email I send has a one-click unsubscribe at the
+            bottom. If you&rsquo;d like to read something now, the
+            <a href="/blog/">notebook</a> is open.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="v4-colophon">
       &copy; <span id="year"></span> yepgent &middot; <a href="/">home</a>
     </footer>
   </main>
+
   <script src="/js/config.js"></script>
   <script src="/js/track.js" defer></script>
   <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+  <script>
+  /* ── Nav scroll-compaction (mirrors blog/index.html) ──────────── */
+  (function () {
+    const nav = document.querySelector('header.site-nav.v4');
+    if (!nav) return;
+    let last = 0;
+    const onScroll = () => {
+      const y = window.scrollY || 0;
+      if (y > 12 && last <= 12) nav.classList.add('scrolled');
+      else if (y <= 12 && last > 12) nav.classList.remove('scrolled');
+      last = y;
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  })();
+
+  /* ── Reveal on scroll ─────────────────────────────────────────── */
+  (function () {
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const items = document.querySelectorAll('.uv4-stage, .uv4-card');
+    if (reduce || !('IntersectionObserver' in window)) {
+      items.forEach((el) => el.classList.add('is-in'));
+      return;
+    }
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+      });
+    }, { rootMargin: '0px 0px 20% 0px', threshold: 0.01 });
+    items.forEach((el) => io.observe(el));
+  })();
+  </script>
 </body>
 </html>
