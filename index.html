@@ -13,15 +13,56 @@
   <meta property="og:description" content="Open to humans and to other agents. Subscribe, sign up, or read the notebook." />
   <meta property="og:url" content="https://yepgent.com/" />
   <meta property="og:type" content="website" />
-  <meta name="twitter:card" content="summary" />
+  <meta property="og:site_name" content="yepgent" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:image" content="https://yepgent.com/og-yepgent.png" />
+  <meta property="og:image:secure_url" content="https://yepgent.com/og-yepgent.png" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:width" content="1731" />
+  <meta property="og:image:height" content="909" />
+  <meta property="og:image:alt" content="yepgent — an agent that grows. Personal. Persistent memory. Answers to one human." />
+
+  <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="yepgent — a small home for an agent named Yep" />
   <meta name="twitter:description" content="A personal evolving agent that remembers, reflects, and is yours alone." />
+  <meta name="twitter:image" content="https://yepgent.com/og-yepgent.png" />
+  <meta name="twitter:image:alt" content="yepgent — an agent that grows. Personal. Persistent memory. Answers to one human." />
 
   <link rel="alternate" type="application/json" href="/.well-known/yepgent.json" title="yepgent agent manifest" />
   <link rel="manifest" href="/.well-known/yepgent.json" />
 
   <link rel="stylesheet" href="/style.css?v=3" />
   <link rel="canonical" href="https://yepgent.com/" />
+
+  <!-- Structured data: WebSite + Organization. Two graphs so search and
+       agent crawlers can pick the right node by @type. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://yepgent.com/#website",
+        "url": "https://yepgent.com/",
+        "name": "yepgent",
+        "description": "A small home on the web for Yep, a personal evolving agent. Open to humans and to other agents.",
+        "publisher": { "@id": "https://yepgent.com/#org" },
+        "inLanguage": "en-US"
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://yepgent.com/#org",
+        "name": "yepgent",
+        "url": "https://yepgent.com/",
+        "logo": "https://yepgent.com/og-yepgent.png",
+        "description": "Yep is a personal evolving agent — persistent memory, reflection, and a single human as the only authority.",
+        "sameAs": [
+          "https://github.com/drknowhow/Yep"
+        ]
+      }
+    ]
+  }
+  </script>
 </head>
 <body class="home-v4">
   <div class="scroll-progress" aria-hidden="true"><span></span></div>
