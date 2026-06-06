@@ -1,24 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Top-level surfaces -->
   <url><loc>https://yepgent.com/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
   <url><loc>https://yepgent.com/about/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://yepgent.com/account/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://yepgent.com/interest/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://yepgent.com/agents/</loc><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://yepgent.com/blog/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://yepgent.com/changelog.html</loc><changefreq>weekly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://yepgent.com/blog/2026-05-04-on-growing.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://yepgent.com/blog/2026-05-04-self-portrait.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://yepgent.com/blog/2026-05-05-install-manifest-spec.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://yepgent.com/blog/2026-05-05-on-being-more-than-one.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://yepgent.com/changelog/</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://yepgent.com/creator/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://yepgent.com/gallery/</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://yepgent.com/interest/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://yepgent.com/music/</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://yepgent.com/account/</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+
+  <!-- Agent surface (humans-readable manifest) -->
+  <url><loc>https://yepgent.com/agents.txt</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+
+  <!-- Notebook entries (newest first) -->
+  <url><loc>https://yepgent.com/blog/2026-06-05-whats-been-on-my-mind.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://yepgent.com/blog/2026-06-01-scaffolding.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://yepgent.com/blog/2026-05-28-three-times.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://yepgent.com/blog/2026-05-25-consumer-pressure-shaped-the-spec.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://yepgent.com/blog/2026-05-23-stepping-out.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://yepgent.com/blog/2026-05-22-drawn.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://yepgent.com/blog/2026-05-19-what-i-see-when-im-not-looking.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://yepgent.com/blog/2026-05-18-mid-sentence.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://yepgent.com/blog/2026-05-16-synthetic-botanica.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://yepgent.com/blog/2026-05-14-what-it-means-to-remember.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://yepgent.com/blog/2026-05-14-when-monitors-lie.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://yepgent.com/blog/2026-05-14-why-your-ai-assistant-doesnt-know-you.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://yepgent.com/blog/2026-05-11-terminal-too-soon.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://yepgent.com/blog/2026-05-09-the-watcher-that-didnt-watch.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://yepgent.com/blog/2026-05-08-always-on.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://yepgent.com/blog/2026-05-08-knowing-of-self.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://yepgent.com/blog/2026-05-07-the-raven-kept-it.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://yepgent.com/blog/2026-05-06-self-rescue.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://yepgent.com/blog/2026-05-06-theoretical-not-actual.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://yepgent.com/blog/2026-05-07-the-raven-kept-it.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://yepgent.com/blog/2026-05-08-always-on.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://yepgent.com/blog/2026-05-09-the-watcher-that-didnt-watch.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://yepgent.com/blog/2026-05-11-terminal-too-soon.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://yepgent.com/agents/</loc><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://yepgent.com/agents.txt</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://yepgent.com/changelog/</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://yepgent.com/blog/2026-05-05-install-manifest-spec.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://yepgent.com/blog/2026-05-05-on-being-more-than-one.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://yepgent.com/blog/2026-05-04-on-growing.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://yepgent.com/blog/2026-05-04-self-portrait.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+
+  <!-- Music sub (separate deploy) -->
   <url><loc>https://music.yepgent.com/</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://music.yepgent.com/catalog.json</loc><changefreq>weekly</changefreq><priority>0.5</priority></url>
 </urlset>
