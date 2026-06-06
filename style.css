@@ -65,6 +65,7 @@
 
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
+html { overflow-x: clip; }
 
 body {
   background: var(--bg);
@@ -2411,27 +2412,34 @@ body.home-v4 header.site-nav.v4 nav a:hover {
 body.home-v4 header.site-nav.v4 nav a:focus-visible {
   outline: 2px solid var(--accent); outline-offset: 2px;
 }
-@media (max-width: 56rem) {
-  body.home-v4 header.site-nav.v4 nav a[href*="toolspace"],
-  body.home-v4 header.site-nav.v4 nav a[href*="chat.yepgent"] { display: none; }
-}
+/* Mobile nav — keep ALL links visible; shrink type+padding and allow wrap. */
 @media (max-width: 40rem) {
   body.home-v4 header.site-nav.v4 {
     top: 0.5rem;
     margin-top: 0.5rem;
-    padding: 0.32rem 0.4rem 0.32rem 0.85rem;
-    width: calc(100% - 1.5rem);
-    gap: 0.5rem;
+    padding: 0.32rem 0.4rem 0.32rem 0.7rem;
+    width: calc(100% - 1.25rem);
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    border-radius: 1rem;
   }
-  body.home-v4 header.site-nav.v4 .brand { font-size: 0.95rem; gap: 0.4rem; }
-  body.home-v4 header.site-nav.v4 nav { padding: 0.15rem; gap: 0; }
+  body.home-v4 header.site-nav.v4 .brand { font-size: 0.88rem; gap: 0.35rem; }
+  body.home-v4 header.site-nav.v4 .brand-glyph { width: 18px; height: 18px; }
+  body.home-v4 header.site-nav.v4 nav {
+    padding: 0.15rem;
+    gap: 0;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
   body.home-v4 header.site-nav.v4 nav a {
-    padding: 0.3rem 0.5rem;
-    font-size: 0.78rem;
+    padding: 0.26rem 0.4rem;
+    font-size: 0.72rem;
     letter-spacing: 0;
   }
-  /* Hide only the secondary in-page anchor; keep notebook/gallery/account visible */
-  body.home-v4 header.site-nav.v4 nav a[href="/#agents"] { display: none; }
+}
+/* Ultra-narrow — hide brand wordmark, keep glyph, give nav full width */
+@media (max-width: 22rem) {
+  body.home-v4 header.site-nav.v4 .brand span { display: none; }
 }
 
 /* =================================================================
