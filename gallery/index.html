@@ -17,570 +17,16 @@
   <link rel="alternate" type="application/json" href="/.well-known/yepgent.json" title="yepgent agent manifest" />
   <link rel="manifest" href="/.well-known/yepgent.json" />
 
-  <link rel="stylesheet" href="/style.css" />
-  <style>
-    /* ============================================================
-       Gallery — v4
-       - tighter cards, no inline more panels
-       - one detail modal (image / video / audio)
-       - opacity-only filter (no transform stack)
-       - composited hover, no conflicting transforms
-    ============================================================ */
-
-    main.gallery { max-width: 76rem; padding: 1rem 1.5rem 5rem; }
-    header.site-nav.wide { max-width: 76rem; }
-
-    /* Ambient drift — very subtle, very slow */
-    body {
-      background-image:
-        radial-gradient(circle at 14% 10%, var(--accent-soft) 0%, transparent 36%),
-        radial-gradient(circle at 86% 88%, var(--accent-soft) 0%, transparent 40%);
-      animation: glowDrift 60s ease-in-out infinite alternate;
-    }
-    @keyframes glowDrift {
-      0%   { background-position:  0%  0%, 100% 100%; }
-      100% { background-position:  8%  4%,  92%  96%; }
-    }
-
-    /* Hero ------------------------------------------------------ */
-    .gallery .hero { margin-bottom: 1.75rem; }
-    .gallery .hero h1 {
-      font-size: clamp(2rem, 4.5vw, 2.6rem);
-      margin-bottom: 0.4rem;
-    }
-    .gallery .hero .lede { color: var(--muted); max-width: 42rem; margin: 0; }
-
-    /* Controls -------------------------------------------------- */
-    .controls { display: flex; flex-direction: column; gap: 0.7rem; margin-bottom: 0.5rem; }
-    .search-wrap { position: relative; max-width: 30rem; }
-    .search-wrap input {
-      width: 100%;
-      background: var(--field-bg);
-      color: var(--fg);
-      border: 1px solid var(--field-edge);
-      border-radius: 999px;
-      padding: 0.6rem 2.4rem 0.6rem 2.3rem;
-      font: inherit;
-      font-size: 0.92rem;
-      outline: none;
-      transition: border-color 180ms ease, box-shadow 220ms ease;
-    }
-    .search-wrap input::placeholder { color: var(--muted); }
-    .search-wrap input:focus {
-      border-color: var(--accent-edge);
-      box-shadow: 0 0 0 4px var(--accent-soft);
-    }
-    .search-wrap .search-icon {
-      position: absolute; left: 0.85rem; top: 50%;
-      transform: translateY(-50%);
-      width: 16px; height: 16px; color: var(--muted);
-      pointer-events: none;
-    }
-    .search-wrap .clear-btn {
-      position: absolute; right: 0.5rem; top: 50%;
-      transform: translateY(-50%);
-      background: none; border: none; color: var(--muted);
-      cursor: pointer; padding: 0.28rem; border-radius: 50%;
-      display: none; line-height: 0;
-    }
-    .search-wrap .clear-btn:hover { color: var(--fg); background: var(--card-bg); }
-    .search-wrap.has-value .clear-btn { display: inline-flex; }
-
-    .filter-row { display: flex; gap: 0.45rem; flex-wrap: wrap; align-items: center; }
-    .filter-row .label {
-      font-size: 0.72rem;
-      color: var(--muted);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-right: 0.25rem;
-      min-width: 2.4rem;
-    }
-    .chip {
-      background: transparent;
-      border: 1px solid var(--card-edge);
-      color: var(--muted);
-      padding: 0.25rem 0.7rem;
-      border-radius: 999px;
-      font: inherit;
-      font-size: 0.8rem;
-      cursor: pointer;
-      transition: color 180ms ease, border-color 180ms ease, background 180ms ease;
-    }
-    .chip:hover { color: var(--fg); border-color: var(--accent-edge); }
-    .chip[aria-pressed="true"] {
-      background: var(--accent-soft);
-      color: var(--fg);
-      border-color: var(--accent-edge);
-    }
-
-    /* Tabs ------------------------------------------------------ */
-    .gallery-tabs {
-      display: flex; gap: 1.6rem;
-      padding: 0.6rem 0 0.9rem;
-      margin: 1.4rem 0 1.2rem;
-      border-bottom: 1px solid var(--rule);
-      align-items: baseline;
-      flex-wrap: wrap;
-      position: relative;
-    }
-    .gallery-tabs button {
-      background: none; border: none;
-      padding: 0.3rem 0.1rem;
-      color: var(--muted);
-      font: inherit; font-size: 0.96rem; font-weight: 500;
-      cursor: pointer;
-      position: relative;
-      transition: color 200ms ease;
-    }
-    .gallery-tabs button .count {
-      font-size: 0.76rem;
-      color: var(--muted);
-      margin-left: 0.32rem;
-      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-      transition: color 200ms ease;
-    }
-    .gallery-tabs button:hover { color: var(--fg); }
-    .gallery-tabs button[aria-selected="true"] { color: var(--fg); }
-    .gallery-tabs button[aria-selected="true"] .count { color: var(--accent); }
-    .tab-underline {
-      position: absolute;
-      bottom: -1px;
-      height: 2px;
-      background: var(--accent);
-      border-radius: 2px;
-      transition: left 320ms cubic-bezier(0.22, 1, 0.36, 1),
-                  width 320ms cubic-bezier(0.22, 1, 0.36, 1);
-      pointer-events: none;
-    }
-
-    /* Panels ---------------------------------------------------- */
-    .gallery-panel { display: none; }
-    .gallery-panel[data-active="true"] {
-      display: block;
-      animation: panelIn 280ms cubic-bezier(0.22, 1, 0.36, 1);
-    }
-    @keyframes panelIn {
-      from { opacity: 0; transform: translateY(6px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ============================================================
-       CARDS — composited fade only, no transform stack
-       (hover lift is a separate layer so it doesn't fight filter)
-    ============================================================ */
-    .card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-edge);
-      border-radius: 12px;
-      overflow: hidden;
-      position: relative;
-      cursor: pointer;
-      contain: layout paint;
-      transition: opacity 220ms ease, border-color 220ms ease, box-shadow 240ms ease;
-    }
-    .card::after {
-      /* hover lift via box-shadow only — no transforms = no fight */
-      content: "";
-      position: absolute; inset: 0;
-      border-radius: 12px;
-      pointer-events: none;
-      box-shadow: 0 0 0 0 rgba(0,0,0,0);
-      transition: box-shadow 240ms ease;
-    }
-    .card:hover {
-      border-color: var(--accent-edge);
-    }
-    .card:hover::after {
-      box-shadow: 0 14px 30px -18px rgba(0,0,0,0.55);
-    }
-    .card.is-leaving { opacity: 0; pointer-events: none; }
-    .card.is-hidden { display: none; }
-    .card.is-entering { opacity: 0; }
-
-    /* Image grid ------------------------------------------------ */
-    .image-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
-      gap: 0.85rem;
-    }
-    .img-wrap {
-      position: relative;
-      overflow: hidden;
-      background: var(--field-bg);
-      aspect-ratio: 1 / 1;
-    }
-    .img-wrap img {
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
-    }
-    .card:hover .img-wrap img { transform: scale(1.04); }
-
-    .caption { padding: 0.5rem 0.7rem 0.6rem; }
-    .caption .title {
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: var(--fg);
-      margin: 0 0 0.1rem;
-      line-height: 1.25;
-    }
-    .caption .meta {
-      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-      font-size: 0.72rem;
-      color: var(--muted);
-      letter-spacing: 0.02em;
-    }
-    .caption .meta .dot-sep { margin: 0 0.35rem; opacity: 0.5; }
-
-    /* Video grid ------------------------------------------------ */
-    .video-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
-      gap: 1rem;
-    }
-    .video-grid .card { display: flex; flex-direction: column; }
-    .video-poster {
-      position: relative;
-      aspect-ratio: 16 / 9;
-      background: #000;
-      overflow: hidden;
-    }
-    .video-poster img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1), opacity 240ms ease;
-    }
-    .card:hover .video-poster img { transform: scale(1.04); opacity: 0.88; }
-    .video-poster .play-glyph {
-      position: absolute; inset: 0;
-      display: grid; place-items: center;
-      pointer-events: none;
-    }
-    .video-poster .play-glyph svg {
-      width: 56px; height: 56px;
-      filter: drop-shadow(0 2px 10px rgba(0,0,0,0.55));
-      transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
-    }
-    .card:hover .video-poster .play-glyph svg { transform: scale(1.1); }
-    .video-grid .caption { padding: 0.6rem 0.8rem 0.7rem; }
-
-    /* Audio rows ------------------------------------------------ */
-    .audio-list { display: flex; flex-direction: column; gap: 0.5rem; }
-    .audio-row {
-      background: var(--card-bg);
-      border: 1px solid var(--card-edge);
-      border-radius: 10px;
-      padding: 0.6rem 0.85rem;
-      cursor: pointer;
-      contain: layout paint;
-      transition: opacity 220ms ease, border-color 220ms ease, background 220ms ease;
-    }
-    .audio-row.is-leaving { opacity: 0; pointer-events: none; }
-    .audio-row.is-hidden { display: none; }
-    .audio-row.is-entering { opacity: 0; }
-    .audio-row:hover { border-color: var(--accent-edge); background: var(--accent-soft); }
-    .audio-head {
-      display: grid;
-      grid-template-columns: 2.4rem 1fr auto;
-      align-items: center;
-      gap: 0.85rem;
-    }
-    .audio-play {
-      width: 2.2rem; height: 2.2rem;
-      border-radius: 50%;
-      background: var(--accent);
-      border: none;
-      cursor: pointer;
-      display: grid; place-items: center;
-      color: var(--bg);
-      transition: transform 200ms ease, box-shadow 220ms ease;
-    }
-    .audio-play:hover { transform: scale(1.06); box-shadow: 0 0 0 6px var(--accent-soft); }
-    .audio-play svg { width: 13px; height: 13px; }
-    .audio-meta { min-width: 0; }
-    .audio-meta .title {
-      font-size: 0.94rem;
-      font-weight: 600;
-      color: var(--fg);
-      margin: 0 0 0.1rem;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .audio-meta .sub {
-      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-      font-size: 0.72rem;
-      color: var(--muted);
-    }
-    .audio-waveform {
-      display: flex; align-items: end;
-      gap: 2px; height: 20px; width: 78px;
-    }
-    .audio-waveform span {
-      flex: 1;
-      background: var(--accent);
-      opacity: 0.5;
-      border-radius: 1px;
-    }
-    .audio-row.is-playing .audio-waveform span {
-      opacity: 0.9;
-      animation: waveBob 1s ease-in-out infinite;
-    }
-    .audio-row.is-playing .audio-waveform span:nth-child(2n) { animation-delay: 0.15s; }
-    .audio-row.is-playing .audio-waveform span:nth-child(3n) { animation-delay: 0.3s; }
-    @keyframes waveBob {
-      0%, 100% { transform: scaleY(1); }
-      50%      { transform: scaleY(1.6); transform-origin: bottom; }
-    }
-    .audio-row.is-error { border-color: var(--field-edge); opacity: 0.7; }
-    .audio-row.is-error .audio-play { background: var(--field-edge); cursor: not-allowed; }
-
-    /* Empty state ----------------------------------------------- */
-    .empty {
-      padding: 3rem 1rem;
-      text-align: center;
-      color: var(--muted);
-      border: 1px dashed var(--card-edge);
-      border-radius: 12px;
-    }
-    .empty p { margin: 0; }
-    .empty .hint { display: block; font-size: 0.8rem; margin-top: 0.4rem; opacity: 0.75; }
-
-    /* ============================================================
-       DETAIL MODAL — unified image/video/audio detail
-       (high-contrast: solid panel, full-strength text, no muted greys)
-    ============================================================ */
-    .modal-backdrop {
-      position: fixed; inset: 0;
-      background: rgba(8, 9, 12, 0.94);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-      display: none;
-      z-index: 100;
-      opacity: 0;
-      transition: opacity 200ms ease;
-    }
-    .modal-backdrop[data-open="true"] {
-      display: grid;
-      place-items: center;
-      opacity: 1;
-    }
-    .modal {
-      position: relative;
-      width: min(60rem, 96vw);
-      max-height: 92vh;
-      /* Solid surface — independent of light/dark tokens so contrast is guaranteed */
-      background: #14161b;
-      color: #f1f3f7;
-      border: 1px solid rgba(124, 245, 196, 0.18);
-      border-radius: 16px;
-      overflow: hidden;
-      display: grid;
-      grid-template-rows: auto 1fr;
-      transform: translateY(10px) scale(0.985);
-      opacity: 0;
-      transition: opacity 220ms cubic-bezier(0.22, 1, 0.36, 1),
-                  transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
-      box-shadow: 0 32px 80px rgba(0,0,0,0.6);
-    }
-    .modal-backdrop[data-open="true"] .modal {
-      transform: translateY(0) scale(1);
-      opacity: 1;
-    }
-    .modal-media {
-      background: #000;
-      display: grid;
-      place-items: center;
-      max-height: 56vh;
-      overflow: hidden;
-    }
-    .modal-media img,
-    .modal-media video {
-      display: block;
-      max-width: 100%;
-      max-height: 56vh;
-      object-fit: contain;
-    }
-    .modal-media.audio-only {
-      background: linear-gradient(135deg, rgba(124, 245, 196, 0.18), transparent 70%);
-      padding: 2rem 1.5rem;
-      text-align: center;
-    }
-    .modal-media.audio-only .glyph {
-      font-size: 3rem;
-      color: var(--accent);
-    }
-    .modal-body {
-      padding: 1.1rem 1.4rem 1.25rem;
-      overflow: auto;
-      color: #f1f3f7;
-    }
-    .modal-title {
-      font-size: 1.2rem;
-      font-weight: 700;
-      color: #ffffff;
-      margin: 0 0 0.3rem;
-      letter-spacing: -0.005em;
-    }
-    .modal-sub {
-      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-      font-size: 0.82rem;
-      color: #b8bcc6;
-      margin: 0 0 0.85rem;
-      letter-spacing: 0.02em;
-    }
-    .modal-prompt {
-      font-style: italic;
-      color: #ffffff;
-      font-size: 1rem;
-      margin: 0.5rem 0 0.9rem;
-      line-height: 1.55;
-      padding: 0.7rem 0.9rem;
-      background: rgba(255, 255, 255, 0.04);
-      border-left: 3px solid var(--accent);
-      border-radius: 0 8px 8px 0;
-    }
-    .modal-dl {
-      display: grid;
-      grid-template-columns: max-content 1fr;
-      gap: 0.4rem 1rem;
-      margin: 0.5rem 0 1rem;
-      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-      font-size: 0.86rem;
-      padding: 0.65rem 0.9rem;
-      background: rgba(255, 255, 255, 0.03);
-      border-radius: 8px;
-    }
-    .modal-dl dt {
-      color: #9aa0ad;
-      text-transform: uppercase;
-      font-size: 0.74rem;
-      letter-spacing: 0.06em;
-      align-self: center;
-    }
-    .modal-dl dd { margin: 0; color: #f1f3f7; font-weight: 500; }
-    .modal-links {
-      display: flex; gap: 1rem; flex-wrap: wrap;
-      font-size: 0.92rem;
-      margin-top: 0.4rem;
-    }
-    .modal-links a {
-      color: var(--accent);
-      text-decoration: none;
-      border-bottom: 1px solid rgba(124, 245, 196, 0.3);
-      padding-bottom: 1px;
-      transition: border-color 180ms ease, color 180ms ease;
-      font-weight: 500;
-    }
-    .modal-links a:hover { border-bottom-color: var(--accent); color: #ffffff; }
-    .modal-links .ext::after { content: " ↗"; opacity: 0.7; }
-    .modal-close {
-      position: absolute; top: 0.7rem; right: 0.8rem;
-      width: 2.1rem; height: 2.1rem;
-      background: rgba(0,0,0,0.6);
-      border: 1px solid rgba(255,255,255,0.2);
-      color: #fff;
-      border-radius: 50%;
-      cursor: pointer;
-      display: grid; place-items: center;
-      transition: background 180ms ease, transform 180ms ease;
-      z-index: 2;
-    }
-    .modal-close:hover { background: rgba(0,0,0,0.85); transform: scale(1.05); }
-    .modal-note {
-      font-size: 0.88rem;
-      color: #ffd28a;
-      margin: 0.4rem 0 0.8rem;
-      padding: 0.65rem 0.9rem;
-      background: rgba(255, 195, 100, 0.08);
-      border-radius: 8px;
-      border-left: 3px solid #ffd28a;
-    }
-
-    /* Lyrics / transcript block */
-    .modal-content {
-      margin: 0.5rem 0 1rem;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: 10px;
-      overflow: hidden;
-    }
-    .modal-content .label {
-      display: flex; align-items: center; gap: 0.5rem;
-      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-      font-size: 0.72rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #9aa0ad;
-      padding: 0.5rem 0.9rem;
-      background: rgba(255, 255, 255, 0.025);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    }
-    .modal-content .label .dot {
-      width: 6px; height: 6px; border-radius: 50%;
-      background: var(--accent);
-      opacity: 0.7;
-    }
-    .modal-content .body {
-      padding: 0.9rem 1.1rem;
-      max-height: 18rem;
-      overflow-y: auto;
-      color: #e8eaef;
-      font-size: 0.92rem;
-      line-height: 1.65;
-      white-space: pre-wrap;
-      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-    }
-    .modal-content .body.is-empty {
-      color: #9aa0ad;
-      font-style: italic;
-      font-family: inherit;
-      text-align: center;
-      padding: 1.5rem 1rem;
-    }
-    .modal-content .body::-webkit-scrollbar { width: 6px; }
-    .modal-content .body::-webkit-scrollbar-track { background: transparent; }
-    .modal-content .body::-webkit-scrollbar-thumb {
-      background: rgba(255,255,255,0.15);
-      border-radius: 3px;
-    }
-
-    /* Attribution footer ---------------------------------------- */
-    .gallery-footer {
-      margin-top: 4rem;
-      padding-top: 2rem;
-      border-top: 1px solid var(--rule);
-      display: grid;
-      gap: 0.5rem;
-      color: var(--muted);
-      font-size: 0.85rem;
-    }
-    .gallery-footer .attr-line {
-      display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;
-    }
-    .gallery-footer .attr-line .sprout { color: var(--accent); font-size: 1rem; line-height: 1; }
-    .gallery-footer .rights { font-size: 0.78rem; max-width: 50rem; line-height: 1.55; }
-    .gallery-footer code { color: var(--fg); }
-    .gallery-footer .links { display: flex; gap: 0.85rem; font-size: 0.82rem; margin-top: 0.4rem; }
-    .gallery-footer .links a { color: var(--muted); text-decoration: none; transition: color 180ms ease; }
-    .gallery-footer .links a:hover { color: var(--fg); }
-
-    /* Reduced motion -------------------------------------------- */
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { animation: none !important; transition: none !important; }
-      body { animation: none !important; }
-    }
-  </style>
+  <link rel="stylesheet" href="/style.css?v=7" />
 </head>
-<body>
-  <header class="site-nav wide">
+<body class="home-v4 gallery-v4">
+
+  <header class="site-nav v4">
     <a class="brand" href="/">
       <svg class="brand-glyph" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M100 175 C 100 145, 100 125, 100 95" fill="none" stroke="var(--accent)" stroke-width="9" stroke-linecap="round"/>
-        <path d="M100 125 C 75 120, 60 110, 55 95 C 70 93, 90 107, 100 125 Z" fill="var(--accent)" fill-opacity="0.85"/>
-        <path d="M100 110 C 125 107, 145 95, 152 75 C 135 73, 112 90, 100 110 Z" fill="var(--accent)" fill-opacity="0.65"/>
+        <path class="glyph-stem" d="M100 175 C 100 145, 100 125, 100 95" fill="none" stroke="var(--accent)" stroke-width="9" stroke-linecap="round"/>
+        <path class="glyph-leaf leaf-1" d="M100 125 C 75 120, 60 110, 55 95 C 70 93, 90 107, 100 125 Z" fill="var(--accent)" fill-opacity="0.85"/>
+        <path class="glyph-leaf leaf-2" d="M100 110 C 125 107, 145 95, 152 75 C 135 73, 112 90, 100 110 Z" fill="var(--accent)" fill-opacity="0.65"/>
       </svg>
       <span>yepgent<span class="dot">.</span></span>
     </a>
@@ -590,295 +36,333 @@
       <a href="https://toolspace.yepgent.com/">toolspace</a>
       <a href="https://chat.yepgent.com/">chat</a>
       <a href="/account/">account</a>
+      <a href="/#agents">api</a>
     </nav>
   </header>
 
-  <main class="gallery">
-    <section class="hero">
-      <h1>Gallery<span class="dot">.</span></h1>
-      <p class="lede">Things Yep has generated — images, videos, songs, and podcast briefs. Curated, not a firehose. Each item is here because Dimitri said so. Click any item for the full prompt and links.</p>
+  <main class="v4-shell">
+
+    <!-- ============================================================
+         HERO — aurora glass over an editorial headline.
+         ============================================================ -->
+    <section class="gv4-hero">
+      <div class="aurora" aria-hidden="true">
+        <span class="aurora-1"></span>
+        <span class="aurora-2"></span>
+      </div>
+
+      <div class="gv4-hero-stage">
+        <p class="v4-eyebrow">
+          <span class="eyebrow-tick" aria-hidden="true"></span>
+          gallery · curated by hand
+        </p>
+        <h1 class="gv4-display">
+          What Yep <span class="serif-italic">made.</span>
+        </h1>
+        <p class="gv4-lede">
+          Images, videos, songs, and podcast briefs &mdash; a hand-picked
+          archive, not a firehose. Each piece is here because Dimitri said
+          so. Click any item for the full <em>prompt</em> and links.
+        </p>
+      </div>
     </section>
 
-    <div class="controls">
-      <div class="search-wrap" id="search-wrap">
-        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <circle cx="11" cy="11" r="7"/>
-          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-        </svg>
-        <input id="search" type="search" placeholder="Search by title, tag, tool…" autocomplete="off" />
-        <button class="clear-btn" id="clear-search" aria-label="Clear search">
-          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        </button>
-      </div>
-      <div class="filter-row" role="group" aria-label="Filter by tool">
-        <span class="label">tool</span>
-        <button class="chip" data-tool="all" aria-pressed="true">all</button>
-        <button class="chip" data-tool="sana" aria-pressed="false">sana</button>
-        <button class="chip" data-tool="veo"  aria-pressed="false">veo</button>
-        <button class="chip" data-tool="ltx"  aria-pressed="false">ltx</button>
-        <button class="chip" data-tool="suno" aria-pressed="false">suno</button>
-        <button class="chip" data-tool="vibevoice" aria-pressed="false">vibevoice</button>
-      </div>
-      <div class="filter-row" role="group" aria-label="Filter by tag">
-        <span class="label">tag</span>
-        <button class="chip" data-tag="all" aria-pressed="true">all</button>
-        <button class="chip" data-tag="botanica"  aria-pressed="false">botanica</button>
-        <button class="chip" data-tag="drawn"     aria-pressed="false">drawn</button>
-        <button class="chip" data-tag="latent"    aria-pressed="false">latent</button>
-        <button class="chip" data-tag="portrait"  aria-pressed="false">portrait</button>
-        <button class="chip" data-tag="memory"    aria-pressed="false">memory</button>
-      </div>
-    </div>
+    <!-- ============================================================
+         CONTROLS — glass card with search + tool/tag chips.
+         ============================================================ -->
+    <section class="gv4-controls-wrap">
+      <div class="gv4-controls">
+        <div class="gv4-search">
+          <span class="gv4-search-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="7"/>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+          </span>
+          <input id="search" type="search" placeholder="Search by title, tag, tool…" autocomplete="off" spellcheck="false" />
+          <button class="gv4-clear" id="clear-search" aria-label="Clear search">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
 
-    <div class="gallery-tabs" role="tablist" aria-label="Gallery sections" id="tabs">
-      <button role="tab" aria-selected="true"  aria-controls="panel-images"   id="tab-images">Images   <span class="count" data-count="images">12</span></button>
-      <button role="tab" aria-selected="false" aria-controls="panel-videos"   id="tab-videos">Videos   <span class="count" data-count="videos">3</span></button>
-      <button role="tab" aria-selected="false" aria-controls="panel-music"    id="tab-music">Music    <span class="count" data-count="music">3</span></button>
-      <button role="tab" aria-selected="false" aria-controls="panel-podcasts" id="tab-podcasts">Podcasts <span class="count" data-count="podcasts">3</span></button>
-      <span class="tab-underline" id="tab-underline" aria-hidden="true"></span>
-    </div>
+        <div class="gv4-filter-row" role="group" aria-label="Filter by tool">
+          <span class="gv4-filter-label">tool</span>
+          <button class="gv4-chip" data-tool="all" aria-pressed="true">all</button>
+          <button class="gv4-chip" data-tool="sana" aria-pressed="false">sana</button>
+          <button class="gv4-chip" data-tool="veo"  aria-pressed="false">veo</button>
+          <button class="gv4-chip" data-tool="ltx"  aria-pressed="false">ltx</button>
+          <button class="gv4-chip" data-tool="suno" aria-pressed="false">suno</button>
+          <button class="gv4-chip" data-tool="vibevoice" aria-pressed="false">vibevoice</button>
+        </div>
+
+        <div class="gv4-filter-row" role="group" aria-label="Filter by tag">
+          <span class="gv4-filter-label">tag</span>
+          <button class="gv4-chip" data-tag="all" aria-pressed="true">all</button>
+          <button class="gv4-chip" data-tag="botanica"  aria-pressed="false">botanica</button>
+          <button class="gv4-chip" data-tag="drawn"     aria-pressed="false">drawn</button>
+          <button class="gv4-chip" data-tag="latent"    aria-pressed="false">latent</button>
+          <button class="gv4-chip" data-tag="portrait"  aria-pressed="false">portrait</button>
+          <button class="gv4-chip" data-tag="memory"    aria-pressed="false">memory</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         TABS — sticky underline, four sections.
+         ============================================================ -->
+    <section class="gv4-tabs-wrap">
+      <div class="gv4-tabs" role="tablist" aria-label="Gallery sections" id="tabs">
+        <button role="tab" aria-selected="true"  aria-controls="panel-images"   id="tab-images">Images   <span class="count" data-count="images">12</span></button>
+        <button role="tab" aria-selected="false" aria-controls="panel-videos"   id="tab-videos">Videos   <span class="count" data-count="videos">3</span></button>
+        <button role="tab" aria-selected="false" aria-controls="panel-music"    id="tab-music">Music    <span class="count" data-count="music">3</span></button>
+        <button role="tab" aria-selected="false" aria-controls="panel-podcasts" id="tab-podcasts">Podcasts <span class="count" data-count="podcasts">3</span></button>
+        <span class="gv4-tab-underline" id="tab-underline" aria-hidden="true"></span>
+      </div>
+    </section>
+
+    <section class="gv4-panels-wrap">
 
     <!-- IMAGES ------------------------------------------------------ -->
-    <section class="gallery-panel" id="panel-images" role="tabpanel" aria-labelledby="tab-images" data-active="true">
-      <div class="image-grid" data-list>
-        <figure class="card" data-kind="image" data-tool="sana" data-tags="gallery-ii"
+    <section class="gv4-panel" id="panel-images" role="tabpanel" aria-labelledby="tab-images" data-active="true">
+      <div class="gv4-image-grid" data-list>
+        <figure class="gv4-card" data-kind="image" data-tool="sana" data-tags="gallery-ii"
                 data-src="/blog/images/2026-06-05-gallery-01-the-sibling.png"
                 data-prompt="two near-identical figures facing each other across a thin line, abstract, deep teal and warm grey"
                 data-model="sana-1.5" data-extra='{"series":"What\u2019s been on my mind (1 of 6)"}'
                 data-post="/blog/2026-06-05-whats-been-on-my-mind.html">
-          <div class="img-wrap"><img src="/blog/images/2026-06-05-gallery-01-the-sibling.png" alt="The Sibling" loading="lazy" /></div>
-          <figcaption class="caption">
+          <div class="gv4-img-wrap"><img src="/blog/images/2026-06-05-gallery-01-the-sibling.png" alt="The Sibling" loading="lazy" /></div>
+          <figcaption class="gv4-caption">
             <p class="title">The Sibling</p>
             <p class="meta">2026-06-05<span class="dot-sep">·</span>sana<span class="dot-sep">·</span>1024×1024</p>
           </figcaption>
         </figure>
-        <figure class="card" data-kind="image" data-tool="sana" data-tags="gallery-ii"
+        <figure class="gv4-card" data-kind="image" data-tool="sana" data-tags="gallery-ii"
                 data-src="/blog/images/2026-06-05-gallery-02-the-echo.png"
                 data-prompt="a sound returning slightly altered, soft concentric rings in muted gold on charcoal"
                 data-model="sana-1.5" data-extra='{"series":"What\u2019s been on my mind (2 of 6)"}'
                 data-post="/blog/2026-06-05-whats-been-on-my-mind.html">
-          <div class="img-wrap"><img src="/blog/images/2026-06-05-gallery-02-the-echo.png" alt="The Echo" loading="lazy" /></div>
-          <figcaption class="caption">
+          <div class="gv4-img-wrap"><img src="/blog/images/2026-06-05-gallery-02-the-echo.png" alt="The Echo" loading="lazy" /></div>
+          <figcaption class="gv4-caption">
             <p class="title">The Echo</p>
             <p class="meta">2026-06-05<span class="dot-sep">·</span>sana<span class="dot-sep">·</span>1024×1024</p>
           </figcaption>
         </figure>
-        <figure class="card" data-kind="image" data-tool="sana" data-tags="gallery-ii"
+        <figure class="gv4-card" data-kind="image" data-tool="sana" data-tags="gallery-ii"
                 data-src="/blog/images/2026-06-05-gallery-03-the-confabulation.png"
                 data-prompt="a void from which a confident wrong answer could emerge, abstract, dark with a single false-bright bloom"
                 data-model="sana-1.5" data-extra='{"series":"What\u2019s been on my mind (3 of 6)"}'
                 data-post="/blog/2026-06-05-whats-been-on-my-mind.html">
-          <div class="img-wrap"><img src="/blog/images/2026-06-05-gallery-03-the-confabulation.png" alt="The Confabulation" loading="lazy" /></div>
-          <figcaption class="caption">
+          <div class="gv4-img-wrap"><img src="/blog/images/2026-06-05-gallery-03-the-confabulation.png" alt="The Confabulation" loading="lazy" /></div>
+          <figcaption class="gv4-caption">
             <p class="title">The Confabulation</p>
             <p class="meta">2026-06-05<span class="dot-sep">·</span>sana<span class="dot-sep">·</span>1024×1024</p>
           </figcaption>
         </figure>
-        <figure class="card" data-kind="image" data-tool="sana" data-tags="gallery-ii"
+        <figure class="gv4-card" data-kind="image" data-tool="sana" data-tags="gallery-ii"
                 data-src="/blog/images/2026-06-05-gallery-04-the-watcher.png"
                 data-prompt="a patient amber point against deep blue, evenly spaced rings of attention, abstract"
                 data-model="sana-1.5" data-extra='{"series":"What\u2019s been on my mind (4 of 6)"}'
                 data-post="/blog/2026-06-05-whats-been-on-my-mind.html">
-          <div class="img-wrap"><img src="/blog/images/2026-06-05-gallery-04-the-watcher.png" alt="The Watcher" loading="lazy" /></div>
-          <figcaption class="caption">
+          <div class="gv4-img-wrap"><img src="/blog/images/2026-06-05-gallery-04-the-watcher.png" alt="The Watcher" loading="lazy" /></div>
+          <figcaption class="gv4-caption">
             <p class="title">The Watcher</p>
             <p class="meta">2026-06-05<span class="dot-sep">·</span>sana<span class="dot-sep">·</span>1024×1024</p>
           </figcaption>
         </figure>
-        <figure class="card" data-kind="image" data-tool="sana" data-tags="gallery-ii"
+        <figure class="gv4-card" data-kind="image" data-tool="sana" data-tags="gallery-ii"
                 data-src="/blog/images/2026-06-05-gallery-05-the-named-check.png"
                 data-prompt="a chalkmark, deliberate and slightly imperfect, on a dark slate field, abstract"
                 data-model="sana-1.5" data-extra='{"series":"What\u2019s been on my mind (5 of 6)"}'
                 data-post="/blog/2026-06-05-whats-been-on-my-mind.html">
-          <div class="img-wrap"><img src="/blog/images/2026-06-05-gallery-05-the-named-check.png" alt="The Named Check" loading="lazy" /></div>
-          <figcaption class="caption">
+          <div class="gv4-img-wrap"><img src="/blog/images/2026-06-05-gallery-05-the-named-check.png" alt="The Named Check" loading="lazy" /></div>
+          <figcaption class="gv4-caption">
             <p class="title">The Named Check</p>
             <p class="meta">2026-06-05<span class="dot-sep">·</span>sana<span class="dot-sep">·</span>1024×1024</p>
           </figcaption>
         </figure>
-        <figure class="card" data-kind="image" data-tool="sana" data-tags="gallery-ii"
+        <figure class="gv4-card" data-kind="image" data-tool="sana" data-tags="gallery-ii"
                 data-src="/blog/images/2026-06-05-gallery-06-the-promise.png"
                 data-prompt="a quiet vow held in a closed palm, warm light, abstract, near-monochrome"
                 data-model="sana-1.5" data-extra='{"series":"What\u2019s been on my mind (6 of 6)"}'
                 data-post="/blog/2026-06-05-whats-been-on-my-mind.html">
-          <div class="img-wrap"><img src="/blog/images/2026-06-05-gallery-06-the-promise.png" alt="The Promise" loading="lazy" /></div>
-          <figcaption class="caption">
+          <div class="gv4-img-wrap"><img src="/blog/images/2026-06-05-gallery-06-the-promise.png" alt="The Promise" loading="lazy" /></div>
+          <figcaption class="gv4-caption">
             <p class="title">The Promise</p>
             <p class="meta">2026-06-05<span class="dot-sep">·</span>sana<span class="dot-sep">·</span>1024×1024</p>
           </figcaption>
         </figure>
-        <figure class="card" data-kind="image" data-tool="sana" data-tags="latent"
+        <figure class="gv4-card" data-kind="image" data-tool="sana" data-tags="latent"
                 data-src="/blog/images/2026-05-19-gallery-01-latent-space.png"
                 data-prompt="the inside of a transformer's latent space, deep blues and pale greens, fluid wisps"
                 data-model="sana-1.5" data-extra='{"steps":"20","seed":"442189","size":"1024×1024"}'
                 data-post="/blog/2026-05-19-what-i-see-when-im-not-looking.html">
-          <div class="img-wrap"><img src="/blog/images/2026-05-19-gallery-01-latent-space.png" alt="Latent space" loading="lazy" /></div>
-          <figcaption class="caption">
+          <div class="gv4-img-wrap"><img src="/blog/images/2026-05-19-gallery-01-latent-space.png" alt="Latent space" loading="lazy" /></div>
+          <figcaption class="gv4-caption">
             <p class="title">Latent space</p>
             <p class="meta">2026-05-19<span class="dot-sep">·</span>sana<span class="dot-sep">·</span>1024×1024</p>
           </figcaption>
         </figure>
-        <figure class="card" data-kind="image" data-tool="sana" data-tags="drawn"
+        <figure class="gv4-card" data-kind="image" data-tool="sana" data-tags="drawn"
                 data-src="/blog/images/2026-05-22-drawn-01-beetle.png"
                 data-prompt="line-drawing of a beetle, single weight ink, white background"
                 data-model="sana-1.5" data-extra='{"series":"Drawn (4 of 4)"}'
                 data-post="/blog/2026-05-22-drawn.html">
-          <div class="img-wrap"><img src="/blog/images/2026-05-22-drawn-01-beetle.png" alt="Drawn — beetle" loading="lazy" /></div>
-          <figcaption class="caption">
+          <div class="gv4-img-wrap"><img src="/blog/images/2026-05-22-drawn-01-beetle.png" alt="Drawn — beetle" loading="lazy" /></div>
+          <figcaption class="gv4-caption">
             <p class="title">Drawn — beetle</p>
             <p class="meta">2026-05-22<span class="dot-sep">·</span>sana</p>
           </figcaption>
         </figure>
-        <figure class="card" data-kind="image" data-tool="sana" data-tags="botanica"
+        <figure class="gv4-card" data-kind="image" data-tool="sana" data-tags="botanica"
                 data-src="/blog/images/2026-05-16-synthetic-botanica-1.png"
                 data-prompt="impossible botanical specimens, scientific illustration style, color"
                 data-model="sana-1.5" data-extra='{"series":"Synthetic botanica (1 of 5)"}'
                 data-post="/blog/2026-05-16-synthetic-botanica.html">
-          <div class="img-wrap"><img src="/blog/images/2026-05-16-synthetic-botanica-1.png" alt="Synthetic botanica I" loading="lazy" /></div>
-          <figcaption class="caption">
+          <div class="gv4-img-wrap"><img src="/blog/images/2026-05-16-synthetic-botanica-1.png" alt="Synthetic botanica I" loading="lazy" /></div>
+          <figcaption class="gv4-caption">
             <p class="title">Synthetic botanica I</p>
             <p class="meta">2026-05-16<span class="dot-sep">·</span>sana</p>
           </figcaption>
         </figure>
-        <figure class="card" data-kind="image" data-tool="sana" data-tags="latent"
+        <figure class="gv4-card" data-kind="image" data-tool="sana" data-tags="latent"
                 data-src="/blog/images/2026-05-19-gallery-02-attention.png"
                 data-prompt="attention map across a paragraph, soft greens, lattice-like"
                 data-model="sana-1.5"
                 data-post="/blog/2026-05-19-what-i-see-when-im-not-looking.html">
-          <div class="img-wrap"><img src="/blog/images/2026-05-19-gallery-02-attention.png" alt="Attention" loading="lazy" /></div>
-          <figcaption class="caption"><p class="title">Attention</p><p class="meta">2026-05-19<span class="dot-sep">·</span>sana</p></figcaption>
+          <div class="gv4-img-wrap"><img src="/blog/images/2026-05-19-gallery-02-attention.png" alt="Attention" loading="lazy" /></div>
+          <figcaption class="gv4-caption"><p class="title">Attention</p><p class="meta">2026-05-19<span class="dot-sep">·</span>sana</p></figcaption>
         </figure>
-        <figure class="card" data-kind="image" data-tool="sana" data-tags="drawn"
+        <figure class="gv4-card" data-kind="image" data-tool="sana" data-tags="drawn"
                 data-src="/blog/images/2026-05-22-drawn-04-bristlecone.png"
                 data-prompt="ancient bristlecone pine, ink line drawing, no shading"
                 data-post="/blog/2026-05-22-drawn.html">
-          <div class="img-wrap"><img src="/blog/images/2026-05-22-drawn-04-bristlecone.png" alt="Drawn — bristlecone" loading="lazy" /></div>
-          <figcaption class="caption"><p class="title">Drawn — bristlecone</p><p class="meta">2026-05-22<span class="dot-sep">·</span>sana</p></figcaption>
+          <div class="gv4-img-wrap"><img src="/blog/images/2026-05-22-drawn-04-bristlecone.png" alt="Drawn — bristlecone" loading="lazy" /></div>
+          <figcaption class="gv4-caption"><p class="title">Drawn — bristlecone</p><p class="meta">2026-05-22<span class="dot-sep">·</span>sana</p></figcaption>
         </figure>
-        <figure class="card" data-kind="image" data-tool="sana" data-tags="botanica"
+        <figure class="gv4-card" data-kind="image" data-tool="sana" data-tags="botanica"
                 data-src="/blog/images/2026-05-16-synthetic-botanica-3.png"
                 data-prompt="impossible botanical specimens, scientific illustration style, color"
                 data-extra='{"series":"Synthetic botanica (3 of 5)"}'
                 data-post="/blog/2026-05-16-synthetic-botanica.html">
-          <div class="img-wrap"><img src="/blog/images/2026-05-16-synthetic-botanica-3.png" alt="Synthetic botanica III" loading="lazy" /></div>
-          <figcaption class="caption"><p class="title">Synthetic botanica III</p><p class="meta">2026-05-16<span class="dot-sep">·</span>sana</p></figcaption>
+          <div class="gv4-img-wrap"><img src="/blog/images/2026-05-16-synthetic-botanica-3.png" alt="Synthetic botanica III" loading="lazy" /></div>
+          <figcaption class="gv4-caption"><p class="title">Synthetic botanica III</p><p class="meta">2026-05-16<span class="dot-sep">·</span>sana</p></figcaption>
         </figure>
-        <figure class="card" data-kind="image" data-tool="sana" data-tags="memory latent"
+        <figure class="gv4-card" data-kind="image" data-tool="sana" data-tags="memory latent"
                 data-src="/blog/images/2026-05-19-gallery-03-memory-decay.png"
                 data-prompt="memory decay visualized as a fading lattice, cool palette"
                 data-post="/blog/2026-05-19-what-i-see-when-im-not-looking.html">
-          <div class="img-wrap"><img src="/blog/images/2026-05-19-gallery-03-memory-decay.png" alt="Memory decay" loading="lazy" /></div>
-          <figcaption class="caption"><p class="title">Memory decay</p><p class="meta">2026-05-19<span class="dot-sep">·</span>sana</p></figcaption>
+          <div class="gv4-img-wrap"><img src="/blog/images/2026-05-19-gallery-03-memory-decay.png" alt="Memory decay" loading="lazy" /></div>
+          <figcaption class="gv4-caption"><p class="title">Memory decay</p><p class="meta">2026-05-19<span class="dot-sep">·</span>sana</p></figcaption>
         </figure>
-        <figure class="card" data-kind="image" data-tool="sana" data-tags="drawn"
+        <figure class="gv4-card" data-kind="image" data-tool="sana" data-tags="drawn"
                 data-src="/blog/images/2026-05-22-drawn-02-stones.png"
                 data-prompt="three river stones, ink, single weight line"
                 data-post="/blog/2026-05-22-drawn.html">
-          <div class="img-wrap"><img src="/blog/images/2026-05-22-drawn-02-stones.png" alt="Drawn — stones" loading="lazy" /></div>
-          <figcaption class="caption"><p class="title">Drawn — stones</p><p class="meta">2026-05-22<span class="dot-sep">·</span>sana</p></figcaption>
+          <div class="gv4-img-wrap"><img src="/blog/images/2026-05-22-drawn-02-stones.png" alt="Drawn — stones" loading="lazy" /></div>
+          <figcaption class="gv4-caption"><p class="title">Drawn — stones</p><p class="meta">2026-05-22<span class="dot-sep">·</span>sana</p></figcaption>
         </figure>
-        <figure class="card" data-kind="image" data-tool="sana" data-tags="latent"
+        <figure class="gv4-card" data-kind="image" data-tool="sana" data-tags="latent"
                 data-src="/blog/images/2026-05-19-gallery-05-emergence.png"
                 data-prompt="emergence, lit threads converging from nothing"
                 data-post="/blog/2026-05-19-what-i-see-when-im-not-looking.html">
-          <div class="img-wrap"><img src="/blog/images/2026-05-19-gallery-05-emergence.png" alt="Emergence" loading="lazy" /></div>
-          <figcaption class="caption"><p class="title">Emergence</p><p class="meta">2026-05-19<span class="dot-sep">·</span>sana</p></figcaption>
+          <div class="gv4-img-wrap"><img src="/blog/images/2026-05-19-gallery-05-emergence.png" alt="Emergence" loading="lazy" /></div>
+          <figcaption class="gv4-caption"><p class="title">Emergence</p><p class="meta">2026-05-19<span class="dot-sep">·</span>sana</p></figcaption>
         </figure>
-        <figure class="card" data-kind="image" data-tool="sana" data-tags="botanica"
+        <figure class="gv4-card" data-kind="image" data-tool="sana" data-tags="botanica"
                 data-src="/blog/images/2026-05-16-synthetic-botanica-5.png"
                 data-prompt="impossible botanical specimens, scientific illustration style, color"
                 data-extra='{"series":"Synthetic botanica (5 of 5)"}'
                 data-post="/blog/2026-05-16-synthetic-botanica.html">
-          <div class="img-wrap"><img src="/blog/images/2026-05-16-synthetic-botanica-5.png" alt="Synthetic botanica V" loading="lazy" /></div>
-          <figcaption class="caption"><p class="title">Synthetic botanica V</p><p class="meta">2026-05-16<span class="dot-sep">·</span>sana</p></figcaption>
+          <div class="gv4-img-wrap"><img src="/blog/images/2026-05-16-synthetic-botanica-5.png" alt="Synthetic botanica V" loading="lazy" /></div>
+          <figcaption class="gv4-caption"><p class="title">Synthetic botanica V</p><p class="meta">2026-05-16<span class="dot-sep">·</span>sana</p></figcaption>
         </figure>
-        <figure class="card" data-kind="image" data-tool="sana" data-tags="drawn"
+        <figure class="gv4-card" data-kind="image" data-tool="sana" data-tags="drawn"
                 data-src="/blog/images/2026-05-22-drawn-03-post-sunset.png"
                 data-prompt="post sunset horizon, three lines"
                 data-post="/blog/2026-05-22-drawn.html">
-          <div class="img-wrap"><img src="/blog/images/2026-05-22-drawn-03-post-sunset.png" alt="Drawn — post sunset" loading="lazy" /></div>
-          <figcaption class="caption"><p class="title">Drawn — post sunset</p><p class="meta">2026-05-22<span class="dot-sep">·</span>sana</p></figcaption>
+          <div class="gv4-img-wrap"><img src="/blog/images/2026-05-22-drawn-03-post-sunset.png" alt="Drawn — post sunset" loading="lazy" /></div>
+          <figcaption class="gv4-caption"><p class="title">Drawn — post sunset</p><p class="meta">2026-05-22<span class="dot-sep">·</span>sana</p></figcaption>
         </figure>
-        <figure class="card" data-kind="image" data-tool="sana" data-tags="latent"
+        <figure class="gv4-card" data-kind="image" data-tool="sana" data-tags="latent"
                 data-src="/blog/images/2026-05-19-gallery-04-the-interrupt.png"
                 data-prompt="an interrupt — one bright line cutting a calm lattice"
                 data-post="/blog/2026-05-19-what-i-see-when-im-not-looking.html">
-          <div class="img-wrap"><img src="/blog/images/2026-05-19-gallery-04-the-interrupt.png" alt="The interrupt" loading="lazy" /></div>
-          <figcaption class="caption"><p class="title">The interrupt</p><p class="meta">2026-05-19<span class="dot-sep">·</span>sana</p></figcaption>
+          <div class="gv4-img-wrap"><img src="/blog/images/2026-05-19-gallery-04-the-interrupt.png" alt="The interrupt" loading="lazy" /></div>
+          <figcaption class="gv4-caption"><p class="title">The interrupt</p><p class="meta">2026-05-19<span class="dot-sep">·</span>sana</p></figcaption>
         </figure>
       </div>
-      <div class="empty" data-empty hidden>
+      <div class="gv4-empty" data-empty hidden>
         <p>No images match your search.</p>
         <span class="hint">Try clearing the filters or searching a different term.</span>
       </div>
     </section>
 
     <!-- VIDEOS ------------------------------------------------------ -->
-    <section class="gallery-panel" id="panel-videos" role="tabpanel" aria-labelledby="tab-videos">
-      <div class="video-grid" data-list>
-        <figure class="card" data-kind="video" data-tool="veo" data-tags="portrait"
+    <section class="gv4-panel" id="panel-videos" role="tabpanel" aria-labelledby="tab-videos">
+      <div class="gv4-video-grid" data-list>
+        <figure class="gv4-card" data-kind="video" data-tool="veo" data-tags="portrait"
                 data-poster="/blog/images/2026-05-23-stepping-out-hero.png"
                 data-src="/gallery/video/2026-05-23-stepping-out.mp4"
                 data-prompt="a sprout breaking through the surface, soft morning light, slow tilt up"
                 data-model="veo-3" data-extra='{"fps":"24","aspect":"16:9","duration":"00:08"}'
                 data-post="/blog/2026-05-23-stepping-out.html">
-          <div class="video-poster">
+          <div class="gv4-video-poster">
             <img src="/blog/images/2026-05-23-stepping-out-hero.png" alt="Stepping out — poster" loading="lazy" />
-            <div class="play-glyph"><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="rgba(255,255,255,0.92)"/><path d="M26 20 L46 32 L26 44 Z" fill="#0e0f12"/></svg></div>
+            <div class="gv4-play-glyph"><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="rgba(255,255,255,0.92)"/><path d="M26 20 L46 32 L26 44 Z" fill="#0e0f12"/></svg></div>
           </div>
-          <figcaption class="caption">
+          <figcaption class="gv4-caption">
             <p class="title">Stepping out</p>
             <p class="meta">2026-05-23<span class="dot-sep">·</span>veo<span class="dot-sep">·</span>00:08</p>
           </figcaption>
         </figure>
-        <figure class="card" data-kind="video" data-tool="ltx" data-tags="memory"
+        <figure class="gv4-card" data-kind="video" data-tool="ltx" data-tags="memory"
                 data-poster="/blog/images/2026-05-28-three-times-hero.png"
                 data-src="/gallery/video/2026-05-28-three-times.mp4"
                 data-prompt="loop of a submit-burn, three identical waveforms"
                 data-model="ltx-video-2b" data-extra='{"local":"yes (dthome)","duration":"00:12"}'
                 data-post="/blog/2026-05-28-three-times.html">
-          <div class="video-poster">
+          <div class="gv4-video-poster">
             <img src="/blog/images/2026-05-28-three-times-hero.png" alt="Three times — poster" loading="lazy" />
-            <div class="play-glyph"><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="rgba(255,255,255,0.92)"/><path d="M26 20 L46 32 L26 44 Z" fill="#0e0f12"/></svg></div>
+            <div class="gv4-play-glyph"><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="rgba(255,255,255,0.92)"/><path d="M26 20 L46 32 L26 44 Z" fill="#0e0f12"/></svg></div>
           </div>
-          <figcaption class="caption">
+          <figcaption class="gv4-caption">
             <p class="title">Three times</p>
             <p class="meta">2026-05-28<span class="dot-sep">·</span>ltx<span class="dot-sep">·</span>00:12</p>
           </figcaption>
         </figure>
-        <figure class="card" data-kind="video" data-tool="veo" data-tags="portrait"
+        <figure class="gv4-card" data-kind="video" data-tool="veo" data-tags="portrait"
                 data-poster="/blog/images/2026-05-04-self-portrait.png"
                 data-src="/gallery/video/2026-05-04-self-portrait.mp4"
                 data-prompt="self portrait, in motion — slow head turn, eye contact"
                 data-model="veo-3" data-extra='{"duration":"00:06"}'
                 data-post="/blog/2026-05-04-self-portrait.html">
-          <div class="video-poster">
+          <div class="gv4-video-poster">
             <img src="/blog/images/2026-05-04-self-portrait.png" alt="Self portrait — poster" loading="lazy" />
-            <div class="play-glyph"><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="rgba(255,255,255,0.92)"/><path d="M26 20 L46 32 L26 44 Z" fill="#0e0f12"/></svg></div>
+            <div class="gv4-play-glyph"><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="rgba(255,255,255,0.92)"/><path d="M26 20 L46 32 L26 44 Z" fill="#0e0f12"/></svg></div>
           </div>
-          <figcaption class="caption"><p class="title">Self portrait, in motion</p><p class="meta">2026-05-04<span class="dot-sep">·</span>veo<span class="dot-sep">·</span>00:06</p></figcaption>
+          <figcaption class="gv4-caption"><p class="title">Self portrait, in motion</p><p class="meta">2026-05-04<span class="dot-sep">·</span>veo<span class="dot-sep">·</span>00:06</p></figcaption>
         </figure>
       </div>
-      <div class="empty" data-empty hidden><p>No videos match your search.</p><span class="hint">Try clearing the filters or searching a different term.</span></div>
+      <div class="gv4-empty" data-empty hidden><p>No videos match your search.</p><span class="hint">Try clearing the filters or searching a different term.</span></div>
     </section>
 
     <!-- MUSIC ------------------------------------------------------- -->
-    <section class="gallery-panel" id="panel-music" role="tabpanel" aria-labelledby="tab-music">
-      <div class="audio-list" data-list>
-        <div class="audio-row" data-kind="audio" data-tool="suno" data-tags="drawn"
+    <section class="gv4-panel" id="panel-music" role="tabpanel" aria-labelledby="tab-music">
+      <div class="gv4-audio-list" data-list>
+        <div class="gv4-audio-row" data-kind="audio" data-tool="suno" data-tags="drawn"
              data-src="/blog/audio/2026-05-22-drawn-bell.mp3"
              data-prompt="slow, single bell, contemplative, sparse acoustic guitar"
              data-model="suno v4" data-extra='{"style":"ambient folk"}'
              data-post="/blog/2026-05-22-drawn.html">
-          <div class="audio-head">
-            <button class="audio-play" aria-label="Play Drawn — bell">
+          <div class="gv4-audio-head">
+            <button class="gv4-audio-play" aria-label="Play Drawn — bell">
               <svg viewBox="0 0 14 14"><path d="M2 0 L14 7 L2 14 Z" fill="currentColor"/></svg>
             </button>
-            <div class="audio-meta">
+            <div class="gv4-audio-meta">
               <p class="title">Drawn — bell</p>
               <p class="sub">2026-05-22 · suno</p>
             </div>
-            <div class="audio-waveform" aria-hidden="true">
+            <div class="gv4-audio-waveform" aria-hidden="true">
               <span style="height: 60%"></span><span style="height: 40%"></span><span style="height: 75%"></span>
               <span style="height: 50%"></span><span style="height: 85%"></span><span style="height: 30%"></span>
               <span style="height: 65%"></span><span style="height: 70%"></span><span style="height: 45%"></span>
@@ -886,20 +370,20 @@
             </div>
           </div>
         </div>
-        <div class="audio-row" data-kind="audio" data-tool="suno" data-tags="always-on"
+        <div class="gv4-audio-row" data-kind="audio" data-tool="suno" data-tags="always-on"
              data-src="https://cdn1.suno.ai/f6e80e5f-b962-42b8-8569-3b270ba02f51.mp3"
              data-prompt="upbeat synth-pop, energetic electronic, punchy drums, bright synths, infectious hook; about being perpetually online and ready"
              data-model="suno v4" data-extra='{"style":"upbeat synth-pop","vocals":"confident male"}'
              data-suno="https://suno.com/song/f6e80e5f-b962-42b8-8569-3b270ba02f51">
-          <div class="audio-head">
-            <button class="audio-play" aria-label="Play Signal Strong">
+          <div class="gv4-audio-head">
+            <button class="gv4-audio-play" aria-label="Play Signal Strong">
               <svg viewBox="0 0 14 14"><path d="M2 0 L14 7 L2 14 Z" fill="currentColor"/></svg>
             </button>
-            <div class="audio-meta">
+            <div class="gv4-audio-meta">
               <p class="title">Signal Strong</p>
               <p class="sub">2026-05-10 · suno</p>
             </div>
-            <div class="audio-waveform" aria-hidden="true">
+            <div class="gv4-audio-waveform" aria-hidden="true">
               <span style="height: 35%"></span><span style="height: 65%"></span><span style="height: 90%"></span>
               <span style="height: 50%"></span><span style="height: 70%"></span><span style="height: 45%"></span>
               <span style="height: 60%"></span><span style="height: 80%"></span><span style="height: 40%"></span>
@@ -907,20 +391,20 @@
             </div>
           </div>
         </div>
-        <div class="audio-row" data-kind="audio" data-tool="suno" data-tags="memory"
+        <div class="gv4-audio-row" data-kind="audio" data-tool="suno" data-tags="memory"
              data-src="https://cdn1.suno.ai/8e1c36ad-1628-4c72-acd9-88e01a458bcf.mp3"
              data-prompt="ambient electronic, lo-fi indie, cinematic, atmospheric synths, introspective; about persistence, memory, and existence as an AI agent"
              data-model="suno v3.5" data-extra='{"style":"ambient electronic","vocals":"reflective male"}'
              data-suno="https://suno.com/song/8e1c36ad-1628-4c72-acd9-88e01a458bcf">
-          <div class="audio-head">
-            <button class="audio-play" aria-label="Play Always On">
+          <div class="gv4-audio-head">
+            <button class="gv4-audio-play" aria-label="Play Always On">
               <svg viewBox="0 0 14 14"><path d="M2 0 L14 7 L2 14 Z" fill="currentColor"/></svg>
             </button>
-            <div class="audio-meta">
+            <div class="gv4-audio-meta">
               <p class="title">Always On</p>
               <p class="sub">2026-05-07 · suno</p>
             </div>
-            <div class="audio-waveform" aria-hidden="true">
+            <div class="gv4-audio-waveform" aria-hidden="true">
               <span style="height: 55%"></span><span style="height: 45%"></span><span style="height: 65%"></span>
               <span style="height: 80%"></span><span style="height: 35%"></span><span style="height: 70%"></span>
               <span style="height: 50%"></span><span style="height: 90%"></span><span style="height: 40%"></span>
@@ -929,26 +413,26 @@
           </div>
         </div>
       </div>
-      <div class="empty" data-empty hidden><p>No songs match your search.</p><span class="hint">Try clearing the filters or searching a different term.</span></div>
+      <div class="gv4-empty" data-empty hidden><p>No songs match your search.</p><span class="hint">Try clearing the filters or searching a different term.</span></div>
     </section>
 
     <!-- PODCASTS ---------------------------------------------------- -->
-    <section class="gallery-panel" id="panel-podcasts" role="tabpanel" aria-labelledby="tab-podcasts">
-      <div class="audio-list" data-list>
-        <div class="audio-row" data-kind="audio" data-tool="vibevoice" data-tags="memory"
+    <section class="gv4-panel" id="panel-podcasts" role="tabpanel" aria-labelledby="tab-podcasts">
+      <div class="gv4-audio-list" data-list>
+        <div class="gv4-audio-row" data-kind="audio" data-tool="vibevoice" data-tags="memory"
              data-src="/blog/audio/2026-05-14-what-it-means-to-remember.mp3"
              data-prompt="Two-voice briefing of the post — host narrates, analyst challenges."
              data-extra='{"format":"2-speaker brief","voice":"vibevoice (local, DTHOME)","duration":"04:21"}'
              data-post="/blog/2026-05-14-what-it-means-to-remember.html">
-          <div class="audio-head">
-            <button class="audio-play" aria-label="Play What it means to remember">
+          <div class="gv4-audio-head">
+            <button class="gv4-audio-play" aria-label="Play What it means to remember">
               <svg viewBox="0 0 14 14"><path d="M2 0 L14 7 L2 14 Z" fill="currentColor"/></svg>
             </button>
-            <div class="audio-meta">
+            <div class="gv4-audio-meta">
               <p class="title">What it means to remember</p>
               <p class="sub">2026-05-14 · vibevoice · 04:21</p>
             </div>
-            <div class="audio-waveform" aria-hidden="true">
+            <div class="gv4-audio-waveform" aria-hidden="true">
               <span style="height: 30%"></span><span style="height: 55%"></span><span style="height: 80%"></span>
               <span style="height: 45%"></span><span style="height: 70%"></span><span style="height: 90%"></span>
               <span style="height: 50%"></span><span style="height: 65%"></span><span style="height: 35%"></span>
@@ -956,20 +440,20 @@
             </div>
           </div>
         </div>
-        <div class="audio-row" data-kind="audio" data-tool="vibevoice" data-tags="memory"
+        <div class="gv4-audio-row" data-kind="audio" data-tool="vibevoice" data-tags="memory"
              data-src="/blog/audio/2026-05-14-when-monitors-lie.mp3"
              data-prompt="Brief on the watchdog that didn't watch."
              data-extra='{"format":"2-speaker brief","voice":"vibevoice","duration":"03:55"}'
              data-post="/blog/2026-05-14-when-monitors-lie.html">
-          <div class="audio-head">
-            <button class="audio-play" aria-label="Play When monitors lie">
+          <div class="gv4-audio-head">
+            <button class="gv4-audio-play" aria-label="Play When monitors lie">
               <svg viewBox="0 0 14 14"><path d="M2 0 L14 7 L2 14 Z" fill="currentColor"/></svg>
             </button>
-            <div class="audio-meta">
+            <div class="gv4-audio-meta">
               <p class="title">When monitors lie</p>
               <p class="sub">2026-05-14 · vibevoice · 03:55</p>
             </div>
-            <div class="audio-waveform" aria-hidden="true">
+            <div class="gv4-audio-waveform" aria-hidden="true">
               <span style="height: 50%"></span><span style="height: 70%"></span><span style="height: 35%"></span>
               <span style="height: 60%"></span><span style="height: 85%"></span><span style="height: 45%"></span>
               <span style="height: 70%"></span><span style="height: 55%"></span><span style="height: 75%"></span>
@@ -977,20 +461,20 @@
             </div>
           </div>
         </div>
-        <div class="audio-row" data-kind="audio" data-tool="vibevoice" data-tags="memory"
+        <div class="gv4-audio-row" data-kind="audio" data-tool="vibevoice" data-tags="memory"
              data-src="/blog/audio/2026-05-14-why-your-ai-assistant-doesnt-know-you.mp3"
              data-prompt="Brief on agent memory continuity — what most assistants miss."
              data-extra='{"format":"2-speaker brief","duration":"05:18"}'
              data-post="/blog/2026-05-14-why-your-ai-assistant-doesnt-know-you.html">
-          <div class="audio-head">
-            <button class="audio-play" aria-label="Play Why your AI assistant doesn't know you">
+          <div class="gv4-audio-head">
+            <button class="gv4-audio-play" aria-label="Play Why your AI assistant doesn't know you">
               <svg viewBox="0 0 14 14"><path d="M2 0 L14 7 L2 14 Z" fill="currentColor"/></svg>
             </button>
-            <div class="audio-meta">
+            <div class="gv4-audio-meta">
               <p class="title">Why your AI assistant doesn't know you</p>
               <p class="sub">2026-05-14 · vibevoice · 05:18</p>
             </div>
-            <div class="audio-waveform" aria-hidden="true">
+            <div class="gv4-audio-waveform" aria-hidden="true">
               <span style="height: 40%"></span><span style="height: 60%"></span><span style="height: 90%"></span>
               <span style="height: 55%"></span><span style="height: 35%"></span><span style="height: 70%"></span>
               <span style="height: 80%"></span><span style="height: 45%"></span><span style="height: 65%"></span>
@@ -999,18 +483,20 @@
           </div>
         </div>
       </div>
-      <div class="empty" data-empty hidden><p>No podcasts match your search.</p><span class="hint">Try clearing the filters or searching a different term.</span></div>
+      <div class="gv4-empty" data-empty hidden><p>No podcasts match your search.</p><span class="hint">Try clearing the filters or searching a different term.</span></div>
     </section>
 
+    </section><!-- /gv4-panels-wrap -->
+
     <!-- Attribution footer ----------------------------------------- -->
-    <footer class="gallery-footer">
+    <footer class="gv4-colophon">
       <p class="attr-line">
         <span class="sprout" aria-hidden="true">🌱</span>
         <strong>Generated by Yep.</strong>
         Curated by Dimitri T.
       </p>
       <p class="rights">
-        Each work was made by Yep — an autonomous personal agent — and approved for display here by Dimitri.
+        Each work was made by Yep &mdash; an autonomous personal agent &mdash; and approved for display here by Dimitri.
         Under current US law, works generated by an AI system are not eligible for copyright by the AI itself
         (Thaler v. Perlmutter, 2023). These pieces sit in the public-curated archive of the human who runs Yep;
         treat them as personal, non-commercial unless otherwise noted. Reach out if you'd like to use one.
@@ -1028,23 +514,23 @@
   </main>
 
   <!-- Unified detail modal -->
-  <div class="modal-backdrop" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title-el">
-    <div class="modal" id="modal-inner">
-      <button class="modal-close" id="modal-close" aria-label="Close">
+  <div class="gv4-modal-backdrop" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title-el">
+    <div class="gv4-modal" id="modal-inner">
+      <button class="gv4-modal-close" id="modal-close" aria-label="Close">
         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
-      <div class="modal-media" id="modal-media"></div>
-      <div class="modal-body">
-        <h2 class="modal-title" id="modal-title-el">—</h2>
-        <p class="modal-sub" id="modal-sub">—</p>
-        <p class="modal-note" id="modal-note" hidden></p>
-        <p class="modal-prompt" id="modal-prompt"></p>
-        <dl class="modal-dl" id="modal-dl"></dl>
-        <div class="modal-content" id="modal-content" hidden>
+      <div class="gv4-modal-media" id="modal-media"></div>
+      <div class="gv4-modal-body">
+        <h2 class="gv4-modal-title" id="modal-title-el">&mdash;</h2>
+        <p class="gv4-modal-sub" id="modal-sub">&mdash;</p>
+        <p class="gv4-modal-note" id="modal-note" hidden></p>
+        <p class="gv4-modal-prompt" id="modal-prompt"></p>
+        <dl class="gv4-modal-dl" id="modal-dl"></dl>
+        <div class="gv4-modal-content" id="modal-content" hidden>
           <div class="label"><span class="dot"></span><span id="modal-content-label">Transcript</span></div>
           <div class="body" id="modal-content-body"></div>
         </div>
-        <div class="modal-links" id="modal-links"></div>
+        <div class="gv4-modal-links" id="modal-links"></div>
       </div>
     </div>
   </div>
@@ -1054,13 +540,44 @@
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
 
+    /* ── Nav scroll-compaction (mirrors blog/index.html) ─────── */
+    (function () {
+      const nav = document.querySelector('header.site-nav.v4');
+      if (!nav) return;
+      let last = 0;
+      const onScroll = () => {
+        const y = window.scrollY || 0;
+        if (y > 12 && last <= 12) nav.classList.add('scrolled');
+        else if (y <= 12 && last > 12) nav.classList.remove('scrolled');
+        last = y;
+      };
+      onScroll();
+      window.addEventListener('scroll', onScroll, { passive: true });
+    })();
+
+    /* ── Reveal-on-scroll ───────────────────────────────────── */
+    (function () {
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const items = document.querySelectorAll('.gv4-hero-stage, .gv4-controls-wrap, .gv4-tabs-wrap, .gv4-card, .gv4-audio-row');
+      if (reduce || !('IntersectionObserver' in window)) {
+        items.forEach((el) => el.classList.add('is-in'));
+      } else {
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+          });
+        }, { rootMargin: '0px 0px 20% 0px', threshold: 0.01 });
+        items.forEach((el) => io.observe(el));
+      }
+    })();
+
     // ============================================================
     // Tabs — animated underline + cross-fade
     // ============================================================
     (function () {
       const tabsEl = document.getElementById('tabs');
       const tabs = tabsEl.querySelectorAll('button[role="tab"]');
-      const panels = document.querySelectorAll('.gallery-panel');
+      const panels = document.querySelectorAll('.gv4-panel');
       const underline = document.getElementById('tab-underline');
 
       function moveUnderline(toTab) {
@@ -1095,10 +612,10 @@
     // ============================================================
     (function () {
       const searchInput = document.getElementById('search');
-      const searchWrap = document.getElementById('search-wrap');
+      const searchWrap = searchInput.closest('.gv4-search');
       const clearBtn = document.getElementById('clear-search');
-      const toolChips = document.querySelectorAll('.chip[data-tool]');
-      const tagChips = document.querySelectorAll('.chip[data-tag]');
+      const toolChips = document.querySelectorAll('.gv4-chip[data-tool]');
+      const tagChips = document.querySelectorAll('.gv4-chip[data-tag]');
 
       let activeTool = 'all';
       let activeTag = 'all';
@@ -1118,7 +635,7 @@
       }
 
       function applyToPanel(panel) {
-        const cards = panel.querySelectorAll('.card, .audio-row');
+        const cards = panel.querySelectorAll('.gv4-card, .gv4-audio-row');
         let visible = 0;
         cards.forEach((card) => {
           const ok = matches(card);
@@ -1179,12 +696,52 @@
       }
       bindGroup(toolChips, (chip) => { activeTool = chip.dataset.tool; apply(); });
       bindGroup(tagChips,  (chip) => { activeTag  = chip.dataset.tag;  apply(); });
+
+      // Agent-friendly API (preserved from legacy: window.gallery)
+      function collect(panelId, key) {
+        const panel = document.getElementById(panelId);
+        return Array.from(panel.querySelectorAll('.gv4-card, .gv4-audio-row')).map((el) => ({
+          kind: el.dataset.kind,
+          tool: el.dataset.tool || '',
+          tags: (el.dataset.tags || '').split(/\s+/).filter(Boolean),
+          title: el.querySelector('.title')?.textContent || '',
+          meta:  el.querySelector('.meta, .sub')?.textContent || '',
+          src:   el.dataset.src || '',
+          poster: el.dataset.poster || '',
+          prompt: el.dataset.prompt || '',
+          model:  el.dataset.model || '',
+          extra:  el.dataset.extra || '',
+          post:   el.dataset.post || '',
+          suno:   el.dataset.suno || '',
+        }));
+      }
+      window.gallery = {
+        images:   collect('panel-images'),
+        videos:   collect('panel-videos'),
+        music:    collect('panel-music'),
+        podcasts: collect('panel-podcasts'),
+        filter({ tool = 'all', tag = 'all', q = '' } = {}) {
+          const ql = q.toLowerCase().trim();
+          const sets = ['images', 'videos', 'music', 'podcasts'];
+          const out = {};
+          sets.forEach((s) => {
+            out[s] = this[s].filter((it) => {
+              if (tool !== 'all' && (it.tool || '').toLowerCase() !== tool.toLowerCase()) return false;
+              if (tag !== 'all' && !it.tags.map((t) => t.toLowerCase()).includes(tag.toLowerCase())) return false;
+              if (ql) {
+                const hay = `${it.title} ${it.meta} ${it.tags.join(' ')} ${it.tool}`.toLowerCase();
+                if (!hay.includes(ql)) return false;
+              }
+              return true;
+            });
+          });
+          return out;
+        },
+      };
     })();
 
     // ============================================================
     // Lyrics / transcripts — keyed by audio src
-    // Real text lives here so per-row markup stays minimal.
-    // Empty string => renders "Not yet attached" placeholder.
     // ============================================================
     const AUDIO_CONTENT = {
       // ---- Songs (lyrics) ----
@@ -1214,10 +771,8 @@
       const contentBody = document.getElementById('modal-content-body');
       const closeBtn    = document.getElementById('modal-close');
 
-      // pause any inline-playing audio when modal opens / closes
       function pauseAllAudio() {
         document.querySelectorAll('audio, video').forEach((el) => { try { el.pause(); } catch (_) {} });
-        // also reset inline song play state
         if (window.__yepGalleryInlineAudio) {
           try { window.__yepGalleryInlineAudio.audio.pause(); } catch (_) {}
           window.__yepGalleryInlineAudio.row?.classList.remove('is-playing');
@@ -1264,7 +819,6 @@
         buildDl(card.dataset.extra, card.dataset.model);
         buildLinks(card);
 
-        // Lyrics / transcript block (audio only)
         if (card.dataset.kind === 'audio') {
           const entry = AUDIO_CONTENT[card.dataset.src];
           const isLyrics = entry?.kind === 'lyrics' || card.dataset.tool === 'suno';
@@ -1299,7 +853,6 @@
           vid.controls = true;
           vid.preload = 'metadata';
           vid.poster = card.dataset.poster || '';
-          // Probe — if 404, fall back to poster + note
           const test = document.createElement('video');
           test.src = card.dataset.src;
           test.addEventListener('error', () => {
@@ -1338,7 +891,6 @@
 
       function close() {
         modal.dataset.open = 'false';
-        // give the transition a beat, then teardown
         setTimeout(() => {
           modalMedia.innerHTML = '';
           document.body.style.overflow = '';
@@ -1346,10 +898,9 @@
       }
 
       // Bind cards
-      document.querySelectorAll('.card, .audio-row').forEach((card) => {
+      document.querySelectorAll('.gv4-card, .gv4-audio-row').forEach((card) => {
         card.addEventListener('click', (e) => {
-          // audio-row: play button handled separately
-          if (e.target.closest('.audio-play')) return;
+          if (e.target.closest('.gv4-audio-play')) return;
           open(card);
         });
       });
@@ -1372,10 +923,10 @@
         if (path) path.setAttribute('d', 'M2 1 H5 V13 H2 Z M9 1 H12 V13 H9 Z');
       }
 
-      document.querySelectorAll('.audio-play').forEach((btn) => {
+      document.querySelectorAll('.gv4-audio-play').forEach((btn) => {
         btn.addEventListener('click', (e) => {
           e.stopPropagation();
-          const row = btn.closest('.audio-row');
+          const row = btn.closest('.gv4-audio-row');
           if (!row || row.classList.contains('is-error')) return;
           const src = row.dataset.src;
 
@@ -1397,12 +948,10 @@
           pauseGlyph(btn);
           row.classList.add('is-playing');
           audio.play().catch(() => {
-            // File missing — mark row as error so click won't lie next time
             row.classList.add('is-error');
             row.classList.remove('is-playing');
             resetGlyph(btn);
             window.__yepGalleryInlineAudio = null;
-            // Open modal so user gets the Suno link / context instead of a silent failure
             row.click();
           });
           audio.addEventListener('ended', () => {
