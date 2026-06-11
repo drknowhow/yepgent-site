@@ -7065,3 +7065,66 @@ html.motion-off body.home-v4 .v4-subscribe,
 html.motion-off body.home-v4 .v4-privacy,
 html.motion-off body.home-v4 .v4-colophon,
 html.motion-off body.home-v4 .cap-card { opacity: 1 !important; transform: none !important; }
+
+/* =================================================================
+   v4.1 MOTION LAYER — Three.js canvas + GSAP takeover.
+   Scoped to body.home-v4. All of it is progressive enhancement:
+   without /js/v4-motion.js none of these rules change the baseline.
+   ================================================================= */
+
+/* Fixed WebGL "memory field" behind the page. Sits above the body's
+   fixed gradient glow (z -10) and below all content. Starts invisible
+   and fades in only once the scene has rendered a frame (.is-live),
+   so a failed CDN/WebGL init costs nothing visually. */
+body.home-v4 .v4-webgl {
+  position: fixed;
+  inset: 0;
+  z-index: -5;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1200ms var(--ease);
+  /* Calm the field behind the content column: full strength only at the
+     viewport margins so copy and CTAs keep their contrast. */
+  -webkit-mask-image: linear-gradient(to right, #000, rgba(0, 0, 0, 0.45) 22%, rgba(0, 0, 0, 0.45) 78%, #000);
+  mask-image: linear-gradient(to right, #000, rgba(0, 0, 0, 0.45) 22%, rgba(0, 0, 0, 0.45) 78%, #000);
+}
+body.home-v4 .v4-webgl.is-live { opacity: 0.65; }
+@media (prefers-color-scheme: light) {
+  body.home-v4 .v4-webgl.is-live { opacity: 0.5; }
+}
+@media (prefers-reduced-motion: reduce) {
+  body.home-v4 .v4-webgl { display: none; }
+}
+
+/* Hero pre-hide for the GSAP intro. html.v4-motion is added inline in
+   <head> (motion-OK users only) and removed the moment GSAP boots.
+   The delayed keyframe is the failsafe: if the module never lands
+   (CDN down, old browser), the hero fades itself in after 1.8s.
+   The [class*="v4-hero"] rule covers the subpage heroes (nv4-, gv4-,
+   av4-, …) whose non-aurora children get the generic GSAP intro. */
+html.v4-motion body.home-v4 .v4-announce,
+html.v4-motion body.home-v4 .v4-hero-stage > *,
+html.v4-motion body.home-v4 [class*="v4-hero"] > :not(.aurora) {
+  opacity: 0;
+  animation: v4-failsafe 600ms var(--ease) 1.8s forwards;
+}
+@keyframes v4-failsafe { to { opacity: 1; } }
+
+/* Once GSAP owns motion (body.gsap-on), neutralize the CSS reveal
+   transitions and the marquee keyframes. GSAP writes inline styles
+   every frame; a live CSS transition on the same properties would
+   lag each update, and the IO .is-in toggles must become no-ops. */
+body.home-v4.gsap-on .v4-cap,
+body.home-v4.gsap-on .v4-diptych,
+body.home-v4.gsap-on .v4-api,
+body.home-v4.gsap-on .v4-subscribe,
+body.home-v4.gsap-on .v4-privacy,
+body.home-v4.gsap-on .v4-colophon,
+body.home-v4.gsap-on .cap-card {
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+body.home-v4.gsap-on .mq-track { animation: none; }

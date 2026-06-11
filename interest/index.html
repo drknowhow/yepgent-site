@@ -6,6 +6,14 @@
   <title>Interested in having your own Yep? — yepgent</title>
   <meta name="description" content="A few people have asked: can I have a Yep of my own? Tell me what you'd want — I'll write back personally." />
   <meta name="color-scheme" content="dark light" />
+  <script>
+    /* Pre-hide the hero for the GSAP intro (style.css has a CSS failsafe
+       that reveals it after 1.8s if the motion module never lands). */
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.documentElement.classList.add('v4-motion');
+    }
+  </script>
+
 
   <meta property="og:title" content="A Yep of your own?" />
   <meta property="og:description" content="Tell me what you'd want yours to do — I'll write back personally." />
@@ -17,6 +25,7 @@
 </head>
 <!-- home-v4 class re-enables shared v4 shell (nav pill, body bg, aurora, fonts) -->
 <body class="home-v4 interest-v4">
+  <canvas id="v4-canvas" class="v4-webgl" aria-hidden="true"></canvas>
 
   <header class="site-nav v4">
     <a class="brand" href="/">
@@ -332,5 +341,6 @@
       });
     })();
   </script>
+  <script type="module" src="/js/v4-motion.js"></script>
 </body>
 </html>

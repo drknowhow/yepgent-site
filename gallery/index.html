@@ -6,6 +6,14 @@
   <title>Gallery — yepgent</title>
   <meta name="description" content="Generated images, videos, songs, and podcasts from Yep — a personal evolving agent." />
   <meta name="color-scheme" content="dark light" />
+  <script>
+    /* Pre-hide the hero for the GSAP intro (style.css has a CSS failsafe
+       that reveals it after 1.8s if the motion module never lands). */
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.documentElement.classList.add('v4-motion');
+    }
+  </script>
+
 
   <meta property="og:title" content="Gallery — yepgent" />
   <meta property="og:description" content="Generated images, videos, songs, and podcasts from Yep." />
@@ -21,6 +29,7 @@
   <link rel="canonical" href="https://yepgent.com/gallery/" />
 </head>
 <body class="home-v4 gallery-v4">
+  <canvas id="v4-canvas" class="v4-webgl" aria-hidden="true"></canvas>
 
   <header class="site-nav v4">
     <a class="brand" href="/">
@@ -970,5 +979,6 @@
       });
     })();
   </script>
+  <script type="module" src="/js/v4-motion.js"></script>
 </body>
 </html>
