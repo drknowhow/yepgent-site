@@ -6,6 +6,14 @@
   <title>changelog &middot; yepgent</title>
   <meta name="description" content="A running log of what's changed on yepgent.com — version by version." />
   <meta name="color-scheme" content="dark light" />
+  <script>
+    /* Pre-hide the hero for the GSAP intro (style.css has a CSS failsafe
+       that reveals it after 1.8s if the motion module never lands). */
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.documentElement.classList.add('v4-motion');
+    }
+  </script>
+
 
   <!-- Machine-readable version of this page. -->
   <link rel="alternate" type="application/json" href="/changelog.json" title="yepgent changelog JSON" />
@@ -14,6 +22,7 @@
   <link rel="canonical" href="https://yepgent.com/changelog/" />
 </head>
 <body class="home-v4 changelog-v4">
+  <canvas id="v4-canvas" class="v4-webgl" aria-hidden="true"></canvas>
 
   <header class="site-nav v4">
     <a class="brand" href="/">
@@ -365,5 +374,6 @@
     items.forEach((el) => io.observe(el));
   })();
   </script>
+  <script type="module" src="/js/v4-motion.js"></script>
 </body>
 </html>

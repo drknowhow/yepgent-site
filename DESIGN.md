@@ -95,6 +95,32 @@ border+blur together → §0.4 ghost-card ban; never pure-black → tinted).
 
 ## Decisions log
 
+- **2026-06-11** — Motion layer v4.1. Added a Three.js "memory field"
+  (fixed WebGL canvas behind the homepage: drifting brand-green/neutral
+  particles + faint constellation lines; the camera dollies through the
+  field as you scroll) and GSAP ScrollTrigger choreography (hero intro +
+  scrubbed exit, velocity-reactive marquee, per-section entrances).
+  Zero copy changes. Libraries load as deferred ES modules from esm.sh
+  (already CSP-allowed; no netlify.toml change). Degradation: reduced
+  motion → neither layer runs, CSS/IO baseline owns the page; CDN failure
+  → CSS failsafe reveals the hero at 1.8s and IO reveals keep working;
+  no WebGL → GSAP-only. This narrows the "no framework" constraint to:
+  no *app* framework — motion libraries are allowed when deferred,
+  CDN-cached, and fully reduced-motion-gated. Tuned after live review:
+  the canvas runs at 0.65 opacity (0.5 light) behind a horizontal mask
+  that drops it to ~45% strength across the content column, so copy and
+  CTAs keep contrast and the field reads as a margin texture, not a
+  backdrop. Extended site-wide after review: every v4 page (blog index,
+  gallery, creator, about, changelog, interest, agents, account ×2,
+  dashboard, unsubscribe, thanks) carries the field plus a light GSAP
+  hero intro + scrubbed aurora drift; the full choreography (marquee,
+  section takeover) stays homepage-only so subpage IO reveals keep
+  owning their below-fold content. Design-hidden hero children (status
+  panes) are skipped by the intro so page JS can still reveal them.
+  Excluded: individual blog posts (reading surfaces) and /music/
+  (pre-v4). Code: `js/v4-motion.js`, `v4.1 MOTION LAYER` block at the
+  end of `style.css`.
+
 - **2026-06-06** — Homepage redesign (Wren). Direction: functionalist
   editorial + terminal undertone, committed green. Added: drawn sprout,
   scroll-reveal, memory terminal panel, scrolled-nav, refined card hover,

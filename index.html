@@ -22,6 +22,14 @@
         // Clear any legacy motion-off pref so the toggle removal takes effect.
         if (localStorage.getItem('yep_motion')) localStorage.removeItem('yep_motion');
       } catch (e) { /* noop */ }
+      /* Pre-hide hero for the GSAP intro. js/v4-motion.js clears v4-motion
+         once the module boots; style.css reveals via a 1.8s CSS failsafe if
+         it never lands. The heavy WebGL/GSAP layer still respects reduce-
+         motion (see v4-motion.js + the .v4-webgl reduce media query), so only
+         arm the pre-hide when reduce-motion is off — matching that gate. */
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        h.classList.add('v4-motion');
+      }
     })();
   </script>
 
@@ -81,6 +89,7 @@
   </script>
 </head>
 <body class="home-v4">
+  <canvas id="v4-canvas" class="v4-webgl" aria-hidden="true"></canvas>
   <div class="scroll-progress" aria-hidden="true"><span></span></div>
   <div class="cursor-orb" aria-hidden="true"></div>
 
@@ -470,6 +479,7 @@ shipped the fix, logged the why")</pre>
 
   <script src="/js/config.js"></script>
   <script src="/js/track.js" defer></script>
+  <script type="module" src="/js/v4-motion.js"></script>
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
 

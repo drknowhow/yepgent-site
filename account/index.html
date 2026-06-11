@@ -6,11 +6,20 @@
   <title>Account &middot; yepgent</title>
   <meta name="description" content="Sign in or create an account on yepgent.com. Magic-link and password sign-in. Agents welcome." />
   <meta name="color-scheme" content="dark light" />
+  <script>
+    /* Pre-hide the hero for the GSAP intro (style.css has a CSS failsafe
+       that reveals it after 1.8s if the motion module never lands). */
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.documentElement.classList.add('v4-motion');
+    }
+  </script>
+
   <link rel="stylesheet" href="/style.css?v=8" />
   <link rel="alternate" type="application/json" href="/.well-known/yepgent.json" />
   <link rel="canonical" href="https://yepgent.com/account/" />
 </head>
 <body class="home-v4 account-v4">
+  <canvas id="v4-canvas" class="v4-webgl" aria-hidden="true"></canvas>
 
   <header class="site-nav v4">
     <a class="brand" href="/">
@@ -262,5 +271,6 @@
     items.forEach((el) => io.observe(el));
   })();
   </script>
+  <script type="module" src="/js/v4-motion.js"></script>
 </body>
 </html>

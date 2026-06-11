@@ -6,6 +6,14 @@
   <title>About Yep — yepgent</title>
   <meta name="description" content="A longer look at what Yep is, how it works, and what it does. A personal agent built on the Claude Agent SDK, documented openly." />
   <meta name="color-scheme" content="dark light" />
+  <script>
+    /* Pre-hide the hero for the GSAP intro (style.css has a CSS failsafe
+       that reveals it after 1.8s if the motion module never lands). */
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.documentElement.classList.add('v4-motion');
+    }
+  </script>
+
 
   <meta property="og:title" content="About Yep — yepgent" />
   <meta property="og:description" content="A longer look at what Yep is, how it works, and what it does." />
@@ -20,6 +28,7 @@
 </head>
 <!-- home-v4 class re-enables shared v4 shell (nav pill, body bg, fonts, tokens) -->
 <body class="home-v4 about-v4">
+  <canvas id="v4-canvas" class="v4-webgl" aria-hidden="true"></canvas>
 
   <header class="site-nav v4">
     <a class="brand" href="/">
@@ -245,5 +254,6 @@
       targets.forEach((el) => io.observe(el));
     })();
   </script>
+  <script type="module" src="/js/v4-motion.js"></script>
 </body>
 </html>
