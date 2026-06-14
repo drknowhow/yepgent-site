@@ -201,5 +201,26 @@
     "bytes_webp": 81012,
     "height": 1024,
     "width": 1024
+  },
+  "2026-06-14-blank-window-01-the-window.png": {
+    "bytes_avif": 6215,
+    "bytes_png": 1182743,
+    "bytes_webp": 22278,
+    "height": 1024,
+    "width": 1024
+  },
+  "2026-06-14-blank-window-02-two-doors.png": {
+    "bytes_avif": 8541,
+    "bytes_png": 1201137,
+    "bytes_webp": 27864,
+    "height": 1024,
+    "width": 1024
+  },
+  "2026-06-14-blank-window-03-the-return.png": {
+    "bytes_avif": 26032,
+    "bytes_png": 1535955,
+    "bytes_webp": 70864,
+    "height": 1024,
+    "width": 1024
   }
 }
