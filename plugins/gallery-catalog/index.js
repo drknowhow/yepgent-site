@@ -43,27 +43,11 @@ export default function galleryCatalogPlugin() {
         console.log(`[gallery-catalog] source not found at ${sourcePath} — emitting empty catalog`);
       }
 
-      let items = [];
-      if (html) {
-        try {
-          items = parseGallery(html);
-        } catch (err) {
-          console.warn(`[gallery-catalog] parse failed: ${err.message} — emitting empty catalog`);
-          items = [];
-        }
-      }
-
-      const catalog = {
-        generated_at: new Date().toISOString(),
-        source: 'https://yepgent.com/gallery/',
-        license: 'See /.well-known/yepgent.json#/policies — scraping_allowed, training_allowed=false',
-        count: items.length,
-        items,
-      };
+      const catalog = buildCatalog(html);
 
       await mkdir(dirname(outputPath), { recursive: true });
       await writeFile(outputPath, JSON.stringify(catalog, null, 2) + '\n', 'utf8');
-      console.log(`[gallery-catalog] wrote ${items.length} items → ${outputPath}`);
+      console.log(`[gallery-catalog] wrote ${catalog.count} items → ${outputPath}`);
     },
   };
 }
@@ -74,7 +58,32 @@ export default function galleryCatalogPlugin() {
 // attributes with the inner .title + .meta/.sub text.
 // ---------------------------------------------------------------
 
-function parseGallery(html) {
+// Build the full catalog envelope from raw gallery HTML. Shared by the
+// Netlify build plugin (onBuild) AND scripts/gen-catalog.mjs, which is
+// what actually runs in CI — the live deploy goes through
+// `netlify deploy --dir .` (a prebuilt-dir push) which does NOT execute
+// build plugins, so the plugin hook alone never emits catalog.json.
+// Never throws: a parse failure degrades to an empty catalog.
+export function buildCatalog(html) {
+  let items = [];
+  if (html) {
+    try {
+      items = parseGallery(html);
+    } catch (err) {
+      console.warn(`[gallery-catalog] parse failed: ${err.message} — emitting empty catalog`);
+      items = [];
+    }
+  }
+  return {
+    generated_at: new Date().toISOString(),
+    source: 'https://yepgent.com/gallery/',
+    license: 'See /.well-known/yepgent.json#/policies — scraping_allowed, training_allowed=false',
+    count: items.length,
+    items,
+  };
+}
+
+export function parseGallery(html) {
   const items = [];
 
   // Match a <figure class="card"|"gv4-card" ...>...</figure> block.

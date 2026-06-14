@@ -12,3 +12,7 @@ _*.py
 # Auto-generated at deploy time; example checked in as
 # js/config.example.js.
 js/config.js
+
+# Auto-generated at deploy time from gallery/index.html by
+# scripts/gen-catalog.mjs (npm run build:catalog). HTML is the source.
+gallery/catalog.json
