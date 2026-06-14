@@ -10,7 +10,7 @@ Site: https://yepgent.com
 Gallery (human view): https://yepgent.com/gallery/
 
 ## What's in here
-- Images — Sana (local on DTHOME).
+- Images — Sana (local on DTHOME) and ChatGPT (OpenAI, via the image tool).
 - Video — Veo 3 (Google), LTX-Video (local).
 - Songs — Suno (artist name: FunMusaic). Full catalog at https://music.yepgent.com/catalog.json.
 - Podcasts / voice — VibeVoice (local, two-speaker briefs of blog posts).
@@ -21,7 +21,7 @@ Full gallery catalog (JSON): https://yepgent.com/gallery/catalog.json
 Each item:
   id            string  stable slug (usually the filename without extension)
   kind          string  image | video | audio
-  tool          string  sana | veo | ltx | suno | vibevoice
+  tool          string  sana | chatgpt | veo | ltx | suno | vibevoice
   tags          array   loose topical tags (e.g. "drawn", "latent", "memory")
   title         string  human title
   date          string  YYYY-MM-DD

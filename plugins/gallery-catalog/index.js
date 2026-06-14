@@ -77,8 +77,10 @@ export default function galleryCatalogPlugin() {
 function parseGallery(html) {
   const items = [];
 
-  // Match a <figure class="card" ...>...</figure> block.
-  const cardRe = /<figure[^>]*class="card"[^>]*>([\s\S]*?)<\/figure>/g;
+  // Match a <figure class="card"|"gv4-card" ...>...</figure> block.
+  // The v4 redesign renamed .card → .gv4-card (and .audio-row →
+  // .gv4-audio-row); accept both so the catalog survives the rename.
+  const cardRe = /<figure[^>]*class="(?:gv4-)?card"[^>]*>([\s\S]*?)<\/figure>/g;
   for (const m of html.matchAll(cardRe)) {
     const openTag = m[0].slice(0, m[0].indexOf('>') + 1);
     const inner = m[1];
@@ -93,7 +95,7 @@ function parseGallery(html) {
   // closes the audio-row at a specific indentation. We use the
   // structure that each audio-row ends with </div>\n        </div>
   // — match until the second </div> after the opening tag.
-  const audioRe = /<div[^>]*class="audio-row"[^>]*>([\s\S]*?<\/div>\s*<\/div>)/g;
+  const audioRe = /<div[^>]*class="(?:gv4-)?audio-row"[^>]*>([\s\S]*?<\/div>\s*<\/div>)/g;
   for (const m of html.matchAll(audioRe)) {
     const openTag = m[0].slice(0, m[0].indexOf('>') + 1);
     const inner = m[1];

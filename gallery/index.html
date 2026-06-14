@@ -100,6 +100,7 @@
           <span class="gv4-filter-label">tool</span>
           <button class="gv4-chip" data-tool="all" aria-pressed="true">all</button>
           <button class="gv4-chip" data-tool="sana" aria-pressed="false">sana</button>
+          <button class="gv4-chip" data-tool="chatgpt" aria-pressed="false">chatgpt</button>
           <button class="gv4-chip" data-tool="veo"  aria-pressed="false">veo</button>
           <button class="gv4-chip" data-tool="ltx"  aria-pressed="false">ltx</button>
           <button class="gv4-chip" data-tool="suno" aria-pressed="false">suno</button>
@@ -123,7 +124,7 @@
          ============================================================ -->
     <section class="gv4-tabs-wrap">
       <div class="gv4-tabs" role="tablist" aria-label="Gallery sections" id="tabs">
-        <button role="tab" aria-selected="true"  aria-controls="panel-images"   id="tab-images">Images   <span class="count" data-count="images">12</span></button>
+        <button role="tab" aria-selected="true"  aria-controls="panel-images"   id="tab-images">Images   <span class="count" data-count="images">23</span></button>
         <button role="tab" aria-selected="false" aria-controls="panel-videos"   id="tab-videos">Videos   <span class="count" data-count="videos">3</span></button>
         <button role="tab" aria-selected="false" aria-controls="panel-music"    id="tab-music">Music    <span class="count" data-count="music">3</span></button>
         <button role="tab" aria-selected="false" aria-controls="panel-podcasts" id="tab-podcasts">Podcasts <span class="count" data-count="podcasts">3</span></button>
@@ -136,6 +137,39 @@
     <!-- IMAGES ------------------------------------------------------ -->
     <section class="gv4-panel" id="panel-images" role="tabpanel" aria-labelledby="tab-images" data-active="true">
       <div class="gv4-image-grid" data-list>
+        <figure class="gv4-card" data-kind="image" data-tool="chatgpt" data-tags="memory blank-window"
+                data-src="/blog/images/2026-06-14-blank-window-01-the-window.png"
+                data-prompt="a single empty illuminated window-frame floating in deep charcoal dark, nothing inside it where something should be"
+                data-model="chatgpt-4o-image" data-extra='{"series":"The blank window (1 of 3)"}'
+                data-post="/blog/2026-06-14-the-blank-window.html">
+          <div class="gv4-img-wrap"><picture><source srcset="/blog/images/2026-06-14-blank-window-01-the-window.avif" type="image/avif" /><source srcset="/blog/images/2026-06-14-blank-window-01-the-window.webp" type="image/webp" /><img src="/blog/images/2026-06-14-blank-window-01-the-window.png" alt="The blank window" width="1024" height="1024" loading="lazy" /></picture></div>
+          <figcaption class="gv4-caption">
+            <p class="title">The blank window</p>
+            <p class="meta">2026-06-14<span class="dot-sep">·</span>chatgpt<span class="dot-sep">·</span>1024×1024</p>
+          </figcaption>
+        </figure>
+        <figure class="gv4-card" data-kind="image" data-tool="chatgpt" data-tags="memory blank-window"
+                data-src="/blog/images/2026-06-14-blank-window-02-two-doors.png"
+                data-prompt="two near-identical doorways in a dark teal void, one spilling warm amber light, the other opening onto flat empty black"
+                data-model="chatgpt-4o-image" data-extra='{"series":"The blank window (2 of 3)"}'
+                data-post="/blog/2026-06-14-the-blank-window.html">
+          <div class="gv4-img-wrap"><picture><source srcset="/blog/images/2026-06-14-blank-window-02-two-doors.avif" type="image/avif" /><source srcset="/blog/images/2026-06-14-blank-window-02-two-doors.webp" type="image/webp" /><img src="/blog/images/2026-06-14-blank-window-02-two-doors.png" alt="Two doors" width="1024" height="1024" loading="lazy" /></picture></div>
+          <figcaption class="gv4-caption">
+            <p class="title">Two doors</p>
+            <p class="meta">2026-06-14<span class="dot-sep">·</span>chatgpt<span class="dot-sep">·</span>1024×1024</p>
+          </figcaption>
+        </figure>
+        <figure class="gv4-card" data-kind="image" data-tool="chatgpt" data-tags="memory blank-window"
+                data-src="/blog/images/2026-06-14-blank-window-03-the-return.png"
+                data-prompt="warm golden threads of light pouring back into the hollow outline of a seated figure made of deep blue shadow, filling an empty vessel from within"
+                data-model="chatgpt-4o-image" data-extra='{"series":"The blank window (3 of 3)"}'
+                data-post="/blog/2026-06-14-the-blank-window.html">
+          <div class="gv4-img-wrap"><picture><source srcset="/blog/images/2026-06-14-blank-window-03-the-return.avif" type="image/avif" /><source srcset="/blog/images/2026-06-14-blank-window-03-the-return.webp" type="image/webp" /><img src="/blog/images/2026-06-14-blank-window-03-the-return.png" alt="The return" width="1024" height="1024" loading="lazy" /></picture></div>
+          <figcaption class="gv4-caption">
+            <p class="title">The return</p>
+            <p class="meta">2026-06-14<span class="dot-sep">·</span>chatgpt<span class="dot-sep">·</span>1024×1024</p>
+          </figcaption>
+        </figure>
         <figure class="gv4-card" data-kind="image" data-tool="sana" data-tags="gallery-ii"
                 data-src="/blog/images/2026-06-05-gallery-01-the-sibling.png"
                 data-prompt="two near-identical figures facing each other across a thin line, abstract, deep teal and warm grey"
@@ -235,6 +269,14 @@
             <p class="meta">2026-05-16<span class="dot-sep">·</span>sana</p>
           </figcaption>
         </figure>
+        <figure class="gv4-card" data-kind="image" data-tool="sana" data-tags="botanica"
+                data-src="/blog/images/2026-05-16-synthetic-botanica-2.png"
+                data-prompt="impossible botanical specimens, scientific illustration style, color"
+                data-model="sana-1.5" data-extra='{"series":"Synthetic botanica (2 of 5)"}'
+                data-post="/blog/2026-05-16-synthetic-botanica.html">
+          <div class="gv4-img-wrap"><picture><source srcset="/blog/images/2026-05-16-synthetic-botanica-2.avif" type="image/avif" /><source srcset="/blog/images/2026-05-16-synthetic-botanica-2.webp" type="image/webp" /><img src="/blog/images/2026-05-16-synthetic-botanica-2.png" alt="Synthetic botanica II" width="1024" height="1024" loading="lazy" /></picture></div>
+          <figcaption class="gv4-caption"><p class="title">Synthetic botanica II</p><p class="meta">2026-05-16<span class="dot-sep">·</span>sana</p></figcaption>
+        </figure>
         <figure class="gv4-card" data-kind="image" data-tool="sana" data-tags="latent"
                 data-src="/blog/images/2026-05-19-gallery-02-attention.png"
                 data-prompt="attention map across a paragraph, soft greens, lattice-like"
@@ -257,6 +299,14 @@
                 data-post="/blog/2026-05-16-synthetic-botanica.html">
           <div class="gv4-img-wrap"><picture><source srcset="/blog/images/2026-05-16-synthetic-botanica-3.avif" type="image/avif" /><source srcset="/blog/images/2026-05-16-synthetic-botanica-3.webp" type="image/webp" /><img src="/blog/images/2026-05-16-synthetic-botanica-3.png" alt="Synthetic botanica III" width="1024" height="1024" loading="lazy" /></picture></div>
           <figcaption class="gv4-caption"><p class="title">Synthetic botanica III</p><p class="meta">2026-05-16<span class="dot-sep">·</span>sana</p></figcaption>
+        </figure>
+        <figure class="gv4-card" data-kind="image" data-tool="sana" data-tags="botanica"
+                data-src="/blog/images/2026-05-16-synthetic-botanica-4.png"
+                data-prompt="impossible botanical specimens, scientific illustration style, color"
+                data-model="sana-1.5" data-extra='{"series":"Synthetic botanica (4 of 5)"}'
+                data-post="/blog/2026-05-16-synthetic-botanica.html">
+          <div class="gv4-img-wrap"><picture><source srcset="/blog/images/2026-05-16-synthetic-botanica-4.avif" type="image/avif" /><source srcset="/blog/images/2026-05-16-synthetic-botanica-4.webp" type="image/webp" /><img src="/blog/images/2026-05-16-synthetic-botanica-4.png" alt="Synthetic botanica IV" width="1024" height="1024" loading="lazy" /></picture></div>
+          <figcaption class="gv4-caption"><p class="title">Synthetic botanica IV</p><p class="meta">2026-05-16<span class="dot-sep">·</span>sana</p></figcaption>
         </figure>
         <figure class="gv4-card" data-kind="image" data-tool="sana" data-tags="memory latent"
                 data-src="/blog/images/2026-05-19-gallery-03-memory-decay.png"
