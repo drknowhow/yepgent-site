@@ -11,6 +11,7 @@
     "@supabase/supabase-js": "^2.45.4"
   },
   "scripts": {
-    "build:config": "node scripts/build-config.mjs"
+    "build:config": "node scripts/build-config.mjs",
+    "build:catalog": "node scripts/gen-catalog.mjs"
   }
 }

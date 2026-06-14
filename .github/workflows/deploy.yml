@@ -28,6 +28,13 @@ jobs:
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
         run: npm run build:config
 
+      # Generate gallery/catalog.json into the deployed dir. The Netlify
+      # build plugins in netlify.toml never run here — `netlify deploy
+      # --dir .` ships a prebuilt directory and skips `netlify build` —
+      # so the catalog must be produced explicitly as a CI step.
+      - name: Generate gallery/catalog.json
+        run: npm run build:catalog
+
       # Pinned to v17 — matches toolspace-site (working). `@latest` (v18+)
       # broke env-only auth and started returning
       # `Unauthorized: could not retrieve project` against valid tokens.
