@@ -5205,10 +5205,12 @@ body.gallery-v4 .gv4-tabs button[aria-selected="true"] .count { color: var(--acc
 body.gallery-v4 .gv4-tab-underline {
   position: absolute;
   bottom: -1px;
+  left: 0;
+  width: 1px; /* base unit; positioned + sized via transform (no layout-property animation) */
   height: 2px;
   background: linear-gradient(90deg, var(--accent), var(--accent-strong));
-  border-radius: 2px;
-  transition: left 320ms var(--ease), width 320ms var(--ease);
+  transform-origin: 0 0;
+  transition: transform 320ms var(--ease);
   pointer-events: none;
 }
 
