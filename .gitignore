@@ -16,3 +16,9 @@ js/config.js
 # Auto-generated at deploy time from gallery/index.html by
 # scripts/gen-catalog.mjs (npm run build:catalog). HTML is the source.
 gallery/catalog.json
+
+# Local impeccable design skill + Claude Code settings. NOT committed:
+# publish="." serves the repo root, so a committed .claude/ would be
+# exposed publicly at /.claude/... and bloat every deploy. Recreate
+# locally with `npx impeccable install`.
+.claude/
