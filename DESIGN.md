@@ -95,6 +95,22 @@ border+blur together → §0.4 ghost-card ban; never pure-black → tinted).
 
 ## Decisions log
 
+- **2026-06-18** — impeccable design pass (PR #103). Ran the impeccable
+  detector over the homepage + gallery and reconciled each finding against
+  this contract. Removed gradient-text from the legacy v3 `.verb-rotator`
+  (solid `--accent-strong`, per the emphasis spec); softened the gallery
+  modal callout side-stripes (`3px border-left` → `1px --accent-edge`);
+  dropped the `01–07` capability-card numbers **and** the per-section kicker
+  eyebrows (`01–05`) — the section `<h2>`s now carry each section, with the
+  one hero eyebrow kept as a deliberate brand signature (one named kicker =
+  voice; an eyebrow on every section = AI grammar); trimmed em-dash overuse
+  and the "isn't X — it's Y" cadence in body copy; switched the gallery tab
+  underline to a transform-based slide (`translateX`+`scaleX`, no
+  `left`/`width` animation); added measure caps on `.cap-card p` (60ch) and
+  `.gv4-colophon .rights` (70ch). **Kept intentionally:** the
+  `.band-editorial` pull-quote rule, the oversized editorial hero, and the
+  scroll-compacting nav transition (deliberate, low-frequency polish).
+
 - **2026-06-11** — Motion layer v4.1. Added a Three.js "memory field"
   (fixed WebGL canvas behind the homepage: drifting brand-green/neutral
   particles + faint constellation lines; the camera dollies through the
