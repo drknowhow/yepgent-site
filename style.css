@@ -1253,10 +1253,6 @@ header.site-nav nav a:focus-visible,
   min-width: 6.5ch;
   vertical-align: baseline;
   color: var(--accent-strong);
-  background: linear-gradient(90deg, var(--accent-strong), var(--accent));
-  -webkit-background-clip: text;
-          background-clip: text;
-  -webkit-text-fill-color: transparent;
 }
 .verb-rotator .verb {
   position: absolute;
@@ -1604,10 +1600,7 @@ body.home-v3 .announcement-wrap {
   display: inline-block;
   min-width: 9ch;
   position: relative;
-  background: linear-gradient(95deg, var(--accent-strong) 10%, var(--accent) 60%, color-mix(in oklab, var(--accent) 80%, white 10%) 100%);
-  -webkit-background-clip: text;
-          background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: var(--accent-strong);
 }
 .hero-x .verb-rotator .verb {
   position: absolute; left: 0; top: 0;
@@ -5544,8 +5537,8 @@ body.gallery-v4 .gv4-modal-prompt {
   line-height: 1.55;
   padding: 0.7rem 0.95rem;
   background: color-mix(in oklab, var(--fg) 4%, transparent);
-  border-left: 3px solid var(--accent);
-  border-radius: 0 8px 8px 0;
+  border: 1px solid var(--accent-edge);
+  border-radius: 8px;
 }
 body.gallery-v4 .gv4-modal-dl {
   display: grid;
@@ -5608,7 +5601,7 @@ body.gallery-v4 .gv4-modal-note {
   padding: 0.65rem 0.9rem;
   background: color-mix(in oklab, var(--accent) 10%, transparent);
   border-radius: 8px;
-  border-left: 3px solid var(--accent);
+  border: 1px solid var(--accent-edge);
 }
 
 body.gallery-v4 .gv4-modal-content {
