@@ -1,0 +1,49 @@
+<!-- @dsCard group="Foundations" name="Spacing" subtitle="Single non-linear ramp, 8px macro" w="980" h="700" -->
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>yepgent · Spacing</title>
+<link rel="stylesheet" href="../tokens.ds.css">
+<link rel="stylesheet" href="../_preview.css">
+<style>
+  /* Spacing ramp, mirrored from tokens.ds.css :root (--s-1..--s-10). */
+  .ramp { margin-top: var(--s-2); }
+  .scale-row { grid-template-columns: 5rem 4rem 1fr; }
+  .scale-bar { background: var(--accent); }
+</style>
+</head>
+<body>
+<main class="ds">
+  <p class="ds-eyebrow"><span class="eyebrow-tick"></span> foundations / spacing</p>
+  <h1 class="ds-title">Spacing</h1>
+  <p class="ds-lede">One <em>non-linear</em> ramp from a 4px hairline to 128px of air. Macro layout lands on 8px multiples, so the page keeps a quiet, even rhythm.</p>
+
+  <hr class="ds-rule">
+
+  <section class="ds-section">
+    <p class="ds-section-h">RAMP · var(--s-1) … var(--s-10) · token · px · width</p>
+    <div class="ramp">
+      <div class="scale-row"><span class="scale-tok">--s-1</span><span class="scale-val">4px</span><span class="scale-bar" style="width: 4px;"></span></div>
+      <div class="scale-row"><span class="scale-tok">--s-2</span><span class="scale-val">8px</span><span class="scale-bar" style="width: 8px;"></span></div>
+      <div class="scale-row"><span class="scale-tok">--s-3</span><span class="scale-val">12px</span><span class="scale-bar" style="width: 12px;"></span></div>
+      <div class="scale-row"><span class="scale-tok">--s-4</span><span class="scale-val">16px</span><span class="scale-bar" style="width: 16px;"></span></div>
+      <div class="scale-row"><span class="scale-tok">--s-5</span><span class="scale-val">24px</span><span class="scale-bar" style="width: 24px;"></span></div>
+      <div class="scale-row"><span class="scale-tok">--s-6</span><span class="scale-val">32px</span><span class="scale-bar" style="width: 32px;"></span></div>
+      <div class="scale-row"><span class="scale-tok">--s-7</span><span class="scale-val">48px</span><span class="scale-bar" style="width: 48px;"></span></div>
+      <div class="scale-row"><span class="scale-tok">--s-8</span><span class="scale-val">64px</span><span class="scale-bar" style="width: 64px;"></span></div>
+      <div class="scale-row"><span class="scale-tok">--s-9</span><span class="scale-val">96px</span><span class="scale-bar" style="width: 96px;"></span></div>
+      <div class="scale-row"><span class="scale-tok">--s-10</span><span class="scale-val">128px</span><span class="scale-bar" style="width: 128px;"></span></div>
+    </div>
+  </section>
+
+  <hr class="ds-rule">
+
+  <section class="ds-section">
+    <p class="ds-section-h">USAGE</p>
+    <p class="ds-note">Macro layout (section gaps, page padding, grid gutters) sits on 8px multiples, so blocks line up on an invisible grid. The single 4px step is the one sub-multiple, reserved for tight optical nudges like icon gaps and chip padding. Prose holds to the 42rem measure (var(--measure)) regardless of how wide the surface gets.</p>
+  </section>
+</main>
+</body>
+</html>

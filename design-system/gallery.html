@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>yepgent — design system</title>
+<link rel="stylesheet" href="tokens.ds.css">
+<link rel="stylesheet" href="_preview.css">
+<style>
+  .gallery { max-width: 64rem; margin: 0 auto; padding: var(--s-8) clamp(1.25rem, 5vw, var(--s-9)) var(--s-10); }
+  .gallery-head { margin-bottom: var(--s-8); }
+  .group-h {
+    font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--muted);
+    margin: var(--s-8) 0 var(--s-4); padding-bottom: var(--s-3);
+    border-bottom: 1px solid var(--rule);
+  }
+  .frame-wrap { margin: 0 0 var(--s-6); }
+  .frame-cap { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); margin: 0 0 0.5rem; }
+  iframe {
+    width: 100%; border: 1px solid var(--rule); border-radius: var(--r-card);
+    background: var(--bg); display: block; box-shadow: 0 10px 30px -18px var(--shadow-tint);
+  }
+</style>
+</head>
+<body>
+<main class="gallery">
+  <div class="gallery-head">
+    <p class="ds-eyebrow"><span class="eyebrow-tick"></span> yepgent.com / v4</p>
+    <h1 class="ds-title">The <span class="serif-italic">design system</span></h1>
+    <p class="ds-lede">Tokens, type, and the components that build the page. Warm-white, one committed green, the serif that means it.</p>
+  </div>
+
+  <h2 class="group-h">Foundations</h2>
+  <div id="foundations"></div>
+
+  <h2 class="group-h">Components</h2>
+  <div id="components"></div>
+</main>
+<script>
+  const cards = {
+    foundations: [
+      ["foundations/brand.html", 820], ["foundations/color.html", 900],
+      ["foundations/typography.html", 940], ["foundations/spacing.html", 740],
+      ["foundations/shape.html", 760], ["foundations/motion.html", 720],
+    ],
+    components: [
+      ["components/nav.html", 560], ["components/hero.html", 800],
+      ["components/buttons.html", 640], ["components/memory-terminal.html", 600],
+      ["components/cards.html", 820],
+    ],
+  };
+  for (const [group, list] of Object.entries(cards)) {
+    const host = document.getElementById(group);
+    for (const [src, h] of list) {
+      const wrap = document.createElement("div");
+      wrap.className = "frame-wrap";
+      const cap = document.createElement("p");
+      cap.className = "frame-cap";
+      cap.textContent = src;
+      const f = document.createElement("iframe");
+      f.src = src; f.loading = "lazy"; f.style.height = h + "px";
+      wrap.append(cap, f);
+      host.append(wrap);
+    }
+  }
+</script>
+</body>
+</html>

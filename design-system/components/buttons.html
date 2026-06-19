@@ -1,0 +1,199 @@
+<!-- @dsCard group="Components" name="Buttons & CTAs" subtitle="One green primary · ghost · announce pill" w="980" h="600" -->
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>yepgent — Buttons & CTAs</title>
+<link rel="stylesheet" href="../tokens.ds.css">
+<link rel="stylesheet" href="../_preview.css">
+<style>
+  /* Button family, mirrored from yepgent-site style.css v4 (.v4-cta /
+     .v4-announce) with hardcoded values swapped for tokens. The committed
+     green primary is the only filled element on the surface. */
+
+  .btn-rows { display: grid; gap: var(--s-6); }
+
+  .btn-row {
+    display: grid;
+    grid-template-columns: minmax(0, 9rem) minmax(0, 1fr);
+    align-items: center;
+    gap: var(--s-4) var(--s-5);
+  }
+  .btn-row > * { min-width: 0; }
+  .btn-label {
+    font-family: var(--mono); font-size: 0.7rem;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--muted);
+  }
+  .btn-set { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-4); }
+  .btn-note { font-size: 0.82rem; color: var(--muted); }
+
+  /* ── CTA base ──────────────────────────────────────────────────── */
+  .cta {
+    position: relative;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.8rem 1.2rem;
+    border-radius: var(--r-pill);
+    font: inherit; font-weight: 600; font-size: 0.95rem;
+    letter-spacing: -0.005em; text-decoration: none; cursor: pointer;
+    border: 1px solid transparent;
+    transition: transform var(--dur) var(--ease),
+                box-shadow var(--dur) var(--ease),
+                background var(--dur) var(--ease),
+                color var(--dur) var(--ease),
+                border-color var(--dur) var(--ease);
+    overflow: hidden; isolation: isolate;
+  }
+  .cta .cta-arrow { display: inline-flex; transition: transform var(--dur) var(--ease); }
+  .cta .cta-arrow svg { width: 14px; height: 14px; display: block; }
+  .cta:hover .cta-arrow { transform: translateX(3px); }
+
+  /* Primary — the one committed green fill, accent edge shadow + inner sheen */
+  .cta.primary {
+    background: var(--accent); color: var(--bg);
+    box-shadow:
+      0 1px 0 0 color-mix(in oklab, #fff 25%, transparent) inset,
+      0 14px 30px -12px color-mix(in oklab, var(--accent) 70%, transparent),
+      0 4px 10px -2px var(--shadow-tint);
+  }
+  .cta.primary .cta-glow {
+    position: absolute; inset: 0; z-index: -1;
+    background: radial-gradient(120px 60px at 50% 130%,
+      color-mix(in oklab, #fff 40%, transparent), transparent 70%);
+    opacity: 0.6;
+  }
+  .cta.primary:hover {
+    transform: translateY(-1px);
+    box-shadow:
+      0 1px 0 0 color-mix(in oklab, #fff 35%, transparent) inset,
+      0 22px 40px -14px color-mix(in oklab, var(--accent) 80%, transparent),
+      0 6px 12px -2px var(--shadow-tint);
+  }
+  /* Static hover twin — shows reviewers the lifted state without interaction */
+  .cta.primary.is-hover {
+    transform: translateY(-1px);
+    box-shadow:
+      0 1px 0 0 color-mix(in oklab, #fff 35%, transparent) inset,
+      0 22px 40px -14px color-mix(in oklab, var(--accent) 80%, transparent),
+      0 6px 12px -2px var(--shadow-tint);
+  }
+  .cta.primary.is-hover .cta-arrow { transform: translateX(3px); }
+
+  /* Ghost — glass surface, line border, accent edge on hover */
+  .cta.ghost {
+    background: var(--glass); color: var(--ink);
+    border-color: var(--glass-edge);
+  }
+  .cta.ghost:hover { transform: translateY(-1px); border-color: var(--accent-edge); }
+
+  /* Secondary — transparent, --line border, hover resolves to accent */
+  .cta.secondary {
+    background: transparent; color: var(--ink);
+    border-color: var(--line);
+  }
+  .cta.secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+  .cta:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  /* Forced focus-ring twin so the ring reads statically in the card */
+  .cta.is-focus { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+  /* ── Announce pill ─────────────────────────────────────────────── */
+  .v4-announce {
+    display: inline-flex; align-items: center; gap: 0.65rem;
+    padding: 0.55rem 0.95rem 0.55rem 0.7rem;
+    font-size: 0.9rem; text-decoration: none; color: var(--ink);
+    background: var(--card-bg);
+    border: 1px solid var(--glass-edge);
+    border-radius: var(--r-pill);
+    transition: transform var(--dur) var(--ease), border-color var(--dur) var(--ease);
+  }
+  .v4-announce:hover { transform: translateY(-2px); border-color: var(--accent-edge); }
+  .announce-dot {
+    width: 8px; height: 8px; border-radius: 50%; background: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-soft);
+  }
+  .announce-label {
+    font-family: var(--mono); font-size: 0.72rem;
+    text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent);
+    padding: 2px 7px; border-radius: var(--r-pill); background: var(--accent-soft);
+  }
+  .announce-arrow { color: var(--muted); transition: transform var(--dur) var(--ease); }
+  .v4-announce:hover .announce-arrow { transform: translateX(3px); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cta, .cta .cta-arrow, .v4-announce, .announce-arrow { transition: none; }
+  }
+</style>
+</head>
+<body>
+<main class="ds">
+  <p class="ds-eyebrow"><span class="eyebrow-tick"></span> components / buttons</p>
+  <h1 class="ds-title">Buttons &amp; CTAs</h1>
+  <p class="ds-lede">One <span class="serif-italic">committed</span> green fill carries the single primary action. Everything else stays neutral: a glass ghost, a quiet secondary, a pill that announces.</p>
+
+  <hr class="ds-rule">
+
+  <div class="btn-rows">
+
+    <div class="btn-row">
+      <span class="btn-label">primary</span>
+      <div class="btn-set">
+        <a class="cta primary" href="#">Create an account
+          <span class="cta-arrow" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </span>
+          <span class="cta-glow" aria-hidden="true"></span>
+        </a>
+        <a class="cta primary is-hover" href="#" aria-hidden="true" tabindex="-1">Create an account
+          <span class="cta-arrow" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </span>
+          <span class="cta-glow" aria-hidden="true"></span>
+        </a>
+        <span class="btn-note">resting, then :hover (lifted)</span>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <span class="btn-label">ghost</span>
+      <div class="btn-set">
+        <a class="cta ghost" href="#">Read the notebook
+          <span class="cta-arrow" aria-hidden="true">→</span>
+        </a>
+        <span class="btn-note">glass surface, accent edge on hover</span>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <span class="btn-label">secondary</span>
+      <div class="btn-set">
+        <a class="cta secondary" href="#">See the changelog</a>
+        <span class="btn-note">transparent, --line border resolves to --accent</span>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <span class="btn-label">focus ring</span>
+      <div class="btn-set">
+        <a class="cta secondary is-focus" href="#">Keyboard reachable</a>
+        <span class="btn-note">:focus-visible: 2px --accent, 3px offset</span>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <span class="btn-label">announce</span>
+      <div class="btn-set">
+        <a class="v4-announce" href="#">
+          <span class="announce-dot" aria-hidden="true"></span>
+          <span class="announce-label">Now</span>
+          <span class="announce-text">Interest in your own Yep is open</span>
+          <span class="announce-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</main>
+</body>
+</html>
