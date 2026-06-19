@@ -1,0 +1,119 @@
+<!-- @dsCard group="Components" name="Marquee" subtitle="Editorial ribbon, two opposing rows" w="980" h="460" -->
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>yepgent — Marquee</title>
+<link rel="stylesheet" href="../tokens.ds.css">
+<link rel="stylesheet" href="../_preview.css">
+<style>
+  /* Marquee anatomy, mirrored from yepgent-site style.css `.v4-marquee /
+     .mq-row / .mq-track / .mq-fwd / .mq-rev` (~line 2749) + the mq-l / mq-r
+     keyframes, and the markup in index.html (~line 196). Hardcoded values
+     swapped for tokens. The ribbon is two opposing rows of agent words; the
+     track content is duplicated so the -50% translate loops seamlessly. */
+
+  .v4-marquee {
+    position: relative;
+    overflow: clip;
+    padding: clamp(2rem, 5vw, 3.5rem) 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    background: linear-gradient(
+      180deg,
+      transparent,
+      color-mix(in oklab, var(--accent) 4%, transparent) 50%,
+      transparent
+    );
+    /* Fade the row edges so words dissolve into the canvas, like the site. */
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+            mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+  }
+
+  .mq-row { overflow: clip; white-space: nowrap; min-width: 0; }
+  .mq-row + .mq-row { margin-top: var(--s-4); }
+
+  .mq-track {
+    display: inline-flex; gap: 1.4rem; align-items: center;
+    font-family: var(--sans);
+    font-size: clamp(2rem, 6vw, 4.4rem);
+    font-weight: 600;
+    letter-spacing: -0.04em; line-height: 1;
+    color: color-mix(in oklab, var(--ink) 18%, transparent);
+    padding-left: 1.4rem;
+    will-change: transform;
+  }
+  .mq-track .serif-italic {
+    font-family: var(--serif); font-style: italic;
+    color: color-mix(in oklab, var(--accent) 60%, transparent);
+  }
+  .mq-dot { color: var(--accent); }
+
+  .mq-fwd .mq-track { animation: mq-l 36s linear infinite; }
+  .mq-rev .mq-track { animation: mq-r 44s linear infinite; }
+
+  @keyframes mq-l { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @keyframes mq-r { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+
+  /* Reduced motion: freeze both rows in place (no scroll). */
+  @media (prefers-reduced-motion: reduce) {
+    .mq-fwd .mq-track,
+    .mq-rev .mq-track { animation: none !important; transform: none !important; }
+  }
+</style>
+</head>
+<body>
+<main class="ds">
+  <p class="ds-eyebrow"><span class="eyebrow-tick"></span> components / marquee</p>
+  <h1 class="ds-title">Marquee</h1>
+  <p class="ds-lede">A slow editorial ribbon: two rows of agent words drifting in <em>opposite</em> directions over a faint accent wash. The top scrolls left, the bottom right, both fading out at the edges. It loops forever and sits still under reduced motion.</p>
+
+  <hr class="ds-rule">
+
+  <section class="ds-section">
+    <div class="v4-marquee" aria-hidden="true">
+      <div class="mq-row mq-fwd">
+        <div class="mq-track">
+          <span>remembers</span><span class="mq-dot">·</span>
+          <span>reflects</span><span class="mq-dot">·</span>
+          <span class="serif-italic">tends</span><span class="mq-dot">·</span>
+          <span>learns</span><span class="mq-dot">·</span>
+          <span>writes</span><span class="mq-dot">·</span>
+          <span class="serif-italic">grows</span><span class="mq-dot">·</span>
+          <span>ships</span><span class="mq-dot">·</span>
+          <!-- duplicate sequence for a seamless -50% loop -->
+          <span>remembers</span><span class="mq-dot">·</span>
+          <span>reflects</span><span class="mq-dot">·</span>
+          <span class="serif-italic">tends</span><span class="mq-dot">·</span>
+          <span>learns</span><span class="mq-dot">·</span>
+          <span>writes</span><span class="mq-dot">·</span>
+          <span class="serif-italic">grows</span><span class="mq-dot">·</span>
+          <span>ships</span><span class="mq-dot">·</span>
+        </div>
+      </div>
+      <div class="mq-row mq-rev">
+        <div class="mq-track">
+          <span>honest</span><span class="mq-dot">·</span>
+          <span class="serif-italic">calm</span><span class="mq-dot">·</span>
+          <span>yours alone</span><span class="mq-dot">·</span>
+          <span>continuous</span><span class="mq-dot">·</span>
+          <span class="serif-italic">specific</span><span class="mq-dot">·</span>
+          <span>open</span><span class="mq-dot">·</span>
+          <span>quiet</span><span class="mq-dot">·</span>
+          <!-- duplicate sequence for a seamless -50% loop -->
+          <span>honest</span><span class="mq-dot">·</span>
+          <span class="serif-italic">calm</span><span class="mq-dot">·</span>
+          <span>yours alone</span><span class="mq-dot">·</span>
+          <span>continuous</span><span class="mq-dot">·</span>
+          <span class="serif-italic">specific</span><span class="mq-dot">·</span>
+          <span>open</span><span class="mq-dot">·</span>
+          <span>quiet</span><span class="mq-dot">·</span>
+        </div>
+      </div>
+    </div>
+    <p class="ds-note">Faithful to <code>.v4-marquee</code>: the wash is <code>--accent</code> at 4%, the dots carry full <code>--accent</code>, and a few words turn serif-italic at 60% accent for emphasis. Each track repeats its sequence once and translates by <code>-50%</code>, so the loop is seamless. The <code>mask-image</code> gradient dissolves both edges into the canvas. Top row runs <code>mq-l</code> over 36s, bottom <code>mq-r</code> over 44s; <code>prefers-reduced-motion</code> freezes both.</p>
+  </section>
+</main>
+</body>
+</html>

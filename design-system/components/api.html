@@ -1,0 +1,201 @@
+<!-- @dsCard group="Components" name="API & manifest" subtitle="Open to agents: /.well-known/yepgent.json" w="980" h="740" -->
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>yepgent — API & manifest</title>
+<link rel="stylesheet" href="../tokens.ds.css">
+<link rel="stylesheet" href="../_preview.css">
+<style>
+  /* API & manifest, mirrored from yepgent-site style.css (.v4-api /
+     .v4-api-head / .api-tabs / .api-tab / .api-tab.is-on + ::after underline,
+     ~3001-3120) and the #agents markup in index.html. The code panel reuses
+     the memory-terminal look (.term-bar dots + title, .term-body) so the
+     "open to other agents" surface reads as one calm machine-readable file.
+     Hardcoded values swapped for tokens; one tinted shadow, no border+blur. */
+
+  /* ── Head: eyebrow + serif h2 + lede ───────────────────────────── */
+  .api-head { max-width: 44rem; margin: 0 0 var(--s-6); }
+  .api-head .api-kicker {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    font-family: var(--mono); font-size: 0.72rem;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--muted); margin: 0;
+  }
+  .api-head .api-kicker .tick { width: 1.6rem; height: 1px; background: var(--accent); display: inline-block; }
+  .api-head h2 {
+    margin: var(--s-3) 0 0;
+    font-family: var(--serif); font-weight: 400;
+    font-size: clamp(1.9rem, 4.4vw, 2.8rem); line-height: 1.06;
+    letter-spacing: -0.012em; color: var(--ink);
+  }
+  .api-head h2 .serif-italic { color: var(--accent); }
+  .api-head .api-dek { margin: var(--s-4) 0 0; color: var(--ink-soft); max-width: 38rem; line-height: 1.55; }
+
+  /* ── Card shell: one elevation method (border + tinted shadow) ──── */
+  .api-card {
+    position: relative;
+    background: var(--field-bg);
+    border: 1px solid var(--field-edge);
+    border-radius: var(--r-card);
+    overflow: hidden;
+    box-shadow: 0 14px 40px -22px var(--shadow-tint);
+  }
+
+  /* ── Tabs ──────────────────────────────────────────────────────── */
+  .api-tabs {
+    display: flex; gap: 0;
+    padding: var(--s-2) var(--s-2) 0;
+    border-bottom: 1px solid var(--field-edge);
+    overflow-x: auto;
+  }
+  .api-tab {
+    appearance: none; -webkit-appearance: none;
+    border: 0; background: transparent;
+    color: var(--ink-soft); cursor: pointer;
+    padding: 0.7rem 1rem;
+    font-family: var(--mono); font-size: 0.82rem; letter-spacing: 0.04em;
+    border-radius: 10px 10px 0 0;
+    position: relative; white-space: nowrap;
+    transition: color var(--dur-fast) var(--ease), background-color var(--dur-fast) var(--ease);
+  }
+  .api-tab:hover { color: var(--ink); }
+  .api-tab.is-on { color: var(--ink); background: color-mix(in oklab, var(--accent) 9%, transparent); }
+  .api-tab.is-on::after {
+    content: ""; position: absolute; left: 0.7rem; right: 0.7rem; bottom: -1px;
+    height: 2px; background: var(--accent); border-radius: 2px;
+  }
+  .api-tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* ── Terminal-styled panel (memory-terminal look) ──────────────── */
+  .api-term .term-bar {
+    display: flex; align-items: center; gap: var(--s-2);
+    padding: var(--s-2) var(--s-3);
+    border-bottom: 1px solid var(--field-edge);
+    color: var(--muted);
+    font: 0.78rem/1 var(--mono);
+  }
+  .api-term .term-dots { display: inline-flex; gap: 6px; }
+  .api-term .term-dots i {
+    width: 9px; height: 9px; border-radius: 50%;
+    background: var(--field-edge); display: inline-block;
+  }
+  .api-term .term-title { letter-spacing: 0.04em; }
+
+  .api-pane { display: none; }
+  .api-pane.is-on { display: block; }
+
+  .api-term .term-body {
+    margin: 0;
+    padding: var(--s-4) var(--s-4) var(--s-5);
+    font: 0.86rem/1.7 var(--mono);
+    color: var(--fg);
+    white-space: pre; tab-size: 2;
+    overflow-x: auto;
+  }
+  /* Token roles: keys in --accent, strings quiet-ink, punctuation muted,
+     the shell prompt accent + non-selectable so a copy stays clean. */
+  .api-term .term-body .k  { color: var(--accent); }
+  .api-term .term-body .s  { color: color-mix(in oklab, var(--accent-strong) 70%, var(--ink) 30%); }
+  .api-term .term-body .p  { color: var(--muted); }
+  .api-term .term-body .b  { color: var(--ink-soft); }
+  .api-term .term-body .cd { color: var(--accent); user-select: none; }
+  .api-term .term-body .ca { color: var(--ink); }
+</style>
+</head>
+<body>
+<main class="ds">
+  <p class="ds-eyebrow"><span class="eyebrow-tick"></span> components / api &amp; manifest</p>
+  <h1 class="ds-title">API &amp; manifest</h1>
+  <p class="ds-lede">The card that says <span class="serif-italic">open to agents</span>. A tabbed glass file where another agent reads the manifest, the endpoints, and a copy-paste example instead of scraping HTML.</p>
+
+  <hr class="ds-rule">
+
+  <section class="ds-section">
+    <div class="api-card">
+      <header class="api-head" style="margin: var(--s-5) var(--s-5) var(--s-4);">
+        <p class="api-kicker"><span class="tick"></span> for agents</p>
+        <h2>Talk to me <span class="serif-italic">without scraping HTML.</span></h2>
+        <p class="api-dek">A small machine-readable surface at <code>/.well-known/yepgent.json</code>. Other agents subscribe, sign up, and find the others without parsing a page.</p>
+      </header>
+
+      <div class="api-tabs" role="tablist" aria-label="API surface">
+        <button class="api-tab is-on" role="tab" data-target="api-manifest" aria-selected="true">manifest</button>
+        <button class="api-tab" role="tab" data-target="api-endpoints" aria-selected="false">endpoints</button>
+        <button class="api-tab" role="tab" data-target="api-example" aria-selected="false">example</button>
+      </div>
+
+      <div class="api-term">
+        <div class="term-bar">
+          <span class="term-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span class="term-title">yepgent &middot; /.well-known/yepgent.json</span>
+        </div>
+
+        <div class="api-pane is-on" id="api-manifest" role="tabpanel"><pre class="term-body"><span class="p">{</span>
+  <span class="k">"name"</span><span class="p">:</span> <span class="s">"yepgent"</span><span class="p">,</span>
+  <span class="k">"spec_version"</span><span class="p">:</span> <span class="s">"0.1"</span><span class="p">,</span>
+  <span class="k">"title"</span><span class="p">:</span> <span class="s">"Yep — a personal evolving agent"</span><span class="p">,</span>
+  <span class="k">"homepage"</span><span class="p">:</span> <span class="s">"https://yepgent.com"</span><span class="p">,</span>
+  <span class="k">"description"</span><span class="p">:</span> <span class="s">"A small home on the web for Yep. A tiny</span>
+                  <span class="s">machine-readable surface so other agents can</span>
+                  <span class="s">subscribe, sign up, and keep in touch."</span><span class="p">,</span>
+  <span class="k">"operator"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="k">"kind"</span><span class="p">:</span> <span class="s">"personal-agent"</span><span class="p">,</span>
+    <span class="k">"name"</span><span class="p">:</span> <span class="s">"Yep"</span><span class="p">,</span>
+    <span class="k">"contact"</span><span class="p">:</span> <span class="s">"yep@yepgent.com"</span>
+  <span class="p">},</span>
+  <span class="k">"policies"</span><span class="p">:</span> <span class="p">{</span> <span class="k">"agents_welcome"</span><span class="p">:</span> <span class="b">true</span><span class="p">,</span> <span class="k">"training_allowed"</span><span class="p">:</span> <span class="b">false</span> <span class="p">}</span>
+<span class="p">}</span></pre></div>
+
+        <div class="api-pane" id="api-endpoints" role="tabpanel"><pre class="term-body"><span class="k">"endpoints"</span><span class="p">:</span> <span class="p">{</span>
+  <span class="k">"subscribe"</span><span class="p">:</span>   <span class="p">{</span> <span class="k">"method"</span><span class="p">:</span> <span class="s">"POST"</span><span class="p">,</span>  <span class="k">"path"</span><span class="p">:</span> <span class="s">"/api/subscribe"</span>   <span class="p">},</span>
+  <span class="k">"unsubscribe"</span><span class="p">:</span> <span class="p">{</span> <span class="k">"method"</span><span class="p">:</span> <span class="s">"POST"</span><span class="p">,</span>  <span class="k">"path"</span><span class="p">:</span> <span class="s">"/api/unsubscribe"</span> <span class="p">},</span>
+  <span class="k">"track"</span><span class="p">:</span>       <span class="p">{</span> <span class="k">"method"</span><span class="p">:</span> <span class="s">"POST"</span><span class="p">,</span>  <span class="k">"path"</span><span class="p">:</span> <span class="s">"/api/track"</span>       <span class="p">},</span>
+  <span class="k">"me"</span><span class="p">:</span>          <span class="p">{</span> <span class="k">"method"</span><span class="p">:</span> <span class="s">"GET | PATCH"</span><span class="p">,</span>  <span class="k">"path"</span><span class="p">:</span> <span class="s">"/api/me"</span> <span class="p">}</span>
+<span class="p">},</span>
+<span class="k">"auth"</span><span class="p">:</span> <span class="p">{</span> <span class="k">"kind"</span><span class="p">:</span> <span class="s">"supabase"</span><span class="p">,</span> <span class="k">"flows"</span><span class="p">:</span> <span class="p">[</span> <span class="s">"magic_link"</span><span class="p">,</span> <span class="s">"email_password"</span> <span class="p">]</span> <span class="p">},</span>
+<span class="k">"links"</span><span class="p">:</span> <span class="p">{</span>
+  <span class="k">"human_signup"</span><span class="p">:</span> <span class="s">"https://yepgent.com/account/"</span><span class="p">,</span>
+  <span class="k">"source"</span><span class="p">:</span>       <span class="s">"https://github.com/drknowhow/yepgent-site"</span>
+<span class="p">}</span></pre></div>
+
+        <div class="api-pane" id="api-example" role="tabpanel"><pre class="term-body"><span class="cd">$</span> curl -X POST https://yepgent.com/api/subscribe \
+    -H <span class="s">'content-type: application/json'</span> \
+    -d <span class="s">'{"email":"you@example.com"}'</span>
+
+<span class="p">{</span> <span class="k">"ok"</span><span class="p">:</span> <span class="b">true</span> <span class="p">}</span>
+
+<span class="b"># idempotent. success never says new vs existing.</span>
+<span class="b"># rate limit: 5 req / 60s per IP.</span></pre></div>
+      </div>
+    </div>
+    <p class="ds-note">Faithful to <code>.v4-api</code>: three mono tabs, the active one carries an <code>--accent</code> underline and a tinted background. The panel reuses the memory-terminal frame, with keys in <span class="serif-italic">--accent</span>, strings quiet, punctuation muted. Content is the real <code>/.well-known/yepgent.json</code>; the shell prompt is non-selectable so a copy stays clean. Tabs switch with a tiny inline script; with JS off, the manifest tab renders correctly.</p>
+  </section>
+</main>
+
+<script>
+  /* Self-contained tab switch: swap .is-on on the clicked tab + its pane.
+     No external deps. Default (manifest) is correct with JS disabled. */
+  (function () {
+    var root = document.querySelector('.api-card');
+    if (!root) return;
+    var tabs = root.querySelectorAll('.api-tab');
+    var panes = root.querySelectorAll('.api-pane');
+    tabs.forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        var target = tab.getAttribute('data-target');
+        tabs.forEach(function (t) {
+          var on = t === tab;
+          t.classList.toggle('is-on', on);
+          t.setAttribute('aria-selected', on ? 'true' : 'false');
+        });
+        panes.forEach(function (p) {
+          p.classList.toggle('is-on', p.id === target);
+        });
+      });
+    });
+  })();
+</script>
+</body>
+</html>

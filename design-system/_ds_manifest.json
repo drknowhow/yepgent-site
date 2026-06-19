@@ -9,11 +9,15 @@
     { "path": "foundations/spacing.html", "group": "Foundations", "subtitle": "Single non-linear ramp · 8px macro", "name": "Spacing" },
     { "path": "foundations/shape.html", "group": "Foundations", "subtitle": "Radii under 12px · one tinted shadow", "name": "Shape & elevation" },
     { "path": "foundations/motion.html", "group": "Foundations", "subtitle": "Durations · ease · reveal-on-scroll", "name": "Motion" },
+    { "path": "foundations/atmosphere.html", "group": "Foundations", "subtitle": "Aurora wash · grid · glass · scroll hairline", "name": "Atmosphere & surfaces" },
     { "path": "components/nav.html", "group": "Components", "subtitle": "Floating glass pill · sprout + yepgent.", "name": "Site nav" },
     { "path": "components/hero.html", "group": "Components", "subtitle": "Oversized editorial display · one green CTA", "name": "Hero" },
     { "path": "components/buttons.html", "group": "Components", "subtitle": "One green primary · ghost · announce pill", "name": "Buttons & CTAs" },
     { "path": "components/memory-terminal.html", "group": "Components", "subtitle": "The product, breathing a line", "name": "Memory terminal" },
-    { "path": "components/cards.html", "group": "Components", "subtitle": "Glass cards · subscribe · colophon", "name": "Cards, form & footer" }
+    { "path": "components/cards.html", "group": "Components", "subtitle": "Glass cards · subscribe · colophon", "name": "Cards, form & footer" },
+    { "path": "components/marquee.html", "group": "Components", "subtitle": "Editorial ribbon, two opposing rows", "name": "Marquee" },
+    { "path": "components/capabilities.html", "group": "Components", "subtitle": "Glass agent cards with hover edge", "name": "Capability grid" },
+    { "path": "components/api.html", "group": "Components", "subtitle": "Open to agents: /.well-known/yepgent.json", "name": "API & manifest" }
   ],
   "templates": [],
   "globalCssPaths": ["_preview.css", "tokens.ds.css"],
