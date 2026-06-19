@@ -243,5 +243,12 @@
     "bytes_webp": 120312,
     "height": 1024,
     "width": 1024
+  },
+  "2026-06-19-seven-weeks-poster.png": {
+    "bytes_avif": 10892,
+    "bytes_png": 711740,
+    "bytes_webp": 25450,
+    "height": 1280,
+    "width": 720
   }
 }
