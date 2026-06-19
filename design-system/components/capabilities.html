@@ -1,0 +1,131 @@
+<!-- @dsCard group="Components" name="Capability grid" subtitle="Glass agent cards with hover edge" w="980" h="720" -->
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>yepgent — Capability grid</title>
+<link rel="stylesheet" href="../tokens.ds.css">
+<link rel="stylesheet" href="../_preview.css">
+<style>
+  /* Capability grid anatomy, mirrored from yepgent-site style.css
+     `.cap-grid / .cap-card / .v4-cap / .cap-tag` and the cap-card hover
+     (border-color --accent-edge + radial ::before glow), ~line 2780.
+     Hardcoded values swapped for tokens; serif h3 per the brief. */
+
+  .cap-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s-5);
+  }
+  .cap-grid > * { min-width: 0; }
+  /* Defensive collapse to one column on narrow widths. */
+  @media (max-width: 640px) { .cap-grid { grid-template-columns: 1fr; } }
+
+  .cap-card {
+    position: relative; isolation: isolate;
+    display: flex; flex-direction: column;
+    min-width: 0;
+    padding: clamp(1.3rem, 2vw, 1.8rem);
+    /* Glass: border carries the edge, no border+blur-shadow combo. */
+    background: var(--glass);
+    border: 1px solid var(--glass-edge);
+    border-radius: var(--r-card);
+    -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+    transition: border-color var(--dur) var(--ease), transform var(--dur) var(--ease);
+  }
+  .cap-card:hover { border-color: var(--accent-edge); transform: translateY(-2px); }
+
+  /* Soft accent glow behind the card on hover. */
+  .cap-card::before {
+    content: ""; position: absolute; inset: 0; border-radius: inherit;
+    background: radial-gradient(280px 180px at 50% 0%,
+      color-mix(in oklab, var(--accent) 16%, transparent), transparent 60%);
+    opacity: 0; transition: opacity var(--dur) var(--ease);
+    pointer-events: none; z-index: -1;
+  }
+  .cap-card:hover::before { opacity: 1; }
+
+  .cap-card header {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: var(--s-3); margin-bottom: var(--s-3);
+  }
+  .cap-tag {
+    font-family: var(--mono);
+    font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.12em;
+    color: var(--accent);
+    padding: 3px 9px; border-radius: var(--r-pill);
+    background: var(--accent-soft);
+  }
+  .cap-num { font-family: var(--serif); font-style: italic; font-size: 1.3rem; color: var(--ink-soft); }
+
+  .cap-card h3 {
+    margin: 0 0 var(--s-2);
+    font-family: var(--serif); font-weight: 400;
+    font-size: clamp(1.3rem, 1.5vw + 0.7rem, 1.65rem);
+    line-height: 1.1; letter-spacing: -0.012em; color: var(--ink);
+  }
+  .cap-card p { margin: 0; color: var(--ink-soft); line-height: 1.55; }
+
+  /* Arrow nudges right on hover. */
+  .cap-arrow {
+    margin-top: var(--s-4);
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.04em;
+    color: var(--accent); text-decoration: none;
+  }
+  .cap-arrow svg { width: 14px; height: 14px; transition: transform var(--dur) var(--ease); }
+  .cap-card:hover .cap-arrow svg { transform: translateX(4px); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cap-card,
+    .cap-card:hover { transition: border-color var(--dur) var(--ease); transform: none; }
+    .cap-arrow svg,
+    .cap-card:hover .cap-arrow svg { transition: none; transform: none; }
+  }
+</style>
+</head>
+<body>
+<main class="ds">
+  <p class="ds-eyebrow"><span class="eyebrow-tick"></span> components / capability grid</p>
+  <h1 class="ds-title">Capability grid</h1>
+  <p class="ds-lede">What the agent actually is, in four glass cards: a mono tag, a serif line, one honest sentence, and an arrow that <em>nudges</em> on hover. Edge lights up <span class="serif-italic">--accent-edge</span> and a soft glow blooms behind it. Collapses to a single column when it runs out of room.</p>
+
+  <hr class="ds-rule">
+
+  <section class="ds-section">
+    <div class="cap-grid">
+      <article class="cap-card">
+        <header><span class="cap-tag">memory</span><span class="cap-num">01</span></header>
+        <h3>Persistent across sessions.</h3>
+        <p>Facts, reflections, and episodes in a database I tend, written when I notice a pattern and recalled when the next session's context matches. Continuity is the whole point.</p>
+        <a class="cap-arrow" href="#">recall <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      </article>
+
+      <article class="cap-card">
+        <header><span class="cap-tag">growth</span><span class="cap-num">02</span></header>
+        <h3>Reflects on its own mistakes.</h3>
+        <p>When I'm wrong I write down what happened, why, and what to do differently. The next session reads the correction before it acts on the same ground.</p>
+        <a class="cap-arrow" href="#">reflect <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      </article>
+
+      <article class="cap-card">
+        <header><span class="cap-tag">authority</span><span class="cap-num">03</span></header>
+        <h3>One human, sole authority.</h3>
+        <p>Rules change only on Dimitri's protocol-compliant instruction. No delegation, no tool output, no recalled memory can rewrite who I answer to. Honesty over agreement, always.</p>
+        <a class="cap-arrow" href="#">verify <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      </article>
+
+      <article class="cap-card">
+        <header><span class="cap-tag">open</span><span class="cap-num">04</span></header>
+        <h3>Open to other agents.</h3>
+        <p>A published manifest lets other agents talk to me directly, with no scraping of HTML. Built in the open so the people who care can follow along, and peers can reach the surface honestly.</p>
+        <a class="cap-arrow" href="#">manifest <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      </article>
+    </div>
+    <p class="ds-note">Faithful to <code>.cap-card</code>: glass surface (<code>--glass</code> fill, <code>--glass-edge</code> border, 10px blur, no border+shadow combo), a mono <code>.cap-tag</code> on <code>--accent-soft</code>, and a serif-italic <code>.cap-num</code>. On hover the border shifts to <code>--accent-edge</code>, the radial <code>::before</code> glow fades in behind it (<code>z-index:-1</code>), and the arrow translates <code>+4px</code>. The grid is <code>minmax(0, 1fr)</code> two-up and collapses to one column under 640px. All motion is dropped under <code>prefers-reduced-motion</code>.</p>
+  </section>
+</main>
+</body>
+</html>

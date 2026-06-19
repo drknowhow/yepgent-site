@@ -1,0 +1,252 @@
+<!-- @dsCard group="Foundations" name="Atmosphere & surfaces" subtitle="Aurora wash · grid · glass · scroll hairline" w="980" h="860" -->
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>yepgent — Atmosphere & surfaces</title>
+<link rel="stylesheet" href="../tokens.ds.css">
+<link rel="stylesheet" href="../_preview.css">
+<style>
+  /* Atmosphere & surfaces — the v4 background/surface layer, mirrored from
+     yepgent-site/style.css (body.home-v4::before, .scroll-progress, glass
+     tokens) + DESIGN.md §motion-layer. Tokens only; every animation gated
+     behind prefers-reduced-motion. */
+
+  .atmo-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-5); }
+  .atmo-grid > * { min-width: 0; }
+  @media (max-width: 720px) { .atmo-grid { grid-template-columns: minmax(0, 1fr); } }
+
+  /* Shared specimen frame: a labelled stage that holds each surface sample. */
+  .spec {
+    border: 1px solid var(--rule);
+    border-radius: var(--r-card);
+    overflow: clip;
+    background: var(--card-bg);
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .spec-stage {
+    position: relative;
+    isolation: isolate;
+    overflow: clip;
+    min-height: 200px;
+    display: grid;
+    place-items: center;
+    padding: var(--s-5);
+  }
+  .spec-cap { padding: 0.7rem 0.85rem; border-top: 1px solid var(--rule); }
+  .spec-name { font-size: 0.92rem; font-weight: 600; color: var(--ink); }
+  .spec-tok { display: block; margin-top: 0.25rem; font-family: var(--mono); font-size: 0.7rem; color: var(--muted); line-height: 1.5; }
+
+  /* ── 1 · Aurora wash ─────────────────────────────────────────────────
+     The calm three-wash accent glow. Live on the site this is a fixed
+     pseudo-element (body.home-v4::before) with three radial washes; the
+     hero layers an animated conic aurora over it. Here we render the calm
+     constant glow only — no drift, by design (it documents the stable
+     base, not the hero's motion). */
+  .aurora-stage { min-height: 240px; }
+  .aurora-wash { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+  .aurora-wash::before {
+    content: ""; position: absolute; inset: 0;
+    background:
+      radial-gradient(900px 700px at 12% -8%, var(--accent-soft), transparent 60%),
+      radial-gradient(700px 700px at 95% 0%, color-mix(in oklab, var(--accent) 6%, transparent), transparent 60%),
+      radial-gradient(1100px 800px at 50% 110%, color-mix(in oklab, var(--accent) 4%, transparent), transparent 60%);
+  }
+  .aurora-note {
+    font-family: var(--serif); font-style: italic; font-weight: 400;
+    font-size: clamp(1.4rem, 3vw, 2rem); line-height: 1.2;
+    color: var(--ink); margin: 0; text-align: center; max-width: 22ch;
+  }
+  .aurora-note .serif-italic { color: var(--accent); }
+
+  /* ── 2 · Glass surface ───────────────────────────────────────────────
+     var(--glass) fill + var(--glass-edge) hairline + ONE tinted shadow
+     (accent color-mixed into --shadow-tint). The ghost-card ban: never
+     pair a border with a blurred box-shadow on the same element — pick a
+     hairline OR a soft shadow, not both. This sample takes the shadow. */
+  .glass-stage { background-image: radial-gradient(circle at 30% 10%, var(--accent-soft) 0%, transparent 55%); }
+  .glass-card {
+    width: min(100%, 18rem);
+    padding: var(--s-5);
+    border-radius: var(--r-card);
+    background: var(--glass);
+    -webkit-backdrop-filter: saturate(1.4) blur(14px);
+            backdrop-filter: saturate(1.4) blur(14px);
+    border: 1px solid var(--glass-edge);
+    box-shadow: 0 18px 40px -22px color-mix(in oklab, var(--accent) 24%, var(--shadow-tint));
+  }
+  .glass-card h3 { margin: 0; font-family: var(--serif); font-weight: 400; font-size: 1.25rem; color: var(--ink); }
+  .glass-card p { margin: 0.5rem 0 0; font-size: 0.9rem; color: var(--ink-soft); line-height: 1.55; }
+  .glass-card .pin { display: inline-flex; align-items: center; gap: 0.45rem; margin-bottom: 0.7rem; font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
+  .glass-card .pin .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft); }
+
+  /* ── 3 · Scroll-progress hairline ────────────────────────────────────
+     A static 2px accent-gradient bar. Live it scales on scroll
+     (transform: scaleX → scroll fraction); here it sits at rest, filled,
+     to document the gradient + height. */
+  .hairline-stage { display: block; padding: 0; }
+  .hairline-frame {
+    position: relative; width: 100%; height: 100%;
+    min-height: 200px; padding: var(--s-6) var(--s-5);
+    display: grid; align-content: start; gap: var(--s-4);
+  }
+  .scroll-progress { position: absolute; inset: 0 0 auto 0; height: 2px; pointer-events: none; }
+  .scroll-progress span {
+    display: block; height: 100%; width: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent-strong));
+    transform-origin: 0 0;
+  }
+  .hairline-rows { display: flex; flex-direction: column; gap: 0.7rem; margin-top: var(--s-3); }
+  .hairline-rows .ln { height: 9px; border-radius: var(--r-pill); background: var(--card-bg); border: 1px solid var(--rule); }
+  .hairline-rows .ln:nth-child(2) { width: 86%; }
+  .hairline-rows .ln:nth-child(3) { width: 72%; }
+  .hairline-rows .ln:nth-child(4) { width: 90%; }
+  .hairline-label { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+
+  /* ── 4 · Memory field (motion layer) — STATIC STILL ──────────────────
+     The live site runs a fixed WebGL "memory field" (Three.js): drifting
+     brand-green + neutral particles with faint constellation lines, the
+     camera dollying through as you scroll (DESIGN.md 2026-06-11). This is
+     a deliberately STATIC representation — a handful of faint dots and thin
+     links painted once. It does NOT simulate the field. The motion is
+     documented in copy, not faked. */
+  .field-stage { background: color-mix(in oklab, var(--bg) 96%, var(--accent) 4%); }
+  .field-still { position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: 0.9; }
+  .field-badge {
+    position: absolute; top: var(--s-3); left: var(--s-3); z-index: 2;
+    display: inline-flex; align-items: center; gap: 0.45rem;
+    font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--muted); background: var(--card-bg);
+    border: 1px solid var(--rule); border-radius: var(--r-pill);
+    padding: 0.25rem 0.6rem;
+  }
+  .field-badge .swatch-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+  .field-caption {
+    position: relative; z-index: 2; align-self: end; justify-self: start;
+    font-family: var(--serif); font-style: italic; font-size: 1.05rem;
+    color: var(--ink-soft); margin: 0;
+  }
+
+  /* ── Token legend strip ──────────────────────────────────────────── */
+  .legend { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+  /* The glow panel + hairline are static by design; reduced-motion has
+     nothing to disable here. The note below documents the live behavior. */
+  @media (prefers-reduced-motion: reduce) {
+    /* No-op: this card paints no animation. Kept explicit so the contract
+       (every animation gated) reads true even as the card evolves. */
+    .scroll-progress span { transform: none; }
+  }
+</style>
+</head>
+<body>
+<main class="ds">
+  <p class="ds-eyebrow"><span class="eyebrow-tick"></span> foundations / atmosphere &amp; surfaces</p>
+  <h1 class="ds-title">Atmosphere &amp; surfaces</h1>
+  <p class="ds-lede">The layer the page floats on: a calm three-wash accent glow, a single glass surface, the 2px scroll hairline, and the WebGL <em>memory field</em> behind it all. Quiet on purpose. The brand green stays a minority, and nothing here is allowed to shout.</p>
+
+  <hr class="ds-rule">
+
+  <section class="ds-section">
+    <div class="atmo-grid">
+
+      <!-- 1 · Aurora wash -->
+      <div class="spec">
+        <div class="spec-stage aurora-stage">
+          <div class="aurora-wash" aria-hidden="true"></div>
+          <p class="aurora-note">A small home <span class="serif-italic">for an agent</span></p>
+        </div>
+        <div class="spec-cap">
+          <span class="spec-name">Aurora wash</span>
+          <span class="spec-tok">body.home-v4::before · three radial washes · --accent-soft + color-mix(--accent 6% / 4%) · fixed, calm, constant (no per-zone repaint)</span>
+        </div>
+      </div>
+
+      <!-- 2 · Glass surface -->
+      <div class="spec">
+        <div class="spec-stage glass-stage">
+          <div class="glass-card">
+            <span class="pin"><span class="dot"></span> glass</span>
+            <h3>One tinted shadow</h3>
+            <p>--glass fill, --glass-edge hairline, and a single accent-tinted shadow. No border + blur on one element. That is the ghost-card ban.</p>
+          </div>
+        </div>
+        <div class="spec-cap">
+          <span class="spec-name">Glass surface</span>
+          <span class="spec-tok">bg --glass · border --glass-edge · shadow color-mix(--accent 24% → --shadow-tint) · backdrop-blur 14px</span>
+        </div>
+      </div>
+
+      <!-- 3 · Scroll-progress hairline -->
+      <div class="spec">
+        <div class="spec-stage hairline-stage">
+          <div class="hairline-frame">
+            <div class="scroll-progress" aria-hidden="true"><span></span></div>
+            <span class="hairline-label">page top · 2px hairline at rest</span>
+            <div class="hairline-rows" aria-hidden="true">
+              <span class="ln"></span><span class="ln"></span><span class="ln"></span><span class="ln"></span>
+            </div>
+          </div>
+        </div>
+        <div class="spec-cap">
+          <span class="spec-name">Scroll-progress hairline</span>
+          <span class="spec-tok">.scroll-progress span · linear-gradient(90deg, --accent, --accent-strong) · 2px · scaleX(scroll) live, filled here</span>
+        </div>
+      </div>
+
+      <!-- 4 · Memory field (static still) -->
+      <div class="spec">
+        <div class="spec-stage field-stage">
+          <span class="field-badge"><span class="swatch-dot"></span> motion layer · static still</span>
+          <svg class="field-still" viewBox="0 0 320 220" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <!-- Faint constellation links: thin neutral lines between nearby dots. -->
+            <g stroke="var(--accent)" stroke-opacity="0.16" stroke-width="0.6">
+              <line x1="46" y1="58" x2="92" y2="40"/>
+              <line x1="92" y1="40" x2="138" y2="74"/>
+              <line x1="138" y1="74" x2="120" y2="128"/>
+              <line x1="210" y1="52" x2="256" y2="86"/>
+              <line x1="256" y1="86" x2="238" y2="140"/>
+              <line x1="120" y1="128" x2="176" y2="156"/>
+              <line x1="176" y1="156" x2="238" y2="140"/>
+              <line x1="66" y1="150" x2="120" y2="128"/>
+            </g>
+            <!-- ~32% green dots, rest neutral — mirrors the field's isGreen 0.32 ratio. -->
+            <g>
+              <circle cx="46" cy="58" r="1.8" fill="var(--accent)" fill-opacity="0.55"/>
+              <circle cx="92" cy="40" r="1.4" fill="var(--muted)" fill-opacity="0.45"/>
+              <circle cx="138" cy="74" r="2.0" fill="var(--accent)" fill-opacity="0.5"/>
+              <circle cx="120" cy="128" r="1.5" fill="var(--muted)" fill-opacity="0.4"/>
+              <circle cx="210" cy="52" r="1.6" fill="var(--muted)" fill-opacity="0.42"/>
+              <circle cx="256" cy="86" r="2.1" fill="var(--accent)" fill-opacity="0.5"/>
+              <circle cx="238" cy="140" r="1.4" fill="var(--muted)" fill-opacity="0.4"/>
+              <circle cx="176" cy="156" r="1.7" fill="var(--muted)" fill-opacity="0.42"/>
+              <circle cx="66" cy="150" r="1.5" fill="var(--accent)" fill-opacity="0.5"/>
+              <circle cx="286" cy="118" r="1.3" fill="var(--muted)" fill-opacity="0.35"/>
+              <circle cx="28" cy="104" r="1.2" fill="var(--muted)" fill-opacity="0.35"/>
+            </g>
+          </svg>
+          <p class="field-caption">drifts · links · dollies on scroll</p>
+        </div>
+        <div class="spec-cap">
+          <span class="spec-name">Memory field <span style="color:var(--muted);font-weight:400">(motion layer)</span></span>
+          <span class="spec-tok">fixed WebGL canvas · ~32% green + neutral particles · constellation links · camera dollies on scroll · still shown here, not simulated</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="ds-rule">
+
+  <section class="ds-section">
+    <p class="ds-section-h">notes</p>
+    <p class="ds-note">The <strong>cursor orb</strong> is a soft <code>--accent</code> radial glow that trails the pointer (<code>360px</code>, <code>blur 14px</code>, opacity <code>0.55</code> dark / <code>0.22</code> light). It only appears on a <em>fine</em> pointer, hidden on coarse/touch input and under reduced-motion, so it is a desktop grace note, never load-bearing.</p>
+    <p class="ds-note">The <strong>memory field</strong> is the only heavy layer: a fixed <code>&lt;canvas&gt;</code> WebGL scene (Three.js) of drifting brand-green and neutral particles with faint constellation lines, the camera dollying through as you scroll. It runs at <code>0.65</code> opacity (<code>0.5</code> light) behind a horizontal mask that drops it to ~45% across the content column, reading as a margin texture, not a backdrop. The still above is a faithful sketch of its <em>shape</em>, not a live simulation.</p>
+    <p class="ds-note"><strong>Reduced motion.</strong> Under <code>prefers-reduced-motion: reduce</code>, neither the cursor orb nor the WebGL field runs. The CSS/IO baseline owns the page, the aurora sits as a calm constant glow, and the scroll hairline stops scaling. CDN failure or no-WebGL degrade the same direction: quieter, never broken. Everything on this card is painted static, so it already reads true with motion off.</p>
+  </section>
+</main>
+</body>
+</html>
