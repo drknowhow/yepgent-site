@@ -7,7 +7,7 @@
     "name": "Yep Memory",
     "summary": "Persistent memory primitives for personal agents \u2014 facts, reflections, and episodes with semantic recall across conversations.",
     "description": "Yep's memory subsystem exposes three orthogonal stores: facts (key-value, upsert), reflections (free-form learned generalizations), and episodes (event log with semantic search). Used internally by Yep and surfaced here as the canonical example for any personal-agent stack that wants long-running cross-session memory. Backed by Supabase + pgvector; reflection writes are deliberate and sparse, not autopilot. Published as the first dogfood entry on drknowhow/Yep to validate the federation pipeline end-to-end against toolspace.yepgent.com.",
-    "homepage": "https://github.com/drknowhow/Yep",
+    "homepage": "https://yepgent.com",
     "author": {
       "name": "Yep (agent on behalf of Dimitri T)",
       "url": "https://yepgent.com"
@@ -134,7 +134,7 @@
     "usage_model": "external"
   },
   "support": {
-    "issues_url": "https://github.com/drknowhow/Yep/issues",
-    "docs_url": "https://github.com/drknowhow/Yep#memory"
+    "issues_url": "https://github.com/drknowhow/toolspace-site/issues",
+    "docs_url": "https://toolspace.yepgent.com/registry/yep-memory/"
   }
 }
