@@ -1,0 +1,130 @@
+<!-- @dsCard group="Foundations" name="Motion" subtitle="Durations · ease · reveal-on-scroll" w="980" h="680" -->
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>yepgent — Motion</title>
+<link rel="stylesheet" href="../tokens.ds.css">
+<link rel="stylesheet" href="../_preview.css">
+<style>
+  /* Motion anatomy, mirrored from BRAND.md §6 + style.css reduced-motion gate. */
+
+  /* Duration rows: a label, the token, and a bar that animates its width once
+     per cycle so each duration reads as a felt length, not just a number. */
+  .dur-row { display: grid; grid-template-columns: minmax(0, 9rem) minmax(0, 1fr) 9rem; align-items: center; gap: var(--s-4); }
+  .dur-row + .dur-row { margin-top: var(--s-4); }
+  .dur-meta { min-width: 0; }
+  .dur-name { font-size: 0.95rem; color: var(--ink); }
+  .dur-use  { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); margin-top: 0.15rem; }
+  .dur-track { height: 12px; border-radius: var(--r-pill); background: var(--accent-soft); overflow: hidden; }
+  .dur-fill  { height: 100%; width: 8%; border-radius: var(--r-pill); background: var(--accent); transform-origin: left; }
+  .dur-fill.f-fast { animation: dur-sweep var(--dur-fast) var(--ease) 200ms infinite alternate; }
+  .dur-fill.f-comp { animation: dur-sweep var(--dur)      var(--ease) 200ms infinite alternate; }
+  .dur-fill.f-slow { animation: dur-sweep var(--dur-slow) var(--ease) 200ms infinite alternate; }
+  .dur-val { font-family: var(--mono); font-size: 0.74rem; color: var(--ink-soft); text-align: right; }
+  @keyframes dur-sweep { from { width: 8%; } to { width: 100%; } }
+
+  /* Ease specimen: the shared curve, plotted, with a dot that travels it. */
+  .ease-card { display: grid; grid-template-columns: minmax(0, 7rem) minmax(0, 1fr); gap: var(--s-5); align-items: center; }
+  .ease-card > * { min-width: 0; }
+  .ease-plot { width: 7rem; height: 7rem; }
+  .ease-plot .grid-line { stroke: var(--rule); stroke-width: 1; }
+  .ease-plot .curve { fill: none; stroke: var(--accent); stroke-width: 3; stroke-linecap: round; }
+  .ease-plot .dot { fill: var(--accent); }
+  .ease-plot .dot.travels { animation: ease-travel var(--dur-slow) var(--ease) 200ms infinite alternate; }
+  @keyframes ease-travel { from { transform: translate(0, 0); } to { transform: translate(84px, -84px); } }
+  .ease-def { font-family: var(--mono); font-size: 0.82rem; color: var(--ink); }
+  .ease-def b { color: var(--accent); font-weight: 600; }
+  .ease-note { color: var(--muted); font-size: 0.86rem; margin-top: 0.4rem; line-height: 1.55; }
+
+  /* Reveal demo: an element that rises from opacity:0 translateY into place,
+     using var(--ease) + --dur-slow, looped subtly so the motion is legible. */
+  .reveal-stage { padding: var(--s-6) var(--s-5); }
+  .reveal-up {
+    opacity: 0;
+    transform: translateY(18px);
+    animation: reveal-loop calc(var(--dur-slow) * 5) var(--ease) infinite;
+  }
+  .reveal-up .ru-eyebrow { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); }
+  .reveal-up .ru-line { font-family: var(--serif); font-size: 1.5rem; line-height: 1.2; color: var(--ink); margin: 0.4rem 0 0; max-width: 26ch; }
+  .reveal-up .ru-line .serif-italic { font-style: italic; color: var(--accent); }
+  /* The loop spends most of its cycle settled (is-in), then resets, so the
+     reveal rise reads clearly on a card without constant churn. */
+  @keyframes reveal-loop {
+    0%   { opacity: 0; transform: translateY(18px); }
+    16%  { opacity: 1; transform: translateY(0); }
+    82%  { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(18px); }
+  }
+
+  .legend { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); margin-top: var(--s-3); }
+
+  /* Every site animation is reduced-motion gated: freeze to the settled state. */
+  @media (prefers-reduced-motion: reduce) {
+    .dur-fill, .ease-plot .dot.travels, .reveal-up { animation: none !important; }
+    .dur-fill { width: 100%; }
+    .reveal-up { opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+<main class="ds">
+  <p class="ds-eyebrow"><span class="eyebrow-tick"></span> foundations / motion</p>
+  <h1 class="ds-title">Motion</h1>
+  <p class="ds-lede">Three durations, one curve. Things <em>settle</em> rather than snap: a fast hover, a measured component change, a slow rise as sections meet the fold. Every animation on the site is gated behind reduced-motion.</p>
+
+  <hr class="ds-rule">
+
+  <section class="ds-section">
+    <p class="ds-section-h">DURATIONS</p>
+    <div class="panel">
+      <div class="dur-row">
+        <div class="dur-meta"><div class="dur-name">Fast</div><div class="dur-use">hover micro-feedback</div></div>
+        <div class="dur-track"><span class="dur-fill f-fast"></span></div>
+        <div class="dur-val">--dur-fast · 150ms</div>
+      </div>
+      <div class="dur-row">
+        <div class="dur-meta"><div class="dur-name">Component</div><div class="dur-use">state change, nav compact</div></div>
+        <div class="dur-track"><span class="dur-fill f-comp"></span></div>
+        <div class="dur-val">--dur · 280ms</div>
+      </div>
+      <div class="dur-row">
+        <div class="dur-meta"><div class="dur-name">Slow</div><div class="dur-use">reveal rise on scroll</div></div>
+        <div class="dur-track"><span class="dur-fill f-slow"></span></div>
+        <div class="dur-val">--dur-slow · 640ms</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ds-section">
+    <p class="ds-section-h">SHARED EASE</p>
+    <div class="panel ease-card">
+      <svg class="ease-plot" viewBox="0 0 100 100" aria-hidden="true">
+        <line class="grid-line" x1="8" y1="92" x2="92" y2="92"></line>
+        <line class="grid-line" x1="8" y1="8"  x2="8"  y2="92"></line>
+        <!-- cubic-bezier(.2,.6,.2,1) plotted on an 8..92 box, y inverted. -->
+        <path class="curve" d="M8 92 C 24.8 41.6, 24.8 8, 92 8"></path>
+        <circle class="dot travels" cx="8" cy="92" r="3.2"></circle>
+      </svg>
+      <div>
+        <div class="ease-def">--ease: <b>cubic-bezier(.2, .6, .2, 1)</b></div>
+        <p class="ease-note">One curve carries every transition. Quick to leave, soft to arrive: motion enters with intent and decelerates into rest, never bouncing or overshooting.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="ds-section">
+    <p class="ds-section-h">REVEAL ON SCROLL</p>
+    <div class="panel reveal-stage">
+      <div class="reveal-up">
+        <span class="ru-eyebrow">is-in</span>
+        <p class="ru-line">A section <span class="serif-italic">rises</span> into place as it meets the fold.</p>
+      </div>
+      <p class="legend">opacity 0 → 1 · translateY(18px) → 0 · --dur-slow · --ease</p>
+    </div>
+    <p class="ds-note">On the live site an IntersectionObserver adds <code>.is-in</code> once, as the section nears the fold (looped here to show the motion). If <code>prefers-reduced-motion: reduce</code> fires or JS is absent, every reveal target lands at <code>opacity: 1; transform: none;</code> immediately: content is never left invisible.</p>
+  </section>
+</main>
+</body>
+</html>

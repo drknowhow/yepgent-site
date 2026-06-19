@@ -1,0 +1,145 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   _preview.css — shared harness for every Yep / yepgent.com DS card.
+
+   The editorial light shell: warm-white canvas, flush-left hierarchy, acres
+   of whitespace, a soft accent glow, mono eyebrow with a leading tick, and
+   serif-italic for emphasis. Cards link tokens.ds.css FIRST, then this file,
+   and set <html data-theme="light"> so they read as the marketing site.
+
+   Restraint is the brand. Accent stays a minority. Nothing shouts.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+html { overflow-x: clip; }
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font: 16px/1.6 var(--sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  /* Soft ambient glow — the site's warmth, subtle accent radial, top-left. */
+  background-image: radial-gradient(circle at 10% 4%, var(--accent-soft) 0%, transparent 42%);
+  background-attachment: fixed;
+}
+
+.ds {
+  max-width: 56rem;
+  margin: 0 auto;
+  padding: var(--s-8) clamp(1.25rem, 5vw, var(--s-9)) var(--s-9);
+}
+
+/* ── Eyebrow → title → lede (flush-left editorial header) ─────────────
+   The eyebrow is uppercase mono micro-text with a leading accent tick —
+   the site's canonical v4-eyebrow pattern. */
+.ds-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0;
+}
+.eyebrow-tick {
+  width: 1.6rem;
+  height: 1px;
+  background: var(--accent);
+  display: inline-block;
+}
+.ds-title {
+  margin: var(--s-4) 0 0;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  line-height: 1.04;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.serif-italic { font-family: var(--serif); font-style: italic; color: var(--accent); }
+.ds-lede {
+  margin: var(--s-4) 0 0;
+  font-size: 1.18rem;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  max-width: 40rem;
+}
+.ds-lede em { font-family: var(--serif); font-style: italic; color: var(--accent); }
+.ds-note { color: var(--muted); font-size: 0.92rem; max-width: 42rem; line-height: 1.6; }
+
+.ds-rule { border: 0; border-top: 1px solid var(--rule); margin: var(--s-8) 0; }
+
+.ds-section + .ds-section { margin-top: var(--s-8); }
+.ds-section-h {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+  margin: 0 0 var(--s-4);
+}
+
+/* ── Layout primitives ───────────────────────────────────────────── */
+.cluster { display: flex; flex-wrap: wrap; gap: var(--s-4); align-items: center; }
+.stack   { display: flex; flex-direction: column; gap: var(--s-4); }
+.grid    { display: grid; gap: var(--s-4); }
+.grid > * { min-width: 0; }
+.grid.cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.grid.cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+/* ── Glass / card surface (one tinted shadow, no border+blur combo) ─ */
+.panel {
+  background: var(--card-bg);
+  border: 1px solid var(--card-edge);
+  border-radius: var(--r-card);
+  padding: var(--s-5);
+}
+
+/* ── Swatches ────────────────────────────────────────────────────── */
+.swatch {
+  border: 1px solid var(--rule);
+  border-radius: var(--r-card);
+  overflow: hidden;
+  background: var(--card-bg);
+}
+.swatch-chip { height: 60px; width: 100%; display: block; }
+.swatch-meta { padding: 0.6rem 0.7rem; }
+.swatch-name { font-size: 0.9rem; font-weight: 600; color: var(--ink); }
+.swatch-tok  { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); }
+.swatch-hex  { font-family: var(--mono); font-size: 0.72rem; color: var(--ink-soft); }
+
+/* ── Token chip ──────────────────────────────────────────────────── */
+.tok {
+  display: inline-flex; align-items: baseline; gap: 0.4rem;
+  font-family: var(--mono); font-size: 0.72rem;
+  background: var(--card-bg);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-field);
+  padding: 0.15rem 0.5rem;
+}
+.tok b { color: var(--accent); font-weight: 600; }
+.tok span { color: var(--ink-soft); }
+
+/* ── Type specimen ───────────────────────────────────────────────── */
+.specimen + .specimen { margin-top: var(--s-5); }
+.specimen-meta { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); margin-bottom: 0.3rem; }
+.specimen-line { line-height: 1.1; color: var(--ink); }
+
+/* ── Scale bars ──────────────────────────────────────────────────── */
+.scale-row { display: grid; grid-template-columns: 4rem 4rem 1fr; align-items: center; gap: var(--s-4); }
+.scale-row + .scale-row { margin-top: 0.7rem; }
+.scale-tok { font-family: var(--mono); font-size: 0.72rem; color: var(--ink-soft); }
+.scale-val { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); }
+.scale-bar { height: 14px; border-radius: var(--r-field); background: var(--accent); }
+
+/* ── Sample tiles (radii / elevation) ────────────────────────────── */
+.sample { display: flex; flex-direction: column; gap: 0.5rem; align-items: center; text-align: center; }
+.sample-box { width: 100%; height: 76px; background: var(--card-bg); border: 1px solid var(--rule); }
+.sample-cap { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); }
+
+a { color: var(--accent); text-underline-offset: 2px; }
+code, .mono { font-family: var(--mono); }

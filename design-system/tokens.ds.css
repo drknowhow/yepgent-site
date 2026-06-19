@@ -1,0 +1,97 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   tokens.ds.css — Yep / yepgent.com design system (v4 canon).
+
+   Source of truth: yepgent-site/style.css :root + BRAND.md + DESIGN.md
+   (v4 design system, locked 2026-06-06). Direction: "functionalist editorial
+   with a terminal undertone." Warm-white in light, near-black in dark.
+   Committed brand green at <=12% of any surface; everything else neutral.
+
+   Theme: dark is the :root default (BRAND canon); light fires on OS
+   preference OR explicit html[data-theme="light"]. The design-system cards
+   force data-theme="light" so they read as the warm editorial site.
+
+   Brand: "Yep, an agent that grows."  Symbol: the drawn sprout (growth, not
+   decoration). Wordmark: yepgent. (lowercase, green dot).
+   ═══════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── Color · dark (default, BRAND canon) ───────────────────────────
+     Accent #1db981 is the canonized emerald (same hue family as light
+     #0a8a5a, lifted to clear WCAG AA on near-black). */
+  --bg:            #0e0f12;
+  --fg:            #e8e8ea;
+  --muted:         #8a8c92;
+  --accent:        #1db981;
+  --accent-strong: #2fd497;
+  --accent-soft:   rgba(29, 185, 129, 0.13);
+  --accent-edge:   rgba(29, 185, 129, 0.32);
+  --rule:          #1f2127;
+  --field-bg:      #15171c;
+  --field-edge:    #262931;
+  --card-bg:       rgba(255, 255, 255, 0.025);
+  --card-edge:     rgba(255, 255, 255, 0.06);
+  --shadow-tint:   rgba(0, 0, 0, 0.45);
+
+  /* ── Spacing · single non-linear ramp (px in comments) ─────────── */
+  --s-1: 0.25rem;  /* 4   */
+  --s-2: 0.5rem;   /* 8   */
+  --s-3: 0.75rem;  /* 12  */
+  --s-4: 1rem;     /* 16  */
+  --s-5: 1.5rem;   /* 24  */
+  --s-6: 2rem;     /* 32  */
+  --s-7: 3rem;     /* 48  */
+  --s-8: 4rem;     /* 64  */
+  --s-9: 6rem;     /* 96  */
+  --s-10: 8rem;    /* 128 */
+
+  /* ── Radii · containers <=12px; pills for chips/buttons only ───── */
+  --r-field: 8px;
+  --r-card:  12px;
+  --r-pill:  999px;
+
+  /* ── Motion · all usage gated behind prefers-reduced-motion ────── */
+  --dur-fast: 150ms;
+  --dur:      280ms;
+  --dur-slow: 640ms;
+  --ease:     cubic-bezier(.2, .6, .2, 1);
+
+  --measure: 42rem;
+
+  /* ── v4 shell tokens (promoted from body.home-v4 so cards inherit) ─
+     The editorial layer: serif display, fluid heads, ink/line/glass. */
+  --serif:      "Iowan Old Style", "Apple Garamond", Georgia, "Times New Roman", serif;
+  --sans:       ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono:       ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --display:    clamp(2.8rem, 8vw, 7rem);
+  --h2:         clamp(2rem, 4.4vw, 3.8rem);
+  --ink:        var(--fg);
+  --ink-soft:   color-mix(in oklab, var(--fg) 70%, transparent);
+  --line:       color-mix(in oklab, var(--fg) 14%, transparent);
+  --glass:      color-mix(in oklab, var(--bg) 75%, transparent);
+  --glass-edge: color-mix(in oklab, var(--fg) 11%, transparent);
+}
+
+/* ── Light · BRAND canon (warm-white). Fires on OS pref unless the page
+   explicitly opts into dark, OR on explicit html[data-theme="light"]. ── */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #fafafa;  --fg: #131418;  --muted: #5e6068;
+    --accent: #0a8a5a;  --accent-strong: #0c7d54;
+    --accent-soft: rgba(10, 138, 90, 0.10);
+    --accent-edge: rgba(10, 138, 90, 0.30);
+    --rule: #e6e7eb;
+    --field-bg: #ffffff;  --field-edge: #d6d8de;
+    --card-bg: rgba(0, 0, 0, 0.02);  --card-edge: rgba(0, 0, 0, 0.08);
+    --shadow-tint: rgba(16, 34, 28, 0.10);
+  }
+}
+html[data-theme="light"] {
+  --bg: #fafafa;  --fg: #131418;  --muted: #5e6068;
+  --accent: #0a8a5a;  --accent-strong: #0c7d54;
+  --accent-soft: rgba(10, 138, 90, 0.10);
+  --accent-edge: rgba(10, 138, 90, 0.30);
+  --rule: #e6e7eb;
+  --field-bg: #ffffff;  --field-edge: #d6d8de;
+  --card-bg: rgba(0, 0, 0, 0.02);  --card-edge: rgba(0, 0, 0, 0.08);
+  --shadow-tint: rgba(16, 34, 28, 0.10);
+}

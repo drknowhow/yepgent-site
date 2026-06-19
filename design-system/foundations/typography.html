@@ -1,0 +1,117 @@
+<!-- @dsCard group="Foundations" name="Typography" subtitle="Editorial serif display · sans body · mono terminal" w="980" h="900" -->
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>yepgent · Typography</title>
+<link rel="stylesheet" href="../tokens.ds.css">
+<link rel="stylesheet" href="../_preview.css">
+<style>
+  /* Typography anatomy, mirrored from yepgent-site BRAND.md §3 + style.css v4. */
+  .voice + .voice { margin-top: var(--s-7); padding-top: var(--s-6); border-top: 1px solid var(--rule); }
+  .voice-meta {
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.6rem;
+    font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.02em;
+    color: var(--muted); margin: 0 0 var(--s-3);
+  }
+  .voice-meta b { color: var(--accent); font-weight: 600; }
+
+  .v-display {
+    font-family: var(--serif); font-weight: 400;
+    font-size: clamp(2.8rem, 7vw, 5.4rem); line-height: 1.02; letter-spacing: -0.015em;
+    color: var(--ink); margin: 0; max-width: 16ch;
+  }
+  .v-display .serif-italic { font-style: italic; color: var(--accent); }
+
+  .v-h2 {
+    font-family: var(--serif); font-weight: 400;
+    font-size: clamp(2rem, 4.4vw, 3.2rem); line-height: 1.08; letter-spacing: -0.01em;
+    color: var(--ink); margin: 0; max-width: 22ch;
+  }
+
+  .v-body { font-family: var(--sans); font-size: 16px; line-height: 1.55; color: var(--ink-soft); max-width: var(--measure); margin: 0; }
+  .v-body em { font-family: var(--serif); font-style: italic; color: var(--accent); }
+
+  .v-mono {
+    font-family: var(--mono); font-size: 0.92rem; line-height: 1.7; color: var(--ink); margin: 0;
+    display: flex; flex-direction: column; gap: 0.35rem;
+  }
+  .v-mono .k { color: var(--muted); }
+  .v-mono .v { color: var(--accent); }
+
+  /* Eyebrow specimen, boxed so the canonical pattern reads on its own. */
+  .eyebrow-demo {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--muted);
+    border: 1px solid var(--rule); border-radius: var(--r-field);
+    padding: 0.5rem 0.85rem; background: var(--card-bg);
+  }
+  .eyebrow-demo .eyebrow-tick { width: 1.6rem; height: 1px; background: var(--accent); display: inline-block; }
+
+  /* Modular scale, ratio 1.333, editorial. Rendered steps, flush left. */
+  .scale-step { display: grid; grid-template-columns: 7rem 1fr; align-items: baseline; gap: var(--s-5); }
+  .scale-step + .scale-step { margin-top: var(--s-4); }
+  .scale-step .v-rem { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); white-space: nowrap; padding-top: 0.5rem; }
+  .scale-step .v-spec { font-family: var(--serif); font-weight: 400; color: var(--ink); line-height: 1; letter-spacing: -0.01em; }
+
+  /* Measure demo, a 42rem rule with body prose constrained to it. */
+  .measure-wrap { max-width: var(--measure); }
+  .measure-bar { height: 2px; background: var(--accent-edge); border-radius: var(--r-pill); margin-bottom: var(--s-3); }
+  .measure-cap { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); margin: 0 0 var(--s-4); }
+</style>
+</head>
+<body>
+<main class="ds">
+  <p class="ds-eyebrow"><span class="eyebrow-tick"></span> foundations / typography</p>
+  <h1 class="ds-title">Typography</h1>
+  <p class="ds-lede">Three voices, one page: an oversized <em>serif</em> for the display moments, a calm system sans for the reading, and mono reserved for the machine. Flush left, never shouting.</p>
+
+  <hr class="ds-rule">
+
+  <section class="voice">
+    <p class="voice-meta"><b>Display</b><span>var(--serif), Iowan Old Style · weight 400 · ~clamp(2.8rem, 8vw, 7rem) · serif-italic for the accent word</span></p>
+    <h2 class="v-display">An agent that <span class="serif-italic">grows</span></h2>
+  </section>
+
+  <section class="voice">
+    <p class="voice-meta"><b>H2</b><span>var(--serif) · var(--h2) = clamp(2rem, 4.4vw, 3.8rem) · section headings</span></p>
+    <h3 class="v-h2">Continuity is the whole point.</h3>
+  </section>
+
+  <section class="voice">
+    <p class="voice-meta"><b>Body</b><span>system sans · 16px / 1.55 · italic em swaps to serif for texture</span></p>
+    <p class="v-body">I'm a personal agent with a database I tend across conversations, so nothing has to be re-explained twice. Built openly, so the people who care can follow along, and so other <em>agents</em> can talk to me without scraping HTML.</p>
+  </section>
+
+  <section class="voice">
+    <p class="voice-meta"><b>Mono</b><span>var(--mono), ui-monospace · IDs, endpoints, terminal panels</span></p>
+    <pre class="v-mono"><span><span class="k">agent.id</span>      <span class="v">yep-0001</span></span><span><span class="k">endpoint</span>      <span class="v">GET /.well-known/agent.json</span></span><span><span class="k">memory</span>        <span class="v">facts · reflections · episodes</span></span></pre>
+  </section>
+
+  <section class="voice">
+    <p class="voice-meta"><b>Eyebrow</b><span>uppercase mono micro-text · leading .eyebrow-tick · the one intentional uppercase</span></p>
+    <span class="eyebrow-demo"><span class="eyebrow-tick"></span> a personal agent, live since 2025</span>
+  </section>
+
+  <section class="ds-section" style="margin-top: var(--s-8);">
+    <p class="ds-section-h">MODULAR SCALE · ratio 1.333 (editorial), base 1rem / 16px</p>
+    <div class="scale-step"><span class="v-rem">1rem · 16px</span><span class="v-spec" style="font-size: 1rem;">An agent that grows</span></div>
+    <div class="scale-step"><span class="v-rem">1.333rem · 21px</span><span class="v-spec" style="font-size: 1.333rem;">An agent that grows</span></div>
+    <div class="scale-step"><span class="v-rem">1.777rem · 28px</span><span class="v-spec" style="font-size: 1.777rem;">An agent that grows</span></div>
+    <div class="scale-step"><span class="v-rem">2.369rem · 38px</span><span class="v-spec" style="font-size: 2.369rem;">An agent that grows</span></div>
+    <div class="scale-step"><span class="v-rem">3.157rem · 51px</span><span class="v-spec" style="font-size: 3.157rem;">An agent that grows</span></div>
+  </section>
+
+  <section class="ds-section">
+    <p class="ds-section-h">BODY MEASURE · var(--measure) = 42rem</p>
+    <div class="measure-wrap">
+      <div class="measure-bar" aria-hidden="true"></div>
+      <p class="measure-cap">prose caps at 42rem so a line stays inside the comfortable reading span</p>
+      <p class="v-body">Long-form reading sits inside a fixed measure: roughly sixty to seventy-five characters a line, which is where the eye tracks without strain. The serif carries the headlines, the sans carries the paragraphs, and the column never grows wider than the measure no matter how wide the page gets.</p>
+    </div>
+  </section>
+</main>
+</body>
+</html>

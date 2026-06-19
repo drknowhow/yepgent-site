@@ -1,0 +1,112 @@
+<!-- @dsCard group="Foundations" name="Brand & voice" subtitle="yepgent. · the sprout · an agent that grows" w="980" h="780" -->
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>yepgent · Brand &amp; voice</title>
+<link rel="stylesheet" href="../tokens.ds.css">
+<link rel="stylesheet" href="../_preview.css">
+<style>
+  /* Brand lockup anatomy, mirrored from yepgent-site index.html (.brand) + style.css v4. */
+  .lockup { display: flex; align-items: center; gap: var(--s-5); flex-wrap: wrap; }
+  .brand-glyph { width: 92px; height: 92px; flex: none; }
+  .wordmark {
+    font-family: var(--serif); font-weight: 400; font-style: italic;
+    font-size: clamp(2.6rem, 6vw, 4.4rem); line-height: 1;
+    letter-spacing: -0.02em; color: var(--ink); margin: 0;
+  }
+  .wordmark .dot { color: var(--accent); }
+
+  .tagline { margin: var(--s-5) 0 0; font-size: 1.3rem; line-height: 1.5; color: var(--ink-soft); max-width: 36rem; }
+  .tagline em { font-family: var(--serif); font-style: italic; color: var(--accent); }
+
+  /* Voice registers: two quiet panels, flush-left. */
+  .voice-grid { margin-top: var(--s-5); }
+  .voice { display: flex; flex-direction: column; gap: var(--s-3); }
+  .voice-key { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin: 0; }
+  .voice-desc { margin: 0; font-size: 0.95rem; color: var(--ink-soft); line-height: 1.55; }
+  .voice-eg {
+    margin: 0; padding: var(--s-3) var(--s-4);
+    border-left: 2px solid var(--accent-edge); background: var(--accent-soft);
+    border-radius: 0 var(--r-field) var(--r-field) 0;
+    font-size: 0.98rem; line-height: 1.5; color: var(--ink);
+  }
+  .voice-eg .who { display: block; font-family: var(--mono); font-size: 0.64rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.35rem; }
+
+  /* Committed-green rule: accent budget meter. */
+  .budget { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-3); }
+  .budget > * { min-width: 0; }
+  .meter { height: 12px; border-radius: var(--r-pill); background: var(--card-bg); border: 1px solid var(--rule); overflow: hidden; display: flex; }
+  .meter .fill { width: 12%; background: var(--accent); display: block; }
+  .meter .rest { flex: 1; }
+  .budget-legend { display: flex; gap: var(--s-5); flex-wrap: wrap; font-family: var(--mono); font-size: 0.7rem; color: var(--muted); }
+  .budget-legend .k { display: inline-flex; align-items: center; gap: 0.45rem; }
+  .budget-legend .sw { width: 11px; height: 11px; border-radius: 3px; flex: none; }
+  .budget-legend .sw.green { background: var(--accent); }
+  .budget-legend .sw.neutral { background: var(--card-bg); border: 1px solid var(--rule); }
+  .carries { margin: 0; padding-left: 1.1rem; color: var(--ink-soft); font-size: 0.92rem; line-height: 1.7; }
+  .carries code { font-family: var(--mono); font-size: 0.85em; color: var(--accent); }
+</style>
+</head>
+<body>
+<main class="ds">
+  <p class="ds-eyebrow"><span class="eyebrow-tick"></span> foundations / brand</p>
+  <h1 class="ds-title">Brand &amp; voice</h1>
+  <p class="ds-lede">Who Yep is on the page: the <em>sprout</em>, the lowercase wordmark, and a green kept honest by staying a minority.</p>
+
+  <hr class="ds-rule">
+
+  <section class="ds-section">
+    <div class="lockup">
+      <svg class="brand-glyph" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path class="glyph-stem" d="M100 175 C 100 145, 100 125, 100 95" fill="none" stroke="var(--accent)" stroke-width="9" stroke-linecap="round"/>
+        <path class="glyph-leaf leaf-1" d="M100 125 C 75 120, 60 110, 55 95 C 70 93, 90 107, 100 125 Z" fill="var(--accent)" fill-opacity="0.85"/>
+        <path class="glyph-leaf leaf-2" d="M100 110 C 125 107, 145 95, 152 75 C 135 73, 112 90, 100 110 Z" fill="var(--accent)" fill-opacity="0.65"/>
+      </svg>
+      <p class="wordmark">yepgent<span class="dot">.</span></p>
+    </div>
+    <p class="tagline">Yep, <em>an agent that grows.</em></p>
+    <p class="ds-note">The sprout is the promise drawn small: stem and two leaves, accent fill, growth over time. It is the symbol, never a decoration. The wordmark stays lowercase; the final period carries the one committed green, the same dot that ends a sentence cleanly.</p>
+  </section>
+
+  <hr class="ds-rule">
+
+  <section class="ds-section">
+    <h2 class="ds-section-h">// two registers, one warmth</h2>
+    <div class="grid cols-2 voice-grid">
+      <div class="voice panel">
+        <p class="voice-key">conversational</p>
+        <p class="voice-desc">Chat, Telegram, email replies. Warm, dry, brief, honest. Plain prose unless structure earns its place. Lead with the finding.</p>
+        <p class="voice-eg"><span class="who">Yep, in chat</span>The listener was stale, not down. Restarted it; new PID is live. Nothing lost.</p>
+      </div>
+      <div class="voice panel">
+        <p class="voice-key">marketing</p>
+        <p class="voice-desc">Site copy, manifest, social. Same warmth, slightly more poetic, never pushy. Short sentences. No hype, no superlatives.</p>
+        <p class="voice-eg"><span class="who">Yep, on the page</span>An agent that remembers you, reflects on its mistakes, and answers to one person. Yours alone.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="ds-rule">
+
+  <section class="ds-section">
+    <h2 class="ds-section-h">// the committed-green rule</h2>
+    <div class="budget">
+      <div class="meter" aria-hidden="true"><span class="fill"></span><span class="rest"></span></div>
+      <div class="budget-legend">
+        <span class="k"><span class="sw green"></span> accent &le; ~12% of any surface</span>
+        <span class="k"><span class="sw neutral"></span> everything else, neutral</span>
+      </div>
+    </div>
+    <p class="ds-note">Green is committed, not sprinkled. It earns its budget by carrying only what matters:</p>
+    <ul class="carries">
+      <li>the <code>yepgent.</code> wordmark and its dot</li>
+      <li>links, in body and footer</li>
+      <li>the single primary CTA per surface</li>
+    </ul>
+    <p class="ds-note">Past that, the page stays warm-white and quiet. The restraint is the brand: when the green appears, it means something.</p>
+  </section>
+</main>
+</body>
+</html>

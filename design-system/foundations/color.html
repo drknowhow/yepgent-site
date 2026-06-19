@@ -1,0 +1,88 @@
+<!-- @dsCard group="Foundations" name="Color" subtitle="Warm-white canon · committed green · dark alt" w="980" h="860" -->
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>yepgent · Color</title>
+<link rel="stylesheet" href="../tokens.ds.css">
+<link rel="stylesheet" href="../_preview.css">
+<style>
+  /* Color anatomy. Swatch usage mirrored from hero.html; dark-alt row uses
+     explicit hex so both themes render on one light card. */
+  .swatch-chip { height: 72px; }
+  .swatch-chip.ring { box-shadow: inset 0 0 0 1px var(--card-edge); }
+
+  /* Dark-alt theme strip: a near-black surface inset on the light card. */
+  .dark-strip {
+    background: #0e0f12; color: #e8e8ea;
+    border: 1px solid #1f2127; border-radius: var(--r-card);
+    padding: var(--s-5);
+  }
+  .dark-strip .ds-section-h { color: #8a8c92; }
+  .dark-swatch {
+    border: 1px solid #1f2127; border-radius: var(--r-card);
+    overflow: hidden; background: rgba(255, 255, 255, 0.025);
+  }
+  .dark-swatch .swatch-chip { height: 72px; width: 100%; display: block; }
+  .dark-swatch .swatch-meta { padding: 0.6rem 0.7rem; }
+  .dark-swatch .swatch-name { font-size: 0.9rem; font-weight: 600; color: #e8e8ea; }
+  .dark-swatch .swatch-tok  { font-family: var(--mono); font-size: 0.72rem; color: #8a8c92; }
+  .dark-swatch .swatch-hex  { font-family: var(--mono); font-size: 0.72rem; color: #b8b9bd; }
+
+  .accent-note { display: flex; align-items: flex-start; gap: var(--s-3); }
+  .accent-note .lock { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); white-space: nowrap; padding-top: 0.15rem; }
+</style>
+</head>
+<body>
+<main class="ds">
+  <p class="ds-eyebrow"><span class="eyebrow-tick"></span> foundations / color</p>
+  <h1 class="ds-title">Color</h1>
+  <p class="ds-lede">Warm-white is the face. One <em>committed</em> emerald, hue-locked across themes, kept to a minority of any surface.</p>
+
+  <hr class="ds-rule">
+
+  <section class="ds-section">
+    <h2 class="ds-section-h">// light canon : the warm-white face (#fafafa)</h2>
+    <div class="grid cols-4">
+      <div class="swatch"><span class="swatch-chip ring" style="background:#fafafa"></span><div class="swatch-meta"><div class="swatch-name">Page</div><div class="swatch-tok">--bg</div><div class="swatch-hex">#fafafa</div></div></div>
+      <div class="swatch"><span class="swatch-chip ring" style="background:#ffffff"></span><div class="swatch-meta"><div class="swatch-name">Card</div><div class="swatch-tok">--card-bg</div><div class="swatch-hex">#ffffff</div></div></div>
+      <div class="swatch"><span class="swatch-chip" style="background:#131418"></span><div class="swatch-meta"><div class="swatch-name">Ink</div><div class="swatch-tok">--fg</div><div class="swatch-hex">#131418</div></div></div>
+      <div class="swatch"><span class="swatch-chip" style="background:#5e6068"></span><div class="swatch-meta"><div class="swatch-name">Muted</div><div class="swatch-tok">--muted</div><div class="swatch-hex">#5e6068</div></div></div>
+      <div class="swatch"><span class="swatch-chip ring" style="background:#e6e7eb"></span><div class="swatch-meta"><div class="swatch-name">Rule</div><div class="swatch-tok">--rule</div><div class="swatch-hex">#e6e7eb</div></div></div>
+      <div class="swatch"><span class="swatch-chip" style="background:#0a8a5a"></span><div class="swatch-meta"><div class="swatch-name">Accent</div><div class="swatch-tok">--accent</div><div class="swatch-hex">#0a8a5a</div></div></div>
+      <div class="swatch"><span class="swatch-chip" style="background:#0c7d54"></span><div class="swatch-meta"><div class="swatch-name">Accent strong</div><div class="swatch-tok">--accent-strong</div><div class="swatch-hex">#0c7d54</div></div></div>
+      <div class="swatch"><span class="swatch-chip ring" style="background:rgba(10,138,90,0.10)"></span><div class="swatch-meta"><div class="swatch-name">Accent soft</div><div class="swatch-tok">--accent-soft</div><div class="swatch-hex">10% wash</div></div></div>
+      <div class="swatch"><span class="swatch-chip ring" style="background:rgba(10,138,90,0.30)"></span><div class="swatch-meta"><div class="swatch-name">Accent edge</div><div class="swatch-tok">--accent-edge</div><div class="swatch-hex">30% glow</div></div></div>
+    </div>
+  </section>
+
+  <hr class="ds-rule">
+
+  <section class="ds-section">
+    <div class="dark-strip">
+      <h2 class="ds-section-h">// dark alt : same emerald, lifted for near-black (#0e0f12)</h2>
+      <div class="grid cols-4">
+        <div class="dark-swatch"><span class="swatch-chip" style="background:#0e0f12;box-shadow:inset 0 0 0 1px #1f2127"></span><div class="swatch-meta"><div class="swatch-name">Page</div><div class="swatch-tok">--bg</div><div class="swatch-hex">#0e0f12</div></div></div>
+        <div class="dark-swatch"><span class="swatch-chip" style="background:#e8e8ea"></span><div class="swatch-meta"><div class="swatch-name">Ink</div><div class="swatch-tok">--fg</div><div class="swatch-hex">#e8e8ea</div></div></div>
+        <div class="dark-swatch"><span class="swatch-chip" style="background:#8a8c92"></span><div class="swatch-meta"><div class="swatch-name">Muted</div><div class="swatch-tok">--muted</div><div class="swatch-hex">#8a8c92</div></div></div>
+        <div class="dark-swatch"><span class="swatch-chip" style="background:#1f2127"></span><div class="swatch-meta"><div class="swatch-name">Rule</div><div class="swatch-tok">--rule</div><div class="swatch-hex">#1f2127</div></div></div>
+        <div class="dark-swatch"><span class="swatch-chip" style="background:#1db981"></span><div class="swatch-meta"><div class="swatch-name">Accent</div><div class="swatch-tok">--accent</div><div class="swatch-hex">#1db981</div></div></div>
+        <div class="dark-swatch"><span class="swatch-chip" style="background:#2fd497"></span><div class="swatch-meta"><div class="swatch-name">Accent strong</div><div class="swatch-tok">--accent-strong</div><div class="swatch-hex">#2fd497</div></div></div>
+        <div class="dark-swatch"><span class="swatch-chip" style="background:rgba(29,185,129,0.13)"></span><div class="swatch-meta"><div class="swatch-name">Accent soft</div><div class="swatch-tok">--accent-soft</div><div class="swatch-hex">13% wash</div></div></div>
+        <div class="dark-swatch"><span class="swatch-chip" style="background:rgba(29,185,129,0.32)"></span><div class="swatch-meta"><div class="swatch-name">Accent edge</div><div class="swatch-tok">--accent-edge</div><div class="swatch-hex">32% glow</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="ds-rule">
+
+  <section class="ds-section">
+    <div class="accent-note">
+      <span class="lock">hue-locked</span>
+      <p class="ds-note" style="margin:0">The accent is one emerald across both themes: <code class="mono">#0a8a5a</code> on warm-white, lifted to <code class="mono">#1db981</code> on near-black only enough to clear WCAG AA. It never shifts hue, and it never claims more than ~12% of a surface. Everything else stays neutral so the green keeps its meaning.</p>
+    </div>
+  </section>
+</main>
+</body>
+</html>

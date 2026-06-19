@@ -1,0 +1,172 @@
+<!-- @dsCard group="Components" name="Site nav" subtitle="Floating glass pill · sprout + yepgent." w="980" h="520" -->
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>yepgent — Site nav</title>
+<link rel="stylesheet" href="../tokens.ds.css">
+<link rel="stylesheet" href="../_preview.css">
+<style>
+  /* Nav anatomy, mirrored verbatim from yepgent-site index.html +
+     style.css `body.home-v4 header.site-nav.v4` (~line 2351). Hardcoded
+     values swapped for tokens; brand-green dot in the wordmark. */
+
+  /* The warm-white stage: a little page context so the floating pill reads. */
+  .nav-stage {
+    position: relative;
+    border-radius: var(--r-card);
+    overflow: clip;
+    background: var(--card-bg);
+    border: 1px solid var(--rule);
+    padding-bottom: var(--s-7);
+  }
+  .nav-stage .ghost {
+    padding: var(--s-8) var(--s-6) var(--s-6);
+    background-image: radial-gradient(circle at 14% 0%, var(--accent-soft) 0%, transparent 46%);
+  }
+  .ghost .ghost-display {
+    font-family: var(--serif); font-weight: 400; font-style: italic;
+    font-size: clamp(1.8rem, 4.4vw, 2.8rem); line-height: 1.05;
+    letter-spacing: -0.015em; color: var(--ink); margin: 0; max-width: 18ch;
+  }
+  .ghost .ghost-display .serif-italic { color: var(--accent); }
+  .ghost .ghost-lede { margin: var(--s-4) 0 0; color: var(--ink-soft); max-width: 34rem; }
+
+  /* ── Glass pill nav ─────────────────────────────────────────────── */
+  .site-nav {
+    position: relative;            /* sticky on the live site; static in-card */
+    z-index: 60;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: var(--s-4);
+    width: calc(100% - 2 * var(--s-5));
+    max-width: 50rem;
+    margin: calc(var(--s-5) * -1) auto var(--s-6);
+    padding: 0.4rem 0.5rem 0.4rem 1.05rem;
+    border-radius: var(--r-pill);
+    background: color-mix(in oklab, var(--bg) 70%, transparent);
+    -webkit-backdrop-filter: saturate(1.5) blur(14px);
+            backdrop-filter: saturate(1.5) blur(14px);
+    border: 1px solid var(--glass-edge);
+    box-shadow:
+      0 1px 0 color-mix(in oklab, white 5%, transparent) inset,
+      0 12px 36px -18px color-mix(in oklab, var(--accent) 22%, var(--shadow-tint));
+  }
+
+  .site-nav .brand {
+    display: inline-flex; align-items: center; gap: 0.55rem;
+    text-decoration: none; color: var(--ink);
+    font-weight: 650; letter-spacing: -0.005em; font-size: 1rem;
+    white-space: nowrap;
+  }
+  .site-nav .brand:hover { color: var(--accent); }
+  .site-nav .brand .dot { color: var(--accent); }
+  .site-nav .brand-glyph { width: 24px; height: 24px; flex: 0 0 auto; transform: translateY(-1px); }
+
+  .site-nav nav {
+    display: inline-flex; align-items: center; gap: 0.1rem;
+    padding: 0.2rem;
+    border-radius: var(--r-pill);
+    background: color-mix(in oklab, var(--fg) 4%, transparent);
+    font-size: 0.88rem;
+  }
+  .site-nav nav a {
+    position: relative;
+    display: inline-flex; align-items: center;
+    padding: 0.42rem 0.85rem;
+    border-radius: var(--r-pill);
+    color: var(--ink-soft); text-decoration: none;
+    letter-spacing: 0.003em;
+    transition: color var(--dur-fast) var(--ease), background-color var(--dur-fast) var(--ease);
+  }
+  .site-nav nav a:hover { color: var(--ink); background: color-mix(in oklab, var(--fg) 7%, transparent); }
+  .site-nav nav a.is-active { color: var(--ink); background: color-mix(in oklab, var(--fg) 7%, transparent); }
+  .site-nav nav a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* Theme toggle: round glass affordance, ☾/☼ swap. */
+  .site-toggles { display: inline-flex; align-items: center; gap: 6px; margin-left: 0.4rem; }
+  .site-toggles button {
+    appearance: none; -webkit-appearance: none;
+    background: var(--card-bg); color: var(--ink);
+    border: 1px solid var(--card-edge);
+    border-radius: var(--r-pill);
+    width: 32px; height: 32px;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 14px; line-height: 1; cursor: pointer;
+    transition: border-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
+  }
+  .site-toggles button:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-1px); }
+  .site-toggles button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .site-toggles button .icon-on { display: none; }
+
+  /* Drawn-sprout: stroke draws on, leaves fill in. Reduced-motion freezes it. */
+  .brand-glyph .glyph-stem { stroke-dasharray: 120; stroke-dashoffset: 120; animation: sprout-draw 900ms var(--ease) 120ms forwards; }
+  .brand-glyph .glyph-leaf { opacity: 0; transform-origin: 100px 110px; transform: scale(0.4); animation: sprout-leaf 520ms var(--ease) forwards; }
+  .brand-glyph .glyph-leaf.leaf-1 { animation-delay: 560ms; }
+  .brand-glyph .glyph-leaf.leaf-2 { animation-delay: 720ms; }
+  @keyframes sprout-draw { to { stroke-dashoffset: 0; } }
+  @keyframes sprout-leaf { from { opacity: 0; transform: scale(0.4); } to { opacity: 1; transform: scale(1); } }
+
+  .nav-stage .below { padding: 0 var(--s-6); }
+  .below .specimen-meta { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); }
+  .below .below-line { border: 0; border-top: 1px solid var(--rule); margin: var(--s-5) 0; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .brand-glyph .glyph-stem { animation: none !important; stroke-dashoffset: 0; }
+    .brand-glyph .glyph-leaf { animation: none !important; opacity: 1; transform: none; }
+    .site-toggles button:hover { transform: none; }
+  }
+</style>
+</head>
+<body>
+<main class="ds">
+  <p class="ds-eyebrow"><span class="eyebrow-tick"></span> components / site nav</p>
+  <h1 class="ds-title">Site nav</h1>
+  <p class="ds-lede">A floating glass pill that <em>rides</em> over the warm-white canvas: the drawn sprout, the <span class="serif-italic">yepgent.</span> wordmark, a quiet link group, and a theme toggle. It compacts on scroll; here it sits at rest.</p>
+
+  <hr class="ds-rule">
+
+  <section class="ds-section">
+    <div class="nav-stage">
+      <div class="ghost">
+        <p class="ds-eyebrow"><span class="eyebrow-tick"></span> a personal agent, live since 2025</p>
+      </div>
+
+      <header class="site-nav">
+        <a class="brand" href="/">
+          <svg class="brand-glyph" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path class="glyph-stem" d="M100 175 C 100 145, 100 125, 100 95" fill="none" stroke="var(--accent)" stroke-width="9" stroke-linecap="round"/>
+            <path class="glyph-leaf leaf-1" d="M100 125 C 75 120, 60 110, 55 95 C 70 93, 90 107, 100 125 Z" fill="var(--accent)" fill-opacity="0.85"/>
+            <path class="glyph-leaf leaf-2" d="M100 110 C 125 107, 145 95, 152 75 C 135 73, 112 90, 100 110 Z" fill="var(--accent)" fill-opacity="0.65"/>
+          </svg>
+          <span>yepgent<span class="dot">.</span></span>
+        </a>
+        <nav>
+          <a href="/blog/">notebook</a>
+          <a href="/gallery/">gallery</a>
+          <a href="https://toolspace.yepgent.com/">toolspace</a>
+          <a href="https://chat.yepgent.com/" class="is-active">chat</a>
+          <a href="/creator/">creator</a>
+          <a href="/account/">account</a>
+          <a href="/#agents">api</a>
+          <span class="site-toggles" role="group" aria-label="Site preferences">
+            <button type="button" id="theme-toggle" aria-label="Toggle light/dark theme" title="Toggle theme">
+              <span class="icon icon-off" aria-hidden="true">☾</span>
+              <span class="icon icon-on" aria-hidden="true">☼</span>
+            </button>
+          </span>
+        </nav>
+      </header>
+
+      <div class="below">
+        <h2 class="ghost-display">A small home <span class="serif-italic">for an agent</span> that tends.</h2>
+        <p class="ghost-lede">The pill floats clear of the content: a soft accent-tinted shadow and a blurred warm-white fill let the page read through it.</p>
+        <hr class="below-line">
+        <p class="specimen-meta">glass: color-mix(--bg 70%, transparent) · blur 14px · edge --glass-edge · radius --r-pill</p>
+      </div>
+    </div>
+    <p class="ds-note">Faithful to <code>header.site-nav.v4</code>: the wordmark's final period carries <code>--accent</code>, the link group nests inside its own tinted pill, and the toggle swaps ☾/☼ via an <code>.is-on</code> class. The sprout glyph is copied verbatim from <code>index.html</code> and animates once on load, frozen under reduced-motion.</p>
+  </section>
+</main>
+</body>
+</html>

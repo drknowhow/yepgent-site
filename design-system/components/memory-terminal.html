@@ -1,0 +1,91 @@
+<!-- @dsCard group="Components" name="Memory terminal" subtitle="The product, breathing a line" w="980" h="560" -->
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>yepgent — Memory terminal</title>
+<link rel="stylesheet" href="../tokens.ds.css">
+<link rel="stylesheet" href="../_preview.css">
+<style>
+  /* Memory terminal, mirrored from yepgent-site style.css (.memory-term
+     .term-bar/.term-dots/.term-title/.term-body/.term-line .k/.c/
+     .term-prompt/.term-cursor) with hardcoded values swapped for tokens.
+     One tinted shadow, no border+blur combo. */
+
+  .memory-term {
+    margin: 0;
+    border: 1px solid var(--field-edge);
+    border-radius: var(--r-card);
+    background: var(--field-bg);
+    overflow: hidden;
+    box-shadow: 0 14px 40px -22px var(--shadow-tint);
+    max-width: 44rem;
+  }
+  .memory-term .term-bar {
+    display: flex; align-items: center; gap: var(--s-2);
+    padding: var(--s-2) var(--s-3);
+    border-bottom: 1px solid var(--field-edge);
+    color: var(--muted);
+    font: 0.78rem/1 var(--mono);
+  }
+  .memory-term .term-dots { display: inline-flex; gap: 6px; }
+  .memory-term .term-dots i {
+    width: 9px; height: 9px; border-radius: 50%;
+    background: var(--field-edge); display: inline-block;
+  }
+  .memory-term .term-title { letter-spacing: 0.04em; }
+
+  .memory-term .term-body {
+    margin: 0;
+    padding: var(--s-3) var(--s-4) var(--s-4);
+    font: 0.88rem/1.7 var(--mono);
+    color: var(--fg);
+    white-space: pre-wrap; word-break: break-word;
+  }
+  .memory-term .term-line { display: block; }
+  .memory-term .term-line .t { color: var(--muted); margin-right: 0.9ch; }
+  .memory-term .term-line .k { color: var(--accent); }
+  .memory-term .term-line .c { color: var(--muted); }
+
+  .memory-term .term-prompt { display: block; margin-top: 0.3rem; color: var(--ink); }
+  .memory-term .term-prompt::before { content: "\203A  "; color: var(--accent); }
+
+  .memory-term .term-cursor {
+    display: inline-block;
+    width: 0.55ch; height: 1.05em;
+    background: var(--accent);
+    transform: translateY(0.16em);
+    animation: term-blink 1.1s steps(1) infinite;
+  }
+  @keyframes term-blink { 50% { opacity: 0; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .memory-term .term-cursor { animation: none; }
+  }
+</style>
+</head>
+<body>
+<main class="ds">
+  <p class="ds-eyebrow"><span class="eyebrow-tick"></span> components / memory terminal</p>
+  <h1 class="ds-title">Memory terminal</h1>
+  <p class="ds-lede">The product, <span class="serif-italic">breathing</span> a line. Mono panel, honest tool calls: remember, reflect, recall. A prompt, a cursor that blinks until you stop it.</p>
+
+  <hr class="ds-rule">
+
+  <div class="memory-term">
+    <div class="term-bar">
+      <span class="term-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="term-title">yep &middot; memory</span>
+    </div>
+    <pre class="term-body"><span class="term-line"><span class="t">08:14</span><span class="k">recall_facts</span><span class="c">("yepgent-site redesign")</span></span>
+<span class="term-line"><span class="t">08:14</span><span class="k">remember_fact</span><span class="c">("user.prefers", "plain prose over hype")</span></span>
+<span class="term-line"><span class="t">08:15</span><span class="k">reflect</span><span class="c">("shipped the fix, logged the why")</span></span>
+<span class="term-line"><span class="t">08:15</span><span class="k">recall_episodes</span><span class="c">("last week's launch notes")</span></span>
+<span class="term-prompt">remember_fact<span class="term-cursor" aria-hidden="true"></span></span></pre>
+  </div>
+
+  <p class="ds-note">Keys in <span class="serif-italic">--accent</span>, comments in --muted, timestamps quiet. The cursor freezes under reduced motion.</p>
+</main>
+</body>
+</html>

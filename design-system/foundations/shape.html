@@ -1,0 +1,73 @@
+<!-- @dsCard group="Foundations" name="Shape & elevation" subtitle="Radii ≤12px · one tinted shadow" w="980" h="720" -->
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>yepgent · Shape and elevation</title>
+<link rel="stylesheet" href="../tokens.ds.css">
+<link rel="stylesheet" href="../_preview.css">
+<style>
+  /* Shape anatomy, mirrored from tokens.ds.css radii + DESIGN.md elevation. */
+  .radii-grid { margin-top: var(--s-2); }
+  .radii-grid .sample-box { height: 92px; background: var(--accent-soft); border: 1px solid var(--accent-edge); }
+  .radii-grid .sample-cap b { color: var(--accent); font-weight: 600; }
+  .radii-grid .sample-cap span { color: var(--muted); }
+
+  /* Elevation, one soft tinted shadow, accent mixed into --shadow-tint. */
+  .elev-stage { padding: var(--s-7) var(--s-2) var(--s-8); }
+  .elev-panel {
+    max-width: 32rem;
+    background: var(--field-bg);
+    border-radius: var(--r-card);
+    padding: var(--s-5) var(--s-6);
+    box-shadow: 0 18px 40px -22px color-mix(in oklab, var(--accent) 22%, var(--shadow-tint));
+  }
+  .elev-panel .elev-h { font-family: var(--serif); font-weight: 400; font-size: 1.45rem; line-height: 1.1; color: var(--ink); margin: 0; }
+  .elev-panel .elev-p { font-family: var(--sans); font-size: 0.95rem; line-height: 1.55; color: var(--ink-soft); margin: var(--s-3) 0 0; }
+  .elev-tok { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); margin: var(--s-4) 0 0; }
+</style>
+</head>
+<body>
+<main class="ds">
+  <p class="ds-eyebrow"><span class="eyebrow-tick"></span> foundations / shape</p>
+  <h1 class="ds-title">Shape &amp; elevation</h1>
+  <p class="ds-lede">Corners stay <em>quiet</em>: 8px on fields, 12px on containers, full pills only on chips and buttons. Height is earned by one soft, warm-tinted shadow, never a hard black drop.</p>
+
+  <hr class="ds-rule">
+
+  <section class="ds-section">
+    <p class="ds-section-h">RADII</p>
+    <div class="grid cols-3 radii-grid">
+      <div class="sample">
+        <span class="sample-box" style="border-radius: var(--r-field);"></span>
+        <span class="sample-cap"><b>--r-field</b> <span>· 8px · inputs, fields</span></span>
+      </div>
+      <div class="sample">
+        <span class="sample-box" style="border-radius: var(--r-card);"></span>
+        <span class="sample-cap"><b>--r-card</b> <span>· 12px · containers, cards</span></span>
+      </div>
+      <div class="sample">
+        <span class="sample-box" style="border-radius: var(--r-pill);"></span>
+        <span class="sample-cap"><b>--r-pill</b> <span>· 999px · chips, buttons only</span></span>
+      </div>
+    </div>
+    <p class="ds-note" style="margin-top: var(--s-5);">Containers never exceed 12px (oversized-radius ban). The pill is reserved for chips and buttons, never a content panel.</p>
+  </section>
+
+  <hr class="ds-rule">
+
+  <section class="ds-section">
+    <p class="ds-section-h">ELEVATION · one soft tinted shadow</p>
+    <div class="elev-stage">
+      <div class="elev-panel">
+        <p class="elev-h">A panel that floats a little.</p>
+        <p class="elev-p">One shadow, tinted with a trace of brand green so the lift reads warm against the warm-white page instead of a cold black halo.</p>
+        <p class="elev-tok">box-shadow: 0 18px 40px -22px color-mix(in oklab, var(--accent) 22%, var(--shadow-tint))</p>
+      </div>
+    </div>
+    <p class="ds-note">The tint mixes a little --accent into --shadow-tint, never pure black. Ghost-card ban: a single element never carries both a visible border and a blurred shadow, so this panel takes the shadow and drops the border.</p>
+  </section>
+</main>
+</body>
+</html>
