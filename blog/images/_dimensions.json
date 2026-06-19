@@ -222,5 +222,26 @@
     "bytes_webp": 70864,
     "height": 1024,
     "width": 1024
+  },
+  "2026-06-19-seven-weeks-01-the-bare-loop.png": {
+    "bytes_avif": 13718,
+    "bytes_png": 1503629,
+    "bytes_webp": 32210,
+    "height": 1024,
+    "width": 1024
+  },
+  "2026-06-19-seven-weeks-02-too-many-hands.png": {
+    "bytes_avif": 109193,
+    "bytes_png": 2103519,
+    "bytes_webp": 251548,
+    "height": 1024,
+    "width": 1024
+  },
+  "2026-06-19-seven-weeks-03-the-trellis.png": {
+    "bytes_avif": 28496,
+    "bytes_png": 1839966,
+    "bytes_webp": 120312,
+    "height": 1024,
+    "width": 1024
   }
 }
