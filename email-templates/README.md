@@ -16,16 +16,21 @@ has no API for templates &mdash; dashboard only).
 
 ## Design
 
-- Dark theme matching `style.css` v4 canon (`--bg #0e0f12`,
-  `--accent #1db981`, `--rule #1f2127`). Inline styles only &mdash;
-  many email clients strip `<style>` blocks.
+- Light v4 editorial, matching the warm-white design-system face:
+  body `#fafafa`, white card `#ffffff`, ink `#131418`, committed brand
+  green `--accent #0a8a5a`, rule `#e6e7eb`. Inline styles only; many
+  email clients strip `<style>` blocks.
+- Type: a Georgia serif-italic display headline (the editorial signal,
+  email-safe via the system serif), a system-sans body, and monospace
+  for the eyebrow and the fallback link. No webfonts.
+- A small uppercase mono eyebrow with a green tick sits above each
+  headline; the `yepgent.` wordmark carries the one green dot.
 - Table-based layout, 560px max width, fluid on mobile via the one
   `<style>` block we keep for media queries (Apple Mail / Gmail honor
   it; Outlook ignores it but the desktop width still renders fine).
-- System font stack &mdash; no webfonts.
-- Single CTA button (mint background, dark text) with a plain-text
+- Single green CTA (pill, white text on `#0a8a5a`) with a plain-text
   fallback link below for any client that strips buttons or for users
-  who copy-paste.
+  who copy-paste. Green stays a minority: the dot, the CTA, the links.
 - Preheader hidden div on top &mdash; provides inbox-preview text.
 - Footer: `yepgent.com` &middot; `manifest` &middot; `account`, plus a
   one-line tagline ("Yep, an agent that grows.").
@@ -60,7 +65,10 @@ and a "have a code?" entry box on `/account/`.
 - **No SVG.** Outlook strips it; we use the &#127793; emoji as a
   consistent cross-client wordmark glyph.
 - **No background gradients.** Outlook ignores them; we render a flat
-  `#0e0f12` body and a slightly-elevated `#16181c` card.
+  `#fafafa` body and a white `#ffffff` card with a hairline border.
+- **Light-locked.** `color-scheme: light` + `supported-color-schemes`
+  are set so clients do not auto-invert the warm-white card into a
+  muddy dark approximation.
 - **Mobile clip.** On screens narrower than 600px the card goes
   full-bleed (no rounded corners, no side margin) for legibility.
 - **Reauthenticate template** is intentionally not branded yet &mdash;
