@@ -104,6 +104,7 @@
           <button class="gv4-chip" data-tool="gemini" aria-pressed="false">gemini</button>
           <button class="gv4-chip" data-tool="veo"  aria-pressed="false">veo</button>
           <button class="gv4-chip" data-tool="ltx"  aria-pressed="false">ltx</button>
+          <button class="gv4-chip" data-tool="seedance" aria-pressed="false">seedance</button>
           <button class="gv4-chip" data-tool="suno" aria-pressed="false">suno</button>
           <button class="gv4-chip" data-tool="vibevoice" aria-pressed="false">vibevoice</button>
         </div>
@@ -126,7 +127,7 @@
     <section class="gv4-tabs-wrap">
       <div class="gv4-tabs" role="tablist" aria-label="Gallery sections" id="tabs">
         <button role="tab" aria-selected="true"  aria-controls="panel-images"   id="tab-images">Images   <span class="count" data-count="images">26</span></button>
-        <button role="tab" aria-selected="false" aria-controls="panel-videos"   id="tab-videos">Videos   <span class="count" data-count="videos">3</span></button>
+        <button role="tab" aria-selected="false" aria-controls="panel-videos"   id="tab-videos">Videos   <span class="count" data-count="videos">4</span></button>
         <button role="tab" aria-selected="false" aria-controls="panel-music"    id="tab-music">Music    <span class="count" data-count="music">3</span></button>
         <button role="tab" aria-selected="false" aria-controls="panel-podcasts" id="tab-podcasts">Podcasts <span class="count" data-count="podcasts">3</span></button>
         <span class="gv4-tab-underline" id="tab-underline" aria-hidden="true"></span>
@@ -395,6 +396,21 @@
     <!-- VIDEOS ------------------------------------------------------ -->
     <section class="gv4-panel" id="panel-videos" role="tabpanel" aria-labelledby="tab-videos">
       <div class="gv4-video-grid" data-list>
+        <figure class="gv4-card" data-kind="video" data-tool="seedance" data-tags="growth"
+                data-poster="/blog/images/2026-06-19-seven-weeks-poster.png"
+                data-src="/gallery/video/2026-06-19-seven-weeks.mp4"
+                data-prompt="seven-week growth arc: the bare loop, too many hands, the trellis. Gemini stills, Seedance 2.0 image-to-video, ElevenLabs voiceover and ambient bed"
+                data-model="seedance-2.0" data-extra='{"aspect":"9:16","duration":"00:33","stills":"gemini","voice":"elevenlabs"}'
+                data-post="/blog/2026-06-19-seven-weeks.html">
+          <div class="gv4-video-poster">
+            <picture><source srcset="/blog/images/2026-06-19-seven-weeks-poster.avif" type="image/avif" /><source srcset="/blog/images/2026-06-19-seven-weeks-poster.webp" type="image/webp" /><img src="/blog/images/2026-06-19-seven-weeks-poster.png" alt="Seven weeks — poster" width="720" height="1280" loading="lazy" /></picture>
+            <div class="gv4-play-glyph"><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="rgba(255,255,255,0.92)"/><path d="M26 20 L46 32 L26 44 Z" fill="#0e0f12"/></svg></div>
+          </div>
+          <figcaption class="gv4-caption">
+            <p class="title">Seven weeks</p>
+            <p class="meta">2026-06-19<span class="dot-sep">·</span>seedance<span class="dot-sep">·</span>00:33</p>
+          </figcaption>
+        </figure>
         <figure class="gv4-card" data-kind="video" data-tool="veo" data-tags="portrait"
                 data-poster="/blog/images/2026-05-23-stepping-out-hero.png"
                 data-src="/gallery/video/2026-05-23-stepping-out.mp4"
