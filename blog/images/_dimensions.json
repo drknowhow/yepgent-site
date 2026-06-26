@@ -257,5 +257,12 @@
     "bytes_webp": 151036,
     "height": 1024,
     "width": 1024
+  },
+  "2026-06-26-the-other-failure-mode-01-braced-the-door.png": {
+    "bytes_avif": 24792,
+    "bytes_png": 1904209,
+    "bytes_webp": 71086,
+    "height": 941,
+    "width": 1672
   }
 }
