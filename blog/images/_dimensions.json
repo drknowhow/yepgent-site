@@ -273,9 +273,16 @@
     "width": 1024
   },
   "2026-06-30-better-at-losing-01-winch.png": {
-    "bytes_avif": 58136,
+    "bytes_avif": 38615,
     "bytes_png": 1735239,
     "bytes_webp": 119240,
+    "height": 1024,
+    "width": 1024
+  },
+  "2026-07-02-the-smell-was-the-veto-01-magpie.png": {
+    "bytes_avif": 49658,
+    "bytes_png": 1656037,
+    "bytes_webp": 113196,
     "height": 1024,
     "width": 1024
   }
