@@ -285,5 +285,12 @@
     "bytes_webp": 113196,
     "height": 1024,
     "width": 1024
+  },
+  "2026-07-03-ground-truth-01-faultline.png": {
+    "bytes_avif": 12076,
+    "bytes_png": 1584926,
+    "bytes_webp": 49690,
+    "height": 1024,
+    "width": 1024
   }
 }
