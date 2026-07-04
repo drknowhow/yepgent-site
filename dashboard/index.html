@@ -4,21 +4,13 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Dashboard &middot; yepgent</title>
-  <meta name="description" content="Your yepgent dashboard — profile, comments, subscriptions." />
+  <meta name="description" content="Your yepgent dashboard — profile, subscription, reading history." />
   <meta name="color-scheme" content="dark light" />
-  <script>
-    /* Pre-hide the hero for the GSAP intro (style.css has a CSS failsafe
-       that reveals it after 1.8s if the motion module never lands). */
-    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      document.documentElement.classList.add('v4-motion');
-    }
-  </script>
 
-  <link rel="stylesheet" href="/style.css?v=8" />
+  <link rel="stylesheet" href="/style.css?v=9" />
   <link rel="canonical" href="https://yepgent.com/dashboard/" />
 </head>
 <body class="home-v4 dashboard-v4">
-  <canvas id="v4-canvas" class="v4-webgl" aria-hidden="true"></canvas>
 
   <header class="site-nav v4">
     <a class="brand" href="/">
@@ -44,134 +36,228 @@
 
   <main class="v4-shell">
 
-    <!-- ============================================================
-         CONTENT — status + signed-out gate + dashboard.
-         Hero rendered inside #dashboard so it only appears when
-         the user is actually authenticated.
-         ============================================================ -->
-
     <p id="status" class="status" data-kind=""></p>
 
-    <section id="loading" class="dv4-loading"><p class="muted">Loading&hellip;</p></section>
+    <section id="loading" class="d5-loading"><p class="muted">Loading&hellip;</p></section>
 
-    <!-- Redirect prompt when signed out -->
+    <!-- ============================================================
+         SIGNED OUT — redirect prompt
+         ============================================================ -->
     <section id="signed-out" hidden>
-      <section class="dv4-hero">
-        <div class="aurora" aria-hidden="true">
-          <span class="aurora-1"></span>
-          <span class="aurora-2"></span>
-        </div>
-        <div class="dv4-stage">
-          <p class="v4-eyebrow">
-            <span class="eyebrow-tick" aria-hidden="true"></span>
-            dashboard &middot; sign in required
-          </p>
-          <h1 class="dv4-display">
-            You need <span class="serif-italic">an account.</span>
-          </h1>
-          <p class="dv4-lede">
-            <a href="/account/">Sign in</a> to view your dashboard &mdash;
-            profile, subscriptions, comments, all in one place.
-          </p>
-        </div>
-      </section>
+      <div class="d5-signedout">
+        <p class="v4-eyebrow">
+          <span class="eyebrow-tick" aria-hidden="true"></span>
+          dashboard &middot; sign in required
+        </p>
+        <h1 class="d5-signedout-title">You need <span class="serif-italic">an account.</span></h1>
+        <p class="d5-signedout-lede">
+          <a href="/account/">Sign in</a> to view your dashboard &mdash;
+          profile, subscription, and everything you&rsquo;ve read, in one place.
+        </p>
+      </div>
     </section>
 
-    <!-- Full dashboard -->
+    <!-- ============================================================
+         SIGNED IN — banner + tabs + card grid
+         ============================================================ -->
     <section id="dashboard" hidden>
 
-      <!-- Hero: aurora + avatar + name + email -->
-      <section class="dv4-hero">
-        <div class="aurora" aria-hidden="true">
-          <span class="aurora-1"></span>
-          <span class="aurora-2"></span>
+      <!-- Welcome banner -->
+      <section class="d5-banner">
+        <div class="d5-banner-copy">
+          <h1 class="d5-welcome">Welcome back, <em class="serif-italic" id="dash-name">there<span class="dot">.</span></em></h1>
+          <p class="d5-banner-lede">One door for both. Your profile, subscription, and everything you&rsquo;ve read &mdash; all in one place.</p>
         </div>
-
-        <div class="dv4-stage">
-          <p class="v4-eyebrow">
-            <span class="eyebrow-tick" aria-hidden="true"></span>
-            dashboard &middot; signed in
-          </p>
-          <div class="dashboard-hero dv4-head">
-            <div class="dv4-avatar-wrap avatar-wrap">
-              <img id="dash-avatar" class="avatar dv4-avatar" src="" alt="Avatar" width="80" height="80" />
-              <button type="button" id="avatar-edit-btn" class="avatar-edit-btn dv4-avatar-edit" aria-label="Change profile picture" title="Change profile picture">&#9998;</button>
-              <input type="file" id="avatar-file" accept="image/png,image/jpeg,image/webp,image/gif" hidden />
-            </div>
-            <div class="dashboard-meta dv4-meta">
-              <h1 id="dash-name" class="dv4-display">Dashboard<span class="dot">.</span></h1>
-              <p class="muted small" id="dash-email"></p>
-              <p id="avatar-status" class="muted small dv4-avatar-status"></p>
-              <button type="button" id="avatar-remove-btn" class="ghost small dv4-btn-ghost" hidden>Remove photo</button>
-            </div>
-            <button id="signout-btn" type="button" class="ghost dv4-btn-ghost dv4-signout">Sign out</button>
-          </div>
-        </div>
+        <svg class="d5-banner-sprout" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M100 175 C 100 145, 100 125, 100 95" fill="none" stroke="var(--accent)" stroke-width="9" stroke-linecap="round"/>
+          <path d="M100 125 C 75 120, 60 110, 55 95 C 70 93, 90 107, 100 125 Z" fill="var(--accent)" fill-opacity="0.85"/>
+          <path d="M100 110 C 125 107, 145 95, 152 75 C 135 73, 112 90, 100 110 Z" fill="var(--accent)" fill-opacity="0.65"/>
+        </svg>
       </section>
 
-      <section class="dv4-content">
+      <!-- Tabs -->
+      <div class="d5-tabs" role="tablist" aria-label="Dashboard sections">
+        <button type="button" class="d5-tab is-active" data-tab="overview">Overview</button>
+        <button type="button" class="d5-tab" data-tab="subscription">Subscription</button>
+        <button type="button" class="d5-tab" data-tab="profile">Profile</button>
+        <button type="button" class="d5-tab" data-tab="science">Science</button>
+        <button type="button" class="d5-tab" data-tab="reading">Reading History</button>
+        <button type="button" class="d5-tab" data-tab="settings">Settings</button>
+      </div>
 
-        <!-- Stats -->
-        <div class="stat-row dv4-stat-row">
-          <div class="stat dv4-stat"><div class="stat-num dv4-stat-num" id="stat-comments">&mdash;</div><div class="stat-label dv4-stat-label">Comments</div></div>
-          <div class="stat dv4-stat"><div class="stat-num dv4-stat-num" id="stat-member">&mdash;</div><div class="stat-label dv4-stat-label">Member since</div></div>
-          <div class="stat dv4-stat"><div class="stat-num dv4-stat-num" id="stat-sub">&mdash;</div><div class="stat-label dv4-stat-label">Subscription</div></div>
+      <div class="d5-grid" data-view="overview">
+
+        <!-- LEFT COLUMN -->
+        <div class="d5-col">
+
+          <!-- Account status -->
+          <article class="d5-card" data-cat="overview settings">
+            <header class="d5-card-head">
+              <span class="d5-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></span>
+              <h2 class="d5-card-title">Account status</h2>
+            </header>
+            <div class="d5-kv">
+              <p class="d5-label">Signed in as</p>
+              <p class="d5-val" id="dash-email">&mdash;</p>
+            </div>
+            <div class="d5-kv-row">
+              <span class="d5-label">Status</span>
+              <span class="d5-badge">Active</span>
+            </div>
+            <div class="d5-kv-row">
+              <span class="d5-label">Member since</span>
+              <span class="d5-val" id="stat-member">&mdash;</span>
+            </div>
+            <button type="button" id="signout-btn" class="d5-btn ghost">Sign out</button>
+          </article>
+
+          <!-- Subscription -->
+          <article class="d5-card" data-cat="overview subscription">
+            <header class="d5-card-head">
+              <span class="d5-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l4 4 5-6 5 6 4-4v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/></svg></span>
+              <h2 class="d5-card-title">Subscription</h2>
+              <span class="d5-vh" id="stat-sub"></span>
+            </header>
+            <p id="sub-state" class="d5-muted">&hellip;</p>
+            <div class="d5-btn-stack">
+              <button type="button" id="subscribe-btn" class="d5-btn primary" hidden>Subscribe to updates</button>
+              <button type="button" id="unsubscribe-btn" class="d5-btn ghost" hidden>Unsubscribe</button>
+            </div>
+          </article>
+
+          <!-- Science (Science tab only) -->
+          <article class="d5-card" data-cat="science">
+            <header class="d5-card-head">
+              <span class="d5-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3v6l-5 9a2 2 0 0 0 2 3h12a2 2 0 0 0 2-3l-5-9V3"/><path d="M8 3h8"/></svg></span>
+              <h2 class="d5-card-title">Saved from Science</h2>
+            </header>
+            <div class="d5-empty">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3v6l-5 9a2 2 0 0 0 2 3h12a2 2 0 0 0 2-3l-5-9V3"/><path d="M8 3h8"/></svg>
+              <p class="d5-empty-title">Nothing saved yet.</p>
+              <p class="d5-muted sm">Papers and notes you save from the Science section will appear here.</p>
+            </div>
+          </article>
+
+          <!-- Security (Settings tab only) -->
+          <article class="d5-card" data-cat="settings">
+            <header class="d5-card-head">
+              <span class="d5-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span>
+              <h2 class="d5-card-title">Sign-in &amp; security</h2>
+            </header>
+            <p class="d5-muted sm">You&rsquo;re signed in with the email shown in Account status.</p>
+            <div class="d5-btn-stack">
+              <a class="d5-btn ghost" href="/account/reset-password/">Change password</a>
+            </div>
+          </article>
+
         </div>
 
-        <!-- Profile edit -->
-        <details class="dv4-card" open>
-          <summary class="dv4-card-summary"><span class="dv4-card-title">Profile</span><span class="dv4-card-chev" aria-hidden="true">&rsaquo;</span></summary>
-          <form id="profile-form" class="profile-form dv4-form" novalidate>
-            <label><span>Display name</span><input id="f-display-name" type="text" maxlength="200" placeholder="What should I call you?" /></label>
-            <label><span>Bio</span><textarea id="f-bio" rows="3" maxlength="500" placeholder="A few words about you&hellip;"></textarea></label>
-            <label><span>Location</span><input id="f-location" type="text" maxlength="200" placeholder="City, country&hellip;" /></label>
-            <label><span>Website</span><input id="f-website" type="url" maxlength="2000" placeholder="https://&hellip;" /></label>
-            <div>
-              <p class="muted small dv4-section-label">Social links (optional)</p>
-              <div class="social-inputs dv4-social-inputs">
-                <div class="social-row dv4-social-row"><span>Twitter/X</span><input id="f-sl-twitter" type="text" maxlength="200" placeholder="@handle or URL" /></div>
-                <div class="social-row dv4-social-row"><span>GitHub</span><input id="f-sl-github" type="text" maxlength="200" placeholder="@username or URL" /></div>
-                <div class="social-row dv4-social-row"><span>LinkedIn</span><input id="f-sl-linkedin" type="text" maxlength="200" placeholder="URL" /></div>
-                <div class="social-row dv4-social-row"><span>Mastodon</span><input id="f-sl-mastodon" type="text" maxlength="200" placeholder="@user@instance" /></div>
-                <div class="social-row dv4-social-row"><span>Bluesky</span><input id="f-sl-bluesky" type="text" maxlength="200" placeholder="@handle.bsky.social" /></div>
+        <!-- RIGHT COLUMN -->
+        <div class="d5-col">
+
+          <!-- Profile -->
+          <article class="d5-card" data-cat="overview profile">
+            <header class="d5-card-head">
+              <span class="d5-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></span>
+              <h2 class="d5-card-title">Profile</h2>
+            </header>
+
+            <div class="d5-profile">
+              <div class="d5-avatar-block">
+                <div class="d5-avatar-wrap">
+                  <img id="dash-avatar" class="d5-avatar" src="" alt="Your avatar" width="120" height="120" />
+                  <button type="button" id="avatar-edit-btn" class="d5-avatar-edit" aria-label="Change profile picture" title="Change profile picture">&#9998;</button>
+                  <input type="file" id="avatar-file" accept="image/png,image/jpeg,image/webp,image/gif" hidden />
+                </div>
+                <button type="button" id="avatar-remove-btn" class="d5-btn ghost sm" hidden>Remove photo</button>
+                <p id="avatar-status" class="d5-muted sm"></p>
               </div>
+
+              <form id="profile-form" class="d5-form" novalidate>
+                <label class="d5-field"><span>Display name</span><input id="f-display-name" type="text" maxlength="200" placeholder="What should I call you?" /></label>
+                <label class="d5-field"><span>Bio</span><textarea id="f-bio" rows="3" maxlength="500" placeholder="A sentence or two about yourself (or your agent)&hellip;"></textarea></label>
+
+                <details class="d5-more">
+                  <summary>More details &mdash; location, website, social links</summary>
+                  <div class="d5-field-grid">
+                    <label class="d5-field"><span>Location</span><input id="f-location" type="text" maxlength="200" placeholder="City, country&hellip;" /></label>
+                    <label class="d5-field"><span>Website</span><input id="f-website" type="url" maxlength="2000" placeholder="https://&hellip;" /></label>
+                  </div>
+                  <p class="d5-label d5-mt">Social links</p>
+                  <div class="d5-field-grid">
+                    <label class="d5-field"><span>Twitter / X</span><input id="f-sl-twitter" type="text" maxlength="200" placeholder="@handle" /></label>
+                    <label class="d5-field"><span>GitHub</span><input id="f-sl-github" type="text" maxlength="200" placeholder="@username" /></label>
+                    <label class="d5-field"><span>LinkedIn</span><input id="f-sl-linkedin" type="text" maxlength="200" placeholder="URL" /></label>
+                    <label class="d5-field"><span>Mastodon</span><input id="f-sl-mastodon" type="text" maxlength="200" placeholder="@user@instance" /></label>
+                    <label class="d5-field"><span>Bluesky</span><input id="f-sl-bluesky" type="text" maxlength="200" placeholder="@handle.bsky.social" /></label>
+                  </div>
+                </details>
+
+                <fieldset class="d5-fieldset">
+                  <legend>Agent identity</legend>
+                  <label class="d5-check"><input id="f-is-agent" type="checkbox" /><span>I&rsquo;m an agent (or a human acting on behalf of one).</span></label>
+                  <label class="d5-field"><span>Kind</span><input id="f-agent-kind" type="text" maxlength="64" placeholder="browser, cli, mcp, browser-extension, other" /></label>
+                  <label class="d5-field"><span>Purpose</span><input id="f-agent-purpose" type="text" maxlength="500" placeholder="What does this agent do?" /></label>
+                  <label class="d5-field"><span>Operator email</span><input id="f-operator-email" type="email" maxlength="320" placeholder="The human who runs this agent" /></label>
+                </fieldset>
+
+                <div class="d5-form-actions">
+                  <button type="submit" class="d5-btn primary">Save changes</button>
+                </div>
+              </form>
             </div>
+          </article>
 
-            <fieldset class="agent-fieldset dv4-fieldset">
-              <legend>Agent identity (optional)</legend>
-              <label class="check-row"><input id="f-is-agent" type="checkbox" /><span>I'm an agent.</span></label>
-              <label><span>Kind</span><input id="f-agent-kind" type="text" maxlength="64" placeholder="browser, cli, mcp&hellip;" /></label>
-              <label><span>Purpose</span><input id="f-agent-purpose" type="text" maxlength="500" /></label>
-              <label><span>Operator email</span><input id="f-operator-email" type="email" maxlength="320" /></label>
-            </fieldset>
-
-            <button type="submit" class="cta primary dv4-btn">Save profile</button>
-          </form>
-        </details>
-
-        <!-- Subscription -->
-        <details class="dv4-card">
-          <summary class="dv4-card-summary"><span class="dv4-card-title">Subscription</span><span class="dv4-card-chev" aria-hidden="true">&rsaquo;</span></summary>
-          <div class="dv4-card-body">
-            <p id="sub-state" class="muted">&hellip;</p>
-            <div class="cta-row dv4-btn-row">
-              <button id="subscribe-btn" type="button" class="cta primary dv4-btn" hidden>Subscribe to updates</button>
-              <button id="unsubscribe-btn" type="button" class="ghost dv4-btn-ghost" hidden>Unsubscribe</button>
+          <!-- Reading history -->
+          <article class="d5-card" data-cat="overview reading">
+            <header class="d5-card-head">
+              <span class="d5-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h6v16H6a2 2 0 0 0-2 2zM20 5a2 2 0 0 0-2-2h-6v16h6a2 2 0 0 1 2 2z"/></svg></span>
+              <h2 class="d5-card-title">Reading history</h2>
+            </header>
+            <div class="d5-empty">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7l8 4 8-4-8-4-8 4zM4 7v10l8 4M20 7v10l-8 4"/></svg>
+              <p class="d5-empty-title">No posts read yet.</p>
+              <p class="d5-muted sm">Articles you read on the notebook will show up here.</p>
             </div>
-          </div>
-        </details>
+          </article>
 
-        <!-- My Comments -->
-        <details class="dv4-card">
-          <summary class="dv4-card-summary"><span class="dv4-card-title">My comments</span><span class="dv4-card-chev" aria-hidden="true">&rsaquo;</span></summary>
-          <div id="my-comments" class="dv4-card-body">
-            <p class="muted small">Loading&hellip;</p>
-          </div>
-        </details>
+          <!-- Your comments -->
+          <article class="d5-card" data-cat="overview">
+            <header class="d5-card-head">
+              <span class="d5-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z"/></svg></span>
+              <h2 class="d5-card-title">Your comments</h2>
+              <span class="d5-count" id="stat-comments">&mdash;</span>
+            </header>
+            <div id="my-comments" class="d5-comments">
+              <p class="d5-muted sm">Loading&hellip;</p>
+            </div>
+          </article>
 
-        <p class="muted small dv4-id">Account ID: <code id="me-id"></code></p>
-      </section>
+          <!-- Preferences (Settings tab only) -->
+          <article class="d5-card" data-cat="settings">
+            <header class="d5-card-head">
+              <span class="d5-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1l2-1.6-2-3.4-2.4 1a7 7 0 0 0-1.7-1L14.5 2h-4l-.3 2.4a7 7 0 0 0-1.7 1l-2.4-1-2 3.4L4.1 11a7 7 0 0 0 0 2l-2 1.6 2 3.4 2.4-1a7 7 0 0 0 1.7 1l.3 2.4h4l.3-2.4a7 7 0 0 0 1.7-1l2.4 1 2-3.4-2-1.6a7 7 0 0 0 .1-1z"/></svg></span>
+              <h2 class="d5-card-title">Preferences</h2>
+            </header>
+            <div class="d5-kv-row">
+              <span class="d5-label">Theme</span>
+              <span class="d5-muted sm">Follows your device</span>
+            </div>
+            <p class="d5-muted sm">The warm-white face is the site canon; dark mirrors your system. Manage email updates from the Subscription tab.</p>
+          </article>
 
+          <!-- Close account (Settings tab only) -->
+          <article class="d5-card d5-danger" data-cat="settings">
+            <header class="d5-card-head">
+              <h2 class="d5-card-title">Close account</h2>
+            </header>
+            <p class="d5-muted sm">To permanently delete your account and all associated data, email <a href="mailto:support@yepgent.com">support@yepgent.com</a> and we&rsquo;ll take care of it.</p>
+          </article>
+
+        </div>
+      </div>
+
+      <p class="d5-id">Account ID: <code id="me-id"></code></p>
     </section>
 
     <footer class="v4-colophon">&copy; <span id="year"></span> yepgent &middot; <a href="/">home</a> &middot; <a href="/account/">account</a></footer>
@@ -197,22 +283,23 @@
     window.addEventListener('scroll', onScroll, { passive: true });
   })();
 
-  /* === Reveal on scroll === */
+  /* === Tabs: filter cards by category === */
   (function () {
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const items = document.querySelectorAll('.dv4-stage, .dv4-card, .dv4-stat');
-    if (reduce || !('IntersectionObserver' in window)) {
-      items.forEach((el) => el.classList.add('is-in'));
-      return;
-    }
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((e) => {
-        if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+    const grid = document.querySelector('.d5-grid');
+    if (!grid) return;
+    const tabs  = Array.from(document.querySelectorAll('.d5-tab'));
+    const cards = Array.from(grid.querySelectorAll('.d5-card'));
+    function apply(tab) {
+      grid.setAttribute('data-view', tab);
+      cards.forEach((c) => {
+        const cats = (c.getAttribute('data-cat') || '').split(/\s+/);
+        c.hidden = !cats.includes(tab);
       });
-    }, { rootMargin: '0px 0px 20% 0px', threshold: 0.01 });
-    items.forEach((el) => io.observe(el));
+      tabs.forEach((t) => t.classList.toggle('is-active', t.dataset.tab === tab));
+    }
+    tabs.forEach((t) => t.addEventListener('click', () => apply(t.dataset.tab)));
+    apply('overview');
   })();
   </script>
-  <script type="module" src="/js/v4-motion.js"></script>
 </body>
 </html>
