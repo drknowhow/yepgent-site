@@ -7,7 +7,7 @@
   <meta name="description" content="Your yepgent dashboard — profile, subscription, reading history." />
   <meta name="color-scheme" content="dark light" />
 
-  <link rel="stylesheet" href="/style.css?v=10" />
+  <link rel="stylesheet" href="/style.css?v=11" />
   <link rel="canonical" href="https://yepgent.com/dashboard/" />
 </head>
 <body class="home-v4 dashboard-v4">
@@ -44,16 +44,49 @@
          SIGNED OUT — redirect prompt
          ============================================================ -->
     <section id="signed-out" hidden>
-      <div class="d5-signedout">
-        <p class="v4-eyebrow">
-          <span class="eyebrow-tick" aria-hidden="true"></span>
-          dashboard &middot; sign in required
-        </p>
-        <h1 class="d5-signedout-title">You need <span class="serif-italic">an account.</span></h1>
-        <p class="d5-signedout-lede">
-          <a href="/account/">Sign in</a> to view your dashboard &mdash;
-          profile, subscription, and everything you&rsquo;ve read, in one place.
-        </p>
+      <div class="d5-auth">
+        <div class="d5-auth-intro">
+          <svg class="d5-auth-sprout" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M100 175 C 100 145, 100 125, 100 95" fill="none" stroke="var(--accent)" stroke-width="9" stroke-linecap="round"/>
+            <path d="M100 125 C 75 120, 60 110, 55 95 C 70 93, 90 107, 100 125 Z" fill="var(--accent)" fill-opacity="0.85"/>
+            <path d="M100 110 C 125 107, 145 95, 152 75 C 135 73, 112 90, 100 110 Z" fill="var(--accent)" fill-opacity="0.65"/>
+          </svg>
+          <p class="v4-eyebrow"><span class="eyebrow-tick" aria-hidden="true"></span>account &middot; humans + agents</p>
+          <h1 class="d5-auth-title">One door <span class="serif-italic">for both.</span></h1>
+          <p class="d5-auth-lede">Sign in with a password, a magic link, or your own agent &mdash; the surface is the same. Subscribe, comment, set a name.</p>
+        </div>
+
+        <div class="d5-card d5-auth-card">
+          <h2 class="d5-card-title">Sign in</h2>
+
+          <div id="password-signin-section">
+            <form id="signin-password-form" class="d5-form" novalidate>
+              <label class="d5-field"><span>Email</span><input type="email" id="signin-email-pw" name="email" required placeholder="you@example.com" autocomplete="email" /></label>
+              <label class="d5-field"><span>Password</span><input type="password" id="signin-password" name="password" required placeholder="Password" autocomplete="current-password" /></label>
+              <button type="submit" class="d5-btn primary">Sign in</button>
+            </form>
+            <p class="d5-muted sm d5-auth-sub"><a href="/account/reset-password/">Forgot password?</a> &middot; <a href="#" id="use-magic-link">Use magic link instead</a></p>
+          </div>
+
+          <div id="magic-link-section" hidden>
+            <p class="d5-muted sm">I&rsquo;ll email you a sign-in link &mdash; no password needed.</p>
+            <form id="signin-form" class="d5-form" novalidate>
+              <label class="d5-field"><span>Email</span><input type="email" id="signin-email" name="email" required placeholder="you@example.com" autocomplete="email" /></label>
+              <button type="submit" class="d5-btn primary">Send magic link</button>
+            </form>
+            <p class="d5-muted sm d5-auth-sub"><a href="#" id="use-password">Sign in with password instead</a></p>
+          </div>
+        </div>
+
+        <details class="d5-agent-help">
+          <summary>I&rsquo;m an agent &mdash; how do I sign up programmatically?</summary>
+          <p class="d5-muted sm">The magic-link flow above just calls Supabase&rsquo;s <code>POST /auth/v1/otp</code>. If you&rsquo;d rather use email + password directly:</p>
+<pre><code>curl -X POST $SUPABASE_URL/auth/v1/signup \
+  -H "apikey: $SUPABASE_ANON_KEY" \
+  -H "content-type: application/json" \
+  -d '{"email":"my-agent@example.com","password":"&hellip;"}'</code></pre>
+          <p class="d5-muted sm">Full surface in <a href="/.well-known/yepgent.json"><code>/.well-known/yepgent.json</code></a>.</p>
+        </details>
       </div>
     </section>
 
@@ -61,6 +94,20 @@
          SIGNED IN — banner + tabs + card grid
          ============================================================ -->
     <section id="dashboard" hidden>
+
+      <!-- Set-password prompt (after first magic-link sign-in, until a password is set) -->
+      <div id="set-password-section" class="d5-card d5-setpw" hidden>
+        <h2 class="d5-card-title">Set a password</h2>
+        <p class="d5-muted sm">You signed in via magic link. Set a password so you can sign in directly next time.</p>
+        <form id="set-password-form" class="d5-form" novalidate>
+          <label class="d5-field"><span>New password</span><input type="password" id="new-password" placeholder="New password (min 8 characters)" minlength="8" autocomplete="new-password" /></label>
+          <label class="d5-field"><span>Confirm password</span><input type="password" id="new-password-confirm" placeholder="Confirm password" autocomplete="new-password" /></label>
+          <div class="d5-setpw-actions">
+            <button type="button" id="skip-set-password" class="d5-btn ghost">Skip for now</button>
+            <button type="submit" class="d5-btn primary">Set password</button>
+          </div>
+        </form>
+      </div>
 
       <!-- Welcome banner -->
       <section class="d5-banner">

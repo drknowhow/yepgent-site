@@ -74,7 +74,7 @@ function initResetPassword() {
       });
     }
     setStatus('Password updated. Taking you back to sign in…', 'ok');
-    setTimeout(() => { window.location.href = '/account/'; }, 2000);
+    setTimeout(() => { window.location.href = '/dashboard/'; }, 2000);
   });
 
   // Bootstrap: check if we arrived via a PASSWORD_RECOVERY link

@@ -6679,6 +6679,69 @@ body.dashboard-v4 .anima-history .ah-fb-grid textarea {
   color: var(--ink);
 }
 
+/* --- auth door (signed-out state — merged from /account/) --- */
+body.dashboard-v4 .d5-auth { max-width: 30rem; margin: clamp(1.5rem, 5vw, 3.5rem) auto; }
+body.dashboard-v4 .d5-auth-intro { margin-bottom: 1.25rem; }
+body.dashboard-v4 .d5-auth-sprout {
+  width: 54px;
+  height: 54px;
+  margin-bottom: 0.5rem;
+  filter: drop-shadow(0 6px 16px color-mix(in oklab, var(--accent) 30%, transparent));
+}
+body.dashboard-v4 .d5-auth-title {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: clamp(2rem, 5vw, 2.7rem);
+  letter-spacing: -0.015em;
+  line-height: 1.08;
+  margin: 0.35rem 0 0.5rem;
+  color: var(--ink);
+}
+body.dashboard-v4 .d5-auth-title .serif-italic { font-style: italic; color: var(--accent); }
+body.dashboard-v4 .d5-auth-lede { color: var(--ink-soft); font-size: 1rem; line-height: 1.55; margin: 0; }
+body.dashboard-v4 .d5-auth-card .d5-card-title { margin-bottom: 1rem; }
+body.dashboard-v4 .d5-auth-sub { margin: 0.85rem 0 0; }
+body.dashboard-v4 .d5-auth-sub a { color: var(--accent); }
+body.dashboard-v4 #magic-link-section > .d5-muted { margin: 0 0 0.75rem; }
+body.dashboard-v4 .d5-agent-help {
+  margin-top: 1.25rem;
+  border: 1px solid var(--d5-edge-soft);
+  border-radius: 12px;
+  padding: 0 1rem;
+  background: var(--d5-inset);
+}
+body.dashboard-v4 .d5-agent-help > summary {
+  cursor: pointer;
+  padding: 0.85rem 0;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  list-style: none;
+}
+body.dashboard-v4 .d5-agent-help > summary::-webkit-details-marker { display: none; }
+body.dashboard-v4 .d5-agent-help[open] { padding-bottom: 1rem; }
+body.dashboard-v4 .d5-agent-help pre {
+  overflow-x: auto;
+  background: var(--d5-field);
+  border: 1px solid var(--d5-edge-soft);
+  border-radius: 8px;
+  padding: 0.75rem 0.85rem;
+  margin: 0.5rem 0;
+}
+body.dashboard-v4 .d5-agent-help code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.8rem;
+}
+
+/* --- set-password prompt --- */
+body.dashboard-v4 .d5-setpw {
+  margin-bottom: clamp(1rem, 2.5vw, 1.5rem);
+  border-color: color-mix(in oklab, var(--accent) 35%, var(--d5-edge));
+}
+body.dashboard-v4 .d5-setpw .d5-card-title { margin-bottom: 0.4rem; }
+body.dashboard-v4 .d5-setpw form { margin-top: 0.85rem; }
+body.dashboard-v4 .d5-setpw-actions { display: flex; justify-content: flex-end; gap: 0.6rem; margin-top: 0.4rem; }
+body.dashboard-v4 .d5-setpw-actions .d5-btn { width: auto; padding: 0.6rem 1.2rem; }
+
 /* --- reduced motion --- */
 @media (prefers-reduced-motion: reduce) {
   body.dashboard-v4 .d5-tab,
