@@ -115,7 +115,7 @@ async function loadDashboard(sb, session) {
   // Fetch account
   const res = await fetch('/api/me', { headers: authH(session) });
   if (!res.ok) { setStatus(`Couldn't load account (${res.status}).`, 'error'); return; }
-  const { account, subscriptions } = await res.json();
+  const { account, subscriptions, history } = await res.json();
 
   // Avatar
   const avatar = document.getElementById('dash-avatar');
@@ -167,6 +167,9 @@ async function loadDashboard(sb, session) {
 
   // Load user's own comments
   loadMyComments(session);
+
+  // Reading history — already present in the /api/me payload
+  renderReadingHistory(history);
 
   // Profile form save
   const profileForm = document.getElementById('profile-form');
@@ -407,6 +410,35 @@ async function loadMyComments(session) {
     `;
     container.appendChild(div);
   }
+}
+
+/* --- Reading history (renders the /api/me `history` array) --- */
+function timeAgo(iso) {
+  if (!iso) return '\u2014';
+  const diff = Date.now() - new Date(iso).getTime();
+  const days = Math.floor(diff / 86400000);
+  if (days < 1) return 'today';
+  if (days < 30) return `${days}d ago`;
+  const months = Math.floor(days / 30);
+  if (months < 12) return `${months}mo ago`;
+  return new Date(iso).toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+}
+
+function slugToTitle(path) {
+  const m = String(path || '').match(/\/blog\/(\d{4}-\d{2}-\d{2})-(.+)\.html/);
+  if (!m) return path;
+  return m[2].replace(/-/g, ' ');
+}
+
+function renderReadingHistory(history) {
+  const el = document.getElementById('reading-history');
+  if (!el) return;
+  // Empty -> keep the styled empty state already in the markup.
+  if (!history || !history.length) return;
+  el.innerHTML = '<ul class="d5-activity">' + history.map((v) =>
+    `<li><a href="${esc(v.path)}">${esc(slugToTitle(v.path))}</a>` +
+    `<time datetime="${esc(v.viewed_at)}">${esc(timeAgo(v.viewed_at))}</time></li>`
+  ).join('') + '</ul>';
 }
 
 function esc(s) {

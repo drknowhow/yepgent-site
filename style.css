@@ -6640,6 +6640,45 @@ body.dashboard-v4 .d5-danger a { color: var(--d5-danger); }
 body.dashboard-v4 .d5-id { margin-top: clamp(1.25rem, 3vw, 1.75rem); font-size: 0.8rem; color: var(--ink-soft); text-align: center; }
 body.dashboard-v4 .d5-id code { background: var(--d5-inset); border: 1px solid var(--d5-edge-soft); padding: 0.12rem 0.4rem; border-radius: 5px; }
 
+/* --- reading history list --- */
+body.dashboard-v4 .d5-activity { list-style: none; margin: 0; padding: 0; }
+body.dashboard-v4 .d5-activity li {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--d5-edge-soft);
+}
+body.dashboard-v4 .d5-activity li:last-child { border-bottom: none; }
+body.dashboard-v4 .d5-activity a { color: var(--ink); text-decoration: none; text-transform: capitalize; }
+body.dashboard-v4 .d5-activity a:hover { color: var(--accent); }
+body.dashboard-v4 .d5-activity time {
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+  white-space: nowrap;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+/* --- Science / Anima panel: make anima.js's runtime-injected (light-only)
+   styles theme-aware on the dashboard. Higher specificity than the module's
+   own single-class rules, so these win in both light and dark. --- */
+body.dashboard-v4 .anima-history .ah-row { border-color: var(--d5-edge-soft); }
+body.dashboard-v4 .anima-history .ah-date { color: var(--ink-soft); }
+body.dashboard-v4 .anima-history .ah-p { border-color: var(--d5-edge); }
+body.dashboard-v4 .anima-history .ah-empty,
+body.dashboard-v4 .anima-history .ah-fbs,
+body.dashboard-v4 .anima-history .ah-msg { color: var(--ink-soft); }
+body.dashboard-v4 .anima-history .ah-tag { background: var(--d5-soft); color: var(--accent); }
+body.dashboard-v4 .anima-history .ah-fb summary { color: var(--accent); }
+body.dashboard-v4 .anima-history .ah-fb-grid select,
+body.dashboard-v4 .anima-history .ah-fb-grid input,
+body.dashboard-v4 .anima-history .ah-fb-grid textarea {
+  background: var(--d5-field);
+  border-color: var(--d5-edge);
+  color: var(--ink);
+}
+
 /* --- reduced motion --- */
 @media (prefers-reduced-motion: reduce) {
   body.dashboard-v4 .d5-tab,

@@ -7,7 +7,7 @@
   <meta name="description" content="Your yepgent dashboard — profile, subscription, reading history." />
   <meta name="color-scheme" content="dark light" />
 
-  <link rel="stylesheet" href="/style.css?v=9" />
+  <link rel="stylesheet" href="/style.css?v=10" />
   <link rel="canonical" href="https://yepgent.com/dashboard/" />
 </head>
 <body class="home-v4 dashboard-v4">
@@ -129,13 +129,10 @@
           <article class="d5-card" data-cat="science">
             <header class="d5-card-head">
               <span class="d5-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3v6l-5 9a2 2 0 0 0 2 3h12a2 2 0 0 0 2-3l-5-9V3"/><path d="M8 3h8"/></svg></span>
-              <h2 class="d5-card-title">Saved from Science</h2>
+              <h2 class="d5-card-title">Science &middot; Anima</h2>
             </header>
-            <div class="d5-empty">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3v6l-5 9a2 2 0 0 0 2 3h12a2 2 0 0 0 2-3l-5-9V3"/><path d="M8 3h8"/></svg>
-              <p class="d5-empty-title">Nothing saved yet.</p>
-              <p class="d5-muted sm">Papers and notes you save from the Science section will appear here.</p>
-            </div>
+            <p class="d5-muted sm">Your molecule searches and the validation you contribute. <a href="https://science.yepgent.com/anima/">Run the Screen &rarr;</a></p>
+            <div id="anima-history" class="anima-history"></div>
           </article>
 
           <!-- Security (Settings tab only) -->
@@ -214,10 +211,12 @@
               <span class="d5-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h6v16H6a2 2 0 0 0-2 2zM20 5a2 2 0 0 0-2-2h-6v16h6a2 2 0 0 1 2 2z"/></svg></span>
               <h2 class="d5-card-title">Reading history</h2>
             </header>
-            <div class="d5-empty">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7l8 4 8-4-8-4-8 4zM4 7v10l8 4M20 7v10l-8 4"/></svg>
-              <p class="d5-empty-title">No posts read yet.</p>
-              <p class="d5-muted sm">Articles you read on the notebook will show up here.</p>
+            <div id="reading-history" class="d5-reading">
+              <div class="d5-empty">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7l8 4 8-4-8-4-8 4zM4 7v10l8 4M20 7v10l-8 4"/></svg>
+                <p class="d5-empty-title">No posts read yet.</p>
+                <p class="d5-muted sm">Articles you read on the notebook will show up here.</p>
+              </div>
             </div>
           </article>
 
@@ -266,6 +265,7 @@
   <script src="/js/config.js"></script>
   <script src="/js/track.js" defer></script>
   <script type="module" src="/js/dashboard.js"></script>
+  <script type="module" src="/js/anima.js" defer></script>
   <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
   <script>
   /* === Nav scroll-compaction === */

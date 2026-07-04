@@ -99,7 +99,7 @@
     # CSP: allow self + esm.sh (for Supabase JS SDK) + Supabase REST.
     # Inline scripts kept (the index.html has small inline init blocks);
     # data: img-src to allow the SVGs that are embedded inline.
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://esm.sh; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://*.supabase.co; connect-src 'self' https://*.supabase.co; frame-ancestors 'none'; base-uri 'self'"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://esm.sh; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://*.supabase.co; connect-src 'self' https://*.supabase.co https://anima-screen-312853893256.us-central1.run.app; frame-ancestors 'none'; base-uri 'self'"
 
 # music/catalog.json — short cache, open CORS for agents.
 [[headers]]
