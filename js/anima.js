@@ -1,4 +1,4 @@
-// /account -- "Science / Anima" panel: your searches + validation feedback.
+// /dashboard -- "Science / Anima" panel: your searches + validation feedback.
 // Uses the shared yepgent Supabase session; talks to the Anima API on Cloud Run.
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.45.4?bundle';
 import { makeCookieStorage, SHARED_STORAGE_KEY } from './cookie_storage.js';
@@ -6,20 +6,10 @@ import { makeCookieStorage, SHARED_STORAGE_KEY } from './cookie_storage.js';
 const ANIMA_API = 'https://anima-screen-312853893256.us-central1.run.app';
 const cfg = window.YEPGENT_CONFIG;
 
-if (cfg && cfg.supabaseUrl && cfg.supabaseAnonKey && cfg.supabaseAnonKey !== 'REPLACE_AT_DEPLOY_TIME') {
-  const root = document.getElementById('anima-history');
-  if (root) {
-    const sb = createClient(cfg.supabaseUrl, cfg.supabaseAnonKey, {
-      auth: {
-        storage: makeCookieStorage(cfg.cookieDomain || '.yepgent.com'),
-        storageKey: SHARED_STORAGE_KEY,
-        persistSession: true, autoRefreshToken: true, detectSessionInUrl: false,
-      },
-    });
-    injectStyles();
-    run(sb, root);
-  }
-}
+// NOTE: the boot block is at the BOTTOM of this module. run() references the
+// const helpers (tok/esc/pct/badge) declared below; invoking it up here would
+// throw a temporal-dead-zone ReferenceError ("Cannot access 'tok' before
+// initialization").
 
 const esc = (s) => String(s == null ? '' : s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const pct = (p) => (p == null ? '-' : Math.round(p * 100) + '%');
@@ -118,4 +108,20 @@ function injectStyles() {
   const st = document.createElement('style');
   st.textContent = css;
   document.head.appendChild(st);
+}
+
+// --- boot: runs after the const helpers above are initialized ---
+if (cfg && cfg.supabaseUrl && cfg.supabaseAnonKey && cfg.supabaseAnonKey !== 'REPLACE_AT_DEPLOY_TIME') {
+  const root = document.getElementById('anima-history');
+  if (root) {
+    const sb = createClient(cfg.supabaseUrl, cfg.supabaseAnonKey, {
+      auth: {
+        storage: makeCookieStorage(cfg.cookieDomain || '.yepgent.com'),
+        storageKey: SHARED_STORAGE_KEY,
+        persistSession: true, autoRefreshToken: true, detectSessionInUrl: false,
+      },
+    });
+    injectStyles();
+    run(sb, root);
+  }
 }
