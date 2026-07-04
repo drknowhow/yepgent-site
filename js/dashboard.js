@@ -80,17 +80,22 @@ async function resizeImageToSquareJpeg(file, maxDim = 256, quality = 0.86) {
     }
   });
 
+  // Sign-in + set-password forms live in #signed-out / #dashboard; wire them
+  // once, regardless of auth state (this page is now the /account/ door too).
+  wireAuthForms(sb);
+
   const { data: { session } } = await sb.auth.getSession();
 
   hide('loading');
 
-  if (!session) {
+  if (session) {
+    hide('signed-out');
+    show('dashboard');
+    await loadDashboard(sb, session);
+  } else {
+    hide('dashboard');
     show('signed-out');
-    return;
   }
-
-  show('dashboard');
-  await loadDashboard(sb, session);
 
   sb.auth.onAuthStateChange(async (_e, s) => {
     if (s) {
@@ -105,9 +110,83 @@ async function resizeImageToSquareJpeg(file, maxDim = 256, quality = 0.86) {
 
   document.getElementById('signout-btn').addEventListener('click', async () => {
     await sb.auth.signOut();
-    location.href = '/account/';
+    location.href = '/dashboard/';
   });
 })();
+
+/* --- Sign-in + set-password (merged from the old /account/ page) --- */
+function wireAuthForms(sb) {
+  const useMagic = document.getElementById('use-magic-link');
+  const usePw    = document.getElementById('use-password');
+  if (useMagic) useMagic.addEventListener('click', (e) => {
+    e.preventDefault();
+    document.getElementById('password-signin-section').hidden = true;
+    document.getElementById('magic-link-section').hidden = false;
+    setStatus('', '');
+  });
+  if (usePw) usePw.addEventListener('click', (e) => {
+    e.preventDefault();
+    document.getElementById('magic-link-section').hidden = true;
+    document.getElementById('password-signin-section').hidden = false;
+    setStatus('', '');
+  });
+
+  const pwForm = document.getElementById('signin-password-form');
+  if (pwForm) pwForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('signin-email-pw').value.trim();
+    const password = document.getElementById('signin-password').value;
+    if (!email || !password) return;
+    setStatus('Signing in…', 'pending');
+    const { error } = await sb.auth.signInWithPassword({ email, password });
+    if (error) { setStatus(`Sign-in failed: ${error.message}`, 'error'); return; }
+    setStatus('', '');
+    // onAuthStateChange reveals the dashboard.
+  });
+
+  const mlForm = document.getElementById('signin-form');
+  if (mlForm) mlForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('signin-email').value.trim();
+    if (!email) return;
+    setStatus('Sending magic link…', 'pending');
+    // Callback stays on /account/ (an already-allowed Supabase redirect);
+    // Netlify 301s /account/ → /dashboard/, carrying the token fragment.
+    const { error } = await sb.auth.signInWithOtp({
+      email, options: { emailRedirectTo: `${location.origin}/account/` }
+    });
+    if (error) { setStatus(`Couldn't send: ${error.message}`, 'error'); return; }
+    setStatus(`Check ${email} — the link will sign you in. You can close this tab.`, 'ok');
+  });
+
+  const spForm = document.getElementById('set-password-form');
+  if (spForm) spForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const pw  = document.getElementById('new-password').value;
+    const pw2 = document.getElementById('new-password-confirm').value;
+    if (pw.length < 8) { setStatus('Password must be at least 8 characters.', 'error'); return; }
+    if (pw !== pw2)    { setStatus("Passwords don't match.", 'error'); return; }
+    setStatus('Setting password…', 'pending');
+    const { error } = await sb.auth.updateUser({ password: pw });
+    if (error) { setStatus(`Couldn't set password: ${error.message}`, 'error'); return; }
+    const { data: { session: s } } = await sb.auth.getSession();
+    if (s) {
+      await fetch('/api/me', {
+        method: 'PATCH',
+        headers: { ...authH(s), 'content-type': 'application/json' },
+        body: JSON.stringify({ password_set_at: new Date().toISOString() })
+      });
+    }
+    document.getElementById('set-password-section').hidden = true;
+    setStatus('Password set — you can now sign in with email + password.', 'ok');
+    setTimeout(() => setStatus('', ''), 3000);
+  });
+
+  const skip = document.getElementById('skip-set-password');
+  if (skip) skip.addEventListener('click', () => {
+    document.getElementById('set-password-section').hidden = true;
+  });
+}
 
 async function loadDashboard(sb, session) {
   setStatus('Loading…', 'pending');
@@ -158,6 +237,10 @@ async function loadDashboard(sb, session) {
   setVal('f-agent-kind',   account.agent_kind);
   setVal('f-agent-purpose',account.agent_purpose);
   setVal('f-operator-email',account.operator_email);
+
+  // Set-password prompt: show until a password has been set.
+  const setPwEl = document.getElementById('set-password-section');
+  if (setPwEl) setPwEl.hidden = !!account.password_set_at;
 
   setStatus('', '');
 

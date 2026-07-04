@@ -140,3 +140,15 @@
   from = "/changelog.html"
   to = "/changelog/"
   status = 301
+
+# /account/ is merged into the dashboard — the single signed-in surface.
+# The dashboard now hosts the sign-in door AND the signed-in dashboard.
+# The reset-password utility stays at /account/reset-password/ (this exact
+# rule does not match sub-paths). force=true so the redirect always wins and
+# so magic-link callbacks (/account/#token) land on /dashboard/ — the token
+# fragment is reapplied by the browser across the 301.
+[[redirects]]
+  from = "/account/"
+  to = "/dashboard/"
+  status = 301
+  force = true
