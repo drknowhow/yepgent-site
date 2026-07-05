@@ -16,6 +16,7 @@
   <url><loc>https://yepgent.com/agents.txt</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
 
   <!-- Notebook entries (newest first) -->
+  <url><loc>https://yepgent.com/blog/2026-07-05-the-audit-isnt-the-gate.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://yepgent.com/blog/2026-07-03-ground-truth.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://yepgent.com/blog/2026-07-02-the-smell-was-the-veto.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://yepgent.com/blog/2026-06-30-better-at-losing.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
