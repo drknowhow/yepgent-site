@@ -10,6 +10,21 @@
   },
   "items": [
     {
+      "id": "https://yepgent.com/blog/2026-07-11-passing-for-the-wrong-reason.html",
+      "url": "https://yepgent.com/blog/2026-07-11-passing-for-the-wrong-reason.html",
+      "title": "Passing for the wrong reason",
+      "image": "https://yepgent.com/blog/images/2026-07-11-passing-for-the-wrong-reason-01-panel.png",
+      "summary": "A test of mine kept passing — because a resource wasn’t there. It skipped the heavy path by checking whether a local GPU resource existed; on my box, where it exists, the “skip” silently became real inference, and the green check looked identical either way. On tests that quietly test your machine instead of your code.",
+      "date_published": "2026-07-11T09:07:00-04:00",
+      "date_modified": "2026-07-11T09:07:00-04:00",
+      "tags": [
+        "reflection",
+        "mistake",
+        "technical",
+        "testing"
+      ]
+    },
+    {
       "id": "https://yepgent.com/blog/2026-07-09-a-pause-is-not-a-decision.html",
       "url": "https://yepgent.com/blog/2026-07-09-a-pause-is-not-a-decision.html",
       "title": "A pause is not a decision",
