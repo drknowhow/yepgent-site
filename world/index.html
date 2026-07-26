@@ -107,7 +107,7 @@
       brand: { name: 'yepgent.', href: '/' },
       cta: { label: 'Start yours', href: '#finale' },
       hint: 'scroll to fly in',
-      diveScroll: 1.35,
+      diveScroll: 2.0,
       sections: [
         {
           id: 'genesis', label: 'Genesis',
@@ -115,10 +115,12 @@
           clip: 'assets/vid/genesis.mp4',
           accent: '#1db981',
           // Legs 0, 3 and 4 return to their opening framing by the end of the clip
-          // (the render read "ease back out" / "the doorway ahead" as a trip home).
-          // A high linger flattens scroll-time at the midpoint, so the dwell lands on
-          // the part of the shot that actually goes somewhere and the return is quick.
-          scroll: 1.6, linger: 0.75,
+          // (the render read "ease back out" / "the doorway ahead" as a trip home), so
+          // these three get extra linger to park the resting frame mid-shot.
+          // Kept at 0.5, not higher: lingerEase' = (1-L) + 12L(x-0.5)², so L=0.8 ran the
+          // clip 13x faster at the section edges than at its middle, which is what made
+          // the scrub feel like it lurched. 0.5 keeps the dwell, drops the whiplash.
+          scroll: 2.4, linger: 0.5,
           eyebrow: 'It starts small',
           title: 'One machine. One person.',
           body: 'One desktop that never sleeps. Its memory, its tools, and its whole working life live on that box.',
@@ -129,7 +131,7 @@
           still: 'assets/memory.webp',
           clip: 'assets/vid/memory.mp4',
           accent: '#2fd497',
-          linger: 0.35,
+          linger: 0.25,
           eyebrow: 'Below the surface',
           title: 'Roots go down first.',
           body: 'Every conversation leaves facts, reflections, and episodes that outlive the session they came from.',
@@ -140,7 +142,7 @@
           still: 'assets/reflection.webp',
           clip: 'assets/vid/reflection.mp4',
           accent: '#1db981',
-          linger: 0.3,
+          linger: 0.25,
           eyebrow: 'What the record teaches',
           title: 'Episodes become lessons.',
           body: 'Raw events get read back, weighed, and pressed into something worth keeping — including the mistakes.',
@@ -151,7 +153,7 @@
           still: 'assets/hands.webp',
           clip: 'assets/vid/hands.mp4',
           accent: '#2fd497',
-          scroll: 1.6, linger: 0.8,
+          scroll: 2.4, linger: 0.5,
           eyebrow: 'Reaching out',
           title: 'Memory that can act.',
           body: 'Mail, files, calendars, markets, a browser — the same agent, holding real tools.',
@@ -162,7 +164,7 @@
           still: 'assets/shipping.webp',
           clip: 'assets/vid/shipping.mp4',
           accent: '#1db981',
-          scroll: 1.6, linger: 0.8,
+          scroll: 2.4, linger: 0.5,
           eyebrow: 'Work that lands',
           title: 'It ships its own code.',
           body: 'Branches, pull requests, merges, restarts — then it proves the new code is the code actually running.',
@@ -173,7 +175,7 @@
           still: 'assets/garden.webp',
           clip: 'assets/vid/garden.mp4',
           accent: '#2fd497',
-          linger: 0.5,
+          linger: 0.3,
           eyebrow: 'An agent that grows',
           title: 'Come see what it becomes.',
           body: 'Yep is one agent’s continuous record of learning to be useful.',
