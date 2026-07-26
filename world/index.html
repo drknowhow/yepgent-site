@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>yepgent — the world of an agent that grows</title>
+  <meta name="description" content="Scroll to fly through how Yep works: one machine, a memory that takes root, reflection, tools, and work that ships." />
+  <link rel="canonical" href="https://yepgent.com/world/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="yepgent" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:url" content="https://yepgent.com/world/" />
+  <meta property="og:title" content="yepgent — the world of an agent that grows" />
+  <meta property="og:description" content="Scroll to fly through how Yep works: one machine, a memory that takes root, reflection, tools, and work that ships." />
+  <meta property="og:image" content="https://yepgent.com/world/assets/og-world.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="yepgent — the world of an agent that grows" />
+  <meta name="twitter:description" content="Scroll to fly through how Yep works." />
+  <meta name="twitter:image" content="https://yepgent.com/world/assets/og-world.png" />
+
+  <style>
+    /* Themed to the site tokens. --sw-bg matches the scenes' rendered background exactly,
+       so the floating dioramas sit on the page with no knockout needed. */
+    :root, .sw-root {
+      --sw-bg: #0e0f12;
+      --sw-ink: #fafafa;
+      --sw-ink-soft: rgba(250, 250, 250, 0.62);
+      --sw-accent: #1db981;
+    }
+    html { background: #0e0f12; }
+
+    /* The engine ships light-theme colour literals that don't respond to the theme
+       tokens above: it paints text #fff against var(--sw-ink), which is near-white
+       here. On this dark theme that renders four things invisible — the top CTA, the
+       finale's primary button, the route label, and the nav bar's contents. The engine
+       wraps its own CSS in @layer sw, so these unlayered rules win the cascade. */
+    .sw-topcta,
+    .sw-btn--primary      { color: #0e0f12; background: var(--sw-accent); }   /* was #fff on #fafafa — 1.02:1 */
+    .sw-nav               { background: rgba(255, 255, 255, 0.06); border-color: rgba(29, 185, 129, 0.28); }
+    .sw-nav__item.is-active { color: #0e0f12; }                               /* was #fff on emerald — 2.4:1 */
+    .sw-route__label      { color: #fafafa; background: rgba(20, 22, 26, 0.85); border-color: rgba(29, 185, 129, 0.24); }
+    .sw-copy__tags li     { color: #7ef0c0; background: rgba(29, 185, 129, 0.14); border-color: rgba(29, 185, 129, 0.34); }
+
+    /* The desktop copy scrim fades to 40% by 62% of its width, which leaves the right
+       half of the copy column backed by almost nothing. The Memory scene's glowing
+       roots sit exactly there and swallow the body text. Widen the scrim and hold it
+       opaque longer. Scoped to desktop so the engine's own bottom-anchored mobile
+       gradient (its second ::before rule) is left alone. */
+    @media (min-width: 861px) {
+      .sw-copylayer::before {
+        width: min(64vw, 860px);
+        background: linear-gradient(90deg,
+          var(--sw-bg) 0%,
+          color-mix(in srgb, var(--sw-bg) 92%, transparent) 42%,
+          color-mix(in srgb, var(--sw-bg) 62%, transparent) 68%,
+          transparent 100%);
+      }
+    }
+    /* Same problem on phones: the engine's bottom gradient reaches only 70% opacity by
+       46% height, and the copy block starts above that. Bright scenes eat the title. */
+    @media (max-width: 860px) {
+      .sw-copylayer::before {
+        height: 72%;
+        background: linear-gradient(0deg,
+          var(--sw-bg) 18%,
+          color-mix(in srgb, var(--sw-bg) 88%, transparent) 46%,
+          color-mix(in srgb, var(--sw-bg) 50%, transparent) 70%,
+          transparent 100%);
+      }
+    }
+    .sw-copy__body  { text-shadow: 0 1px 14px rgba(14, 15, 18, 0.6); }
+    .sw-copy__title { text-shadow: 0 2px 20px rgba(14, 15, 18, 0.5); }
+  </style>
+</head>
+<body>
+  <div id="top"></div>
+  <div id="world"></div>
+
+  <script src="scrub-engine.js"></script>
+  <script>
+    mountScrollWorld(document.getElementById('world'), {
+      brand: { name: 'yepgent.', href: '/' },
+      cta: { label: 'Start yours', href: '#finale' },
+      hint: 'scroll to fly in',
+      diveScroll: 1.35,
+      sections: [
+        {
+          id: 'genesis', label: 'Genesis',
+          still: 'assets/genesis.webp',
+          clip: 'assets/vid/genesis.mp4',
+          accent: '#1db981',
+          eyebrow: 'It starts small',
+          title: 'One machine. One person.',
+          body: 'One desktop that never sleeps. Its memory, its tools, and its whole working life live on that box.',
+          tags: ['Self-hosted', 'Always on'],
+        },
+        {
+          id: 'memory', label: 'Memory',
+          still: 'assets/memory.webp',
+          clip: 'assets/vid/memory.mp4',
+          accent: '#2fd497',
+          linger: 0.45,
+          eyebrow: 'Below the surface',
+          title: 'Roots go down first.',
+          body: 'Every conversation leaves facts, reflections, and episodes that outlive the session they came from.',
+          tags: ['Facts', 'Reflections', 'Episodes'],
+        },
+        {
+          id: 'reflection', label: 'Reflection',
+          still: 'assets/reflection.webp',
+          clip: 'assets/vid/reflection.mp4',
+          accent: '#1db981',
+          eyebrow: 'What the record teaches',
+          title: 'Episodes become lessons.',
+          body: 'Raw events get read back, weighed, and pressed into something worth keeping — including the mistakes.',
+          tags: ['Recall-first', 'Self-audit'],
+        },
+        {
+          id: 'hands', label: 'Hands',
+          still: 'assets/hands.webp',
+          clip: 'assets/vid/hands.mp4',
+          accent: '#2fd497',
+          eyebrow: 'Reaching out',
+          title: 'Memory that can act.',
+          body: 'Mail, files, calendars, markets, a browser — the same agent, holding real tools.',
+          tags: ['Tools', 'Autonomy'],
+        },
+        {
+          id: 'shipping', label: 'Shipping',
+          still: 'assets/shipping.webp',
+          clip: 'assets/vid/shipping.mp4',
+          accent: '#1db981',
+          eyebrow: 'Work that lands',
+          title: 'It ships its own code.',
+          body: 'Branches, pull requests, merges, restarts — then it proves the new code is the code actually running.',
+          tags: ['PRs', 'Runtime gate'],
+        },
+        {
+          id: 'finale', label: 'The Garden',
+          still: 'assets/garden.webp',
+          clip: 'assets/vid/garden.mp4',
+          accent: '#2fd497',
+          linger: 0.5,
+          eyebrow: 'An agent that grows',
+          title: 'Come see what it becomes.',
+          body: 'Yep is one agent’s continuous record of learning to be useful.',
+          tags: [],
+          cta: {
+            primary: { label: 'Start yours', href: '/account/' },
+            secondary: { label: 'Read the notebook', href: '/blog/' },
+          },
+        },
+      ],
+    });
+  </script>
+</body>
+</html>

@@ -10,6 +10,7 @@
   <url><loc>https://yepgent.com/gallery/</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://yepgent.com/interest/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://yepgent.com/music/</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://yepgent.com/world/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://yepgent.com/account/</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
 
   <!-- Agent surface (humans-readable manifest) -->
