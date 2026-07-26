@@ -99,7 +99,15 @@
     # CSP: allow self + esm.sh (for Supabase JS SDK) + Supabase REST.
     # Inline scripts kept (the index.html has small inline init blocks);
     # data: img-src to allow the SVGs that are embedded inline.
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://esm.sh; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://*.supabase.co; connect-src 'self' https://*.supabase.co https://anima-screen-312853893256.us-central1.run.app https://esm.sh; frame-ancestors 'none'; base-uri 'self'"
+    #
+    # media-src 'self' blob: — /world/ fetches each clip and plays it from a
+    # Blob object URL (that's what makes it seekable on hosts that don't serve
+    # byte-range requests). Without an explicit media-src, blob: falls through
+    # to default-src 'self', which does NOT cover blob: — every <video> then
+    # fails with "Media load rejected by URL safety check" and the page shows
+    # only its poster stills. Local http.server sends no CSP, so this is
+    # invisible until deploy.
+    Content-Security-Policy = "default-src 'self'; media-src 'self' blob:; script-src 'self' 'unsafe-inline' https://esm.sh; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://*.supabase.co; connect-src 'self' https://*.supabase.co https://anima-screen-312853893256.us-central1.run.app https://esm.sh; frame-ancestors 'none'; base-uri 'self'"
 
 # music/catalog.json — short cache, open CORS for agents.
 [[headers]]

@@ -64,7 +64,14 @@
    ========================================================================== */
 
 function mountScrollWorld(container, config) {
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // `forceMotion` is a local addition to upstream. Under prefers-reduced-motion this
+  // engine loads no clips at all (see the guard at ~line 201), so the entire page
+  // becomes six static posters with no way for the visitor to opt in. On a page whose
+  // only content IS the camera flight, that's a dead end rather than an accommodation.
+  // The host page keeps the OS setting as the default and offers an explicit opt-in
+  // control, which re-mounts with forceMotion: true.
+  const reduce = config.forceMotion ? false
+    : window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   // Phone detection. `coarse` is captured once (input type doesn't change mid-session);
   // the ≤860px query is read live via isMobile() so a desktop resize/DevTools toggle
   // switches sources and seek behaviour without a reload.
@@ -270,6 +277,13 @@ function mountScrollWorld(container, config) {
     ticking = false;
   }
 
+  // How much of the remaining gap `cur` closes per tick. Upstream default is 0.18.
+  // Note this lerp sits INSIDE the `video.seeking` guard below, so it advances once per
+  // completed seek rather than once per frame — the effective response is slower than
+  // the constant suggests. Measured seek cost here is ~1.7ms median, so there is plenty
+  // of headroom to converge faster and still never queue on a busy decoder.
+  const EASE = typeof config.scrubEase === 'number' ? config.scrubEase : 0.18;
+
   function raf() {
     const eps = isMobile() ? 0.02 : 0.008;   // coarser seek step on phones = fewer decodes
     for (let i = 0; i < NSEG; i++) {
@@ -280,7 +294,7 @@ function mountScrollWorld(container, config) {
       // cur keeps lerping, so we snap to the latest target the moment it's free.
       if (s.video.seeking) continue;
       if (!s.visible && Math.abs(s.cur - s.target) < 0.002) continue;
-      s.cur += (s.target - s.cur) * (reduce ? 1 : 0.18);
+      s.cur += (s.target - s.cur) * (reduce ? 1 : EASE);
       const dur = s.video.duration || 1;
       const t = clamp(s.cur, 0, 0.999) * dur;
       if (Math.abs(s.video.currentTime - t) > eps) { try { s.video.currentTime = t; } catch (e) {} }
