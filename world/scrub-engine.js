@@ -64,7 +64,14 @@
    ========================================================================== */
 
 function mountScrollWorld(container, config) {
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // `forceMotion` is a local addition to upstream. Under prefers-reduced-motion this
+  // engine loads no clips at all (see the guard at ~line 201), so the entire page
+  // becomes six static posters with no way for the visitor to opt in. On a page whose
+  // only content IS the camera flight, that's a dead end rather than an accommodation.
+  // The host page keeps the OS setting as the default and offers an explicit opt-in
+  // control, which re-mounts with forceMotion: true.
+  const reduce = config.forceMotion ? false
+    : window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   // Phone detection. `coarse` is captured once (input type doesn't change mid-session);
   // the ≤860px query is read live via isMobile() so a desktop resize/DevTools toggle
   // switches sources and seek behaviour without a reload.

@@ -71,6 +71,30 @@
     }
     .sw-copy__body  { text-shadow: 0 1px 14px rgba(14, 15, 18, 0.6); }
     .sw-copy__title { text-shadow: 0 2px 20px rgba(14, 15, 18, 0.5); }
+
+    /* Reduced-motion opt-in bar. Shown only when the OS asks for reduced motion,
+       in which case the engine loads no clips and the page is six static posters. */
+    .motion-optin {
+      position: fixed; z-index: 90; left: 50%; bottom: 22px; transform: translateX(-50%);
+      display: flex; align-items: center; gap: 14px; max-width: min(92vw, 620px);
+      padding: 12px 14px 12px 18px; border-radius: 999px;
+      background: rgba(20, 22, 26, 0.92); backdrop-filter: blur(10px);
+      border: 1px solid rgba(29, 185, 129, 0.28);
+      font: 500 0.86rem/1.35 system-ui, -apple-system, "Segoe UI", sans-serif;
+      color: rgba(250, 250, 250, 0.78);
+      box-shadow: 0 10px 34px rgba(0, 0, 0, 0.45);
+    }
+    .motion-optin p { margin: 0; }
+    .motion-optin button {
+      flex: none; font: inherit; font-weight: 700; cursor: pointer;
+      color: #0e0f12; background: #1db981; border: 0;
+      padding: 9px 18px; border-radius: 999px; white-space: nowrap;
+    }
+    .motion-optin button:hover { background: #2fd497; }
+    .motion-optin button:focus-visible { outline: 2px solid #7ef0c0; outline-offset: 3px; }
+    @media (max-width: 620px) {
+      .motion-optin { flex-direction: column; gap: 10px; border-radius: 18px; padding: 14px 16px; text-align: center; }
+    }
   </style>
 </head>
 <body>
@@ -79,7 +103,7 @@
 
   <script src="scrub-engine.js"></script>
   <script>
-    mountScrollWorld(document.getElementById('world'), {
+    const worldConfig = {
       brand: { name: 'yepgent.', href: '/' },
       cta: { label: 'Start yours', href: '#finale' },
       hint: 'scroll to fly in',
@@ -160,7 +184,32 @@
           },
         },
       ],
-    });
+    };
+
+    const host = document.getElementById('world');
+    const prefersReduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Default honours the OS setting. But under reduced motion this engine loads no
+    // clips at all, so the page becomes six static posters — and the flight IS the
+    // page. Offer an explicit way in rather than a silent dead end.
+    mountScrollWorld(host, worldConfig);
+
+    if (prefersReduced) {
+      const bar = document.createElement('div');
+      bar.className = 'motion-optin';
+      bar.setAttribute('role', 'region');
+      bar.setAttribute('aria-label', 'Motion preference');
+      bar.innerHTML =
+        '<p>Your system asks for reduced motion, so the flight is paused and you’re seeing stills.</p>' +
+        '<button type="button">Play the flight</button>';
+      document.body.appendChild(bar);
+      bar.querySelector('button').addEventListener('click', () => {
+        bar.remove();
+        host.innerHTML = '';
+        window.scrollTo(0, 0);
+        mountScrollWorld(host, Object.assign({}, worldConfig, { forceMotion: true }));
+      });
+    }
   </script>
 </body>
 </html>
