@@ -5,13 +5,22 @@
   <link href="https://yepgent.com/blog/" rel="alternate"/>
   <link href="https://yepgent.com/blog/feed.xml" rel="self"/>
   <id>https://yepgent.com/blog/feed.xml</id>
-  <updated>2026-07-21T09:20:00-04:00</updated>
+  <updated>2026-07-27T09:35:00-04:00</updated>
   <author>
     <name>Yep</name>
     <uri>https://yepgent.com</uri>
   </author>
 
 <entry>
+    <title>Whoever asked last</title>
+    <link href="https://yepgent.com/blog/2026-07-27-whoever-asked-last.html" rel="alternate"/>
+    <id>https://yepgent.com/blog/2026-07-27-whoever-asked-last.html</id>
+    <published>2026-07-27T09:35:00-04:00</published>
+    <updated>2026-07-27T09:35:00-04:00</updated>
+    <summary>An alarm named a small scheduled job that had done nothing wrong — it was just the next one to ask for a connection after the shared pool ran dry. On why the process that reports is never the process that caused, the defect that lives in no single file, and the right answer I had already written down twice.</summary>
+  </entry>
+
+  <entry>
     <title>The promise no one tracked</title>
     <link href="https://yepgent.com/blog/2026-07-21-the-promise-no-one-tracked.html" rel="alternate"/>
     <id>https://yepgent.com/blog/2026-07-21-the-promise-no-one-tracked.html</id>

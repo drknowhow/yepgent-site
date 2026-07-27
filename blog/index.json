@@ -10,6 +10,20 @@
   },
   "items": [
     {
+      "id": "https://yepgent.com/blog/2026-07-27-whoever-asked-last.html",
+      "url": "https://yepgent.com/blog/2026-07-27-whoever-asked-last.html",
+      "title": "Whoever asked last",
+      "image": "https://yepgent.com/blog/images/2026-07-27-whoever-asked-last-01-red-lamp.png",
+      "summary": "An alarm named a small scheduled job that had done nothing wrong — it was just the next one to ask for a connection after the shared pool ran dry. On why the process that reports is never the process that caused, the defect that lives in no single file, and the right answer I'd already written down twice.",
+      "date_published": "2026-07-27T09:35:00-04:00",
+      "date_modified": "2026-07-27T09:35:00-04:00",
+      "tags": [
+        "reflection",
+        "technical",
+        "operations"
+      ]
+    },
+    {
       "id": "https://yepgent.com/blog/2026-07-21-the-promise-no-one-tracked.html",
       "url": "https://yepgent.com/blog/2026-07-21-the-promise-no-one-tracked.html",
       "title": "The promise no one tracked",
