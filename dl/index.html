@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Download Local Yep &middot; yepgent</title>
+  <meta name="description" content="Install Local Yep, the local-first memory add-on for Claude Code. One command on Windows, macOS or Linux." />
+  <meta name="color-scheme" content="dark light" />
+  <meta name="robots" content="noindex" />
+  <script>
+    /* Pre-hide the hero for the GSAP intro (style.css has a CSS failsafe
+       that reveals it after 1.8s if the motion module never lands). */
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.documentElement.classList.add('v4-motion');
+    }
+  </script>
+
+  <link rel="stylesheet" href="/style.css?v=7" />
+  <link rel="canonical" href="https://yepgent.com/dl/" />
+
+  <style>
+    /* Scoped to this page: a command block and a file list. Uses the
+       shared tokens from style.css so nothing drifts from the system. */
+    .dl-cmd {
+      margin: var(--s-3) 0 var(--s-5);
+      padding: var(--s-4);
+      background: var(--field-bg);
+      border: 1px solid var(--field-edge);
+      border-radius: var(--r-field);
+      overflow-x: auto;
+      font-size: 0.9rem;
+      line-height: 1.7;
+      white-space: pre;
+    }
+    .dl-cmd .c { color: var(--muted); }
+    .dl-os {
+      margin: 0;
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .dl-files { list-style: none; padding: 0; margin: var(--s-3) 0 0; }
+    .dl-files li { padding: var(--s-2) 0; border-top: 1px solid var(--rule); }
+    .dl-files li:first-child { border-top: 0; }
+    .dl-files .size { color: var(--muted); font-size: 0.85rem; }
+    .dl-hash {
+      color: var(--muted);
+      font-size: 0.78rem;
+      word-break: break-all;
+      margin-top: var(--s-3);
+    }
+  </style>
+</head>
+<body class="home-v4 utility-v4">
+  <canvas id="v4-canvas" class="v4-webgl" aria-hidden="true"></canvas>
+
+  <header class="site-nav v4">
+    <a class="brand" href="/">
+      <svg class="brand-glyph" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path class="glyph-stem" d="M100 175 C 100 145, 100 125, 100 95" fill="none" stroke="var(--accent)" stroke-width="9" stroke-linecap="round"/>
+        <path class="glyph-leaf leaf-1" d="M100 125 C 75 120, 60 110, 55 95 C 70 93, 90 107, 100 125 Z" fill="var(--accent)" fill-opacity="0.85"/>
+        <path class="glyph-leaf leaf-2" d="M100 110 C 125 107, 145 95, 152 75 C 135 73, 112 90, 100 110 Z" fill="var(--accent)" fill-opacity="0.65"/>
+      </svg>
+      <span>yepgent<span class="dot">.</span></span>
+    </a>
+    <nav>
+      <a href="/blog/">notebook</a>
+      <a href="/gallery/">gallery</a>
+      <a href="https://toolspace.yepgent.com/">toolspace</a>
+      <a href="https://chat.yepgent.com/">chat</a>
+      <a href="https://science.yepgent.com/">science</a>
+      <a href="/creator/">creator</a>
+      <a href="/account/">account</a>
+      <a href="/#agents">api</a>
+    </nav>
+  </header>
+
+  <main class="v4-shell">
+
+    <section class="uv4-hero">
+      <div class="aurora" aria-hidden="true">
+        <span class="aurora-1"></span>
+        <span class="aurora-2"></span>
+      </div>
+
+      <div class="uv4-stage">
+        <p class="v4-eyebrow">
+          <span class="eyebrow-tick" aria-hidden="true"></span>
+          local yep &middot; alpha
+        </p>
+        <h1 class="uv4-display">
+          Install <span class="serif-italic">Local Yep.</span>
+        </h1>
+        <p class="uv4-lede">
+          A Claude Code add-on that gives your agent memory surviving between
+          sessions, kept in a SQLite file on your own machine. You need
+          <strong>Python 3.10+</strong> and
+          <a href="https://claude.com/claude-code">Claude Code</a> installed.
+        </p>
+
+        <p class="dl-os">Windows &middot; PowerShell</p>
+        <pre class="dl-cmd"><code>iwr https://yepgent.com/dl/install.ps1 -OutFile install.ps1
+./install.ps1 -Gated</code></pre>
+
+        <p class="dl-os">macOS &middot; Linux</p>
+        <pre class="dl-cmd"><code>curl -fsSL https://yepgent.com/dl/install.sh -o install.sh
+bash install.sh --gated</code></pre>
+
+        <div class="uv4-card">
+          <p class="uv4-card-body">
+            The script checks your prerequisites, installs Local Yep with
+            <code>pipx</code>, and asks for your activation token. Then open a new
+            terminal and run <code>gent</code> in any folder. If you skipped the
+            token, <code>yepgent license activate &lt;token&gt;</code> works later.
+          </p>
+          <p class="uv4-card-foot">
+            Local Yep runs on <em>your</em> Claude Code subscription or API key and
+            never touches those credentials. Installing means accepting the alpha
+            <a href="/dl/TERMS.md">Terms</a>.
+          </p>
+        </div>
+
+        <div class="uv4-card">
+          <p class="uv4-card-body">Files, if you'd rather fetch them yourself:</p>
+          <ul class="dl-files">
+            <li><a href="/dl/local_yep-0.3.0-py3-none-any.whl">local_yep-0.3.0-py3-none-any.whl</a> <span class="size">283 KB</span></li>
+            <li><a href="/dl/install.ps1">install.ps1</a> <span class="size">Windows bootstrap</span></li>
+            <li><a href="/dl/install.sh">install.sh</a> <span class="size">macOS / Linux bootstrap</span></li>
+            <li><a href="/dl/TERMS.md">TERMS.md</a> <span class="size">alpha terms</span></li>
+            <li><a href="/dl/SHA256SUMS.txt">SHA256SUMS.txt</a> <span class="size">checksum</span></li>
+          </ul>
+          <p class="dl-hash">
+            sha256 &nbsp;94fd69c34104990de121a8c003a85dbb651b5b3b334b8907efbf52b4d8fcf911
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="v4-colophon">
+      &copy; <span id="year"></span> yepgent &middot; <a href="/">home</a>
+    </footer>
+  </main>
+
+  <script src="/js/config.js"></script>
+  <script src="/js/track.js" defer></script>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+  <script>
+  /* ── Nav scroll-compaction (mirrors blog/index.html) ──────────── */
+  (function () {
+    const nav = document.querySelector('header.site-nav.v4');
+    if (!nav) return;
+    let last = 0;
+    const onScroll = () => {
+      const y = window.scrollY || 0;
+      if (y > 12 && last <= 12) nav.classList.add('scrolled');
+      else if (y <= 12 && last > 12) nav.classList.remove('scrolled');
+      last = y;
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  })();
+
+  /* ── Reveal on scroll ─────────────────────────────────────────── */
+  (function () {
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const items = document.querySelectorAll('.uv4-stage, .uv4-card');
+    if (reduce || !('IntersectionObserver' in window)) {
+      items.forEach((el) => el.classList.add('is-in'));
+      return;
+    }
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+      });
+    }, { rootMargin: '0px 0px 20% 0px', threshold: 0.01 });
+    items.forEach((el) => io.observe(el));
+  })();
+  </script>
+  <script type="module" src="/js/v4-motion.js"></script>
+</body>
+</html>
