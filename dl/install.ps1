@@ -65,6 +65,20 @@ function Info([string]$m) { Write-Host "[install] $m" -ForegroundColor Cyan }
 function Warn([string]$m) { Write-Host "[install] $m" -ForegroundColor Yellow }
 function Die([string]$m)  { Write-Host "[install] $m" -ForegroundColor Red; exit 1 }
 
+# --- Source availability (checked BEFORE we touch anything) -----------------
+# Both non-wheel sources exist for the operator, not for testers, and both fail
+# in ways that look like a successful install if we let them run:
+#   pypi -> PyPI currently holds only a ~2 KB NAME RESERVATION (0.0.1a1), no
+#           agent code and no console scripts, so `gent` would simply not exist.
+#   git  -> drknowhow/yepgent-local is PRIVATE; a tester's clone 404s.
+# Fail loudly here rather than after installing pipx and downloading nothing.
+if ($Source -eq 'pypi') {
+  Die "-Source pypi is not available yet: PyPI holds only a name reservation for 'local-yep' (no agent code, no 'gent' command). Install the hosted wheel instead - drop -Source, or pass -Wheel https://yepgent.com/dl/local_yep-0.3.1-py3-none-any.whl"
+}
+if ($Source -eq 'git') {
+  Die "-Source git needs access to the private source repo, which alpha testers do not have. Drop -Source to install the hosted wheel from https://yepgent.com/dl/."
+}
+
 # --- 0. Terms acknowledgment ------------------------------------------------
 $TermsVersion = 'alpha-1'
 function Accept-Terms {
