@@ -29,7 +29,7 @@ PUBKEY="TsiByx8LlpIdrtXhpbnJTMGQr8newB8TKRox4tkoW8Q"
 # Hosted alpha wheel — used when neither --wheel nor --source is given, so the
 # one-liner works for testers who have no access to the private repo.
 # RELEASE STEP: bump this version AND upload the new wheel to yepgent.com/dl/.
-DEFAULT_WHEEL="https://yepgent.com/dl/local_yep-0.3.1-py3-none-any.whl"
+DEFAULT_WHEEL="https://yepgent.com/dl/local_yep-0.3.2-py3-none-any.whl"
 
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -50,17 +50,16 @@ warn() { printf '[install] %s\n' "$*" >&2; }
 die()  { printf '[install] %s\n' "$*" >&2; exit 1; }
 
 # --- Source availability (checked BEFORE we touch anything) -----------------
-# Both non-wheel sources exist for the operator, not for testers, and both fail
-# in ways that look like a successful install if we let them run:
-#   pypi -> PyPI currently holds only a ~2 KB NAME RESERVATION (0.0.1a1), no
-#           agent code and no console scripts, so `gent` would simply not exist.
-#   git  -> drknowhow/yepgent-local is PRIVATE; a tester's clone 404s.
-# Fail loudly here rather than after installing pipx and downloading nothing.
+# `--source pypi` is LIVE as of 0.3.2 (the real package now publishes over the
+# old name-reservation placeholder). It is a fine install path, with one
+# difference worth stating: PyPI ships the package only, so nothing writes
+# ~/.local-yep/entitlement_pubkey. Free core is unaffected; a gated alpha token
+# needs that key, which this script writes in step 3.
+#   git -> drknowhow/yepgent-local is PRIVATE; a tester's clone 404s AFTER this
+#          script has accepted terms and installed pipx, so fail here instead.
 case "$SOURCE" in
-  pypi)
-    die "--source pypi is not available yet: PyPI holds only a name reservation for 'local-yep' (no agent code, no 'gent' command). Install the hosted wheel instead — just drop --source, or pass --wheel https://yepgent.com/dl/local_yep-0.3.1-py3-none-any.whl" ;;
   git)
-    die "--source git needs access to the private source repo, which alpha testers do not have. Drop --source to install the hosted wheel from https://yepgent.com/dl/." ;;
+    die "--source git needs access to the private source repo, which alpha testers do not have. Drop --source to install the hosted wheel from https://yepgent.com/dl/, or use --source pypi." ;;
 esac
 
 # --- 0. Terms acknowledgment ------------------------------------------------

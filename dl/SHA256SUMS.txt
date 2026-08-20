@@ -1,2 +1,3 @@
 94fd69c34104990de121a8c003a85dbb651b5b3b334b8907efbf52b4d8fcf911 *local_yep-0.3.0-py3-none-any.whl
 dc8a4eec0e1d3a238bac7d8ff1847798624abdb4570ae4f0884db6554cfe6f93 *local_yep-0.3.1-py3-none-any.whl
+2e673d1d882b037a0a453ef95be2b49c2b6901e69da379a4165a3e6066c0200d *local_yep-0.3.2-py3-none-any.whl
