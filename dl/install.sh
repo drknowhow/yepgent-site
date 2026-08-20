@@ -29,7 +29,7 @@ PUBKEY="TsiByx8LlpIdrtXhpbnJTMGQr8newB8TKRox4tkoW8Q"
 # Hosted alpha wheel — used when neither --wheel nor --source is given, so the
 # one-liner works for testers who have no access to the private repo.
 # RELEASE STEP: bump this version AND upload the new wheel to yepgent.com/dl/.
-DEFAULT_WHEEL="https://yepgent.com/dl/local_yep-0.3.0-py3-none-any.whl"
+DEFAULT_WHEEL="https://yepgent.com/dl/local_yep-0.3.1-py3-none-any.whl"
 
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -145,7 +145,22 @@ persist() { # NAME VALUE — export now + append to the profile (idempotent)
   export "$1=$2"
   grep -q "export $1=" "$profile" 2>/dev/null || printf 'export %s=%s\n' "$1" "$2" >> "$profile"
 }
-if [ -n "$PUBKEY" ]; then persist LOCAL_YEP_TOOLSPACE_PUBKEY "$PUBKEY"; info "entitlement public key configured ($profile)."; fi
+if [ -n "$PUBKEY" ]; then
+  # Durable lane FIRST. A profile `export` is fragile: this script picks
+  # ~/.bashrc, ~/.zshrc or ~/.profile from the shell that happens to run it,
+  # and an interactive bash never sources ~/.profile — so the key could land
+  # somewhere the agent never reads, leaving a valid token unverifiable
+  # (`yepgent license status` -> state: no_pubkey). A file in the Local Yep
+  # home is read the same way from any shell, cron, or systemd.
+  ly_home="${HOME}/.local-yep"
+  if mkdir -p "$ly_home" 2>/dev/null && printf '%s' "$PUBKEY" > "$ly_home/entitlement_pubkey" 2>/dev/null; then
+    info "entitlement public key written to $ly_home/entitlement_pubkey"
+  else
+    warn "could not write $ly_home/entitlement_pubkey (continuing)."
+  fi
+  persist LOCAL_YEP_TOOLSPACE_PUBKEY "$PUBKEY"
+  info "entitlement public key also exported ($profile)."
+fi
 if [ "$GATED" -eq 1 ]; then persist YEPGENT_REQUIRE_ACTIVATION 1; info "fully-gated mode ON — an activation token is required to run."; fi
 
 # --- 4. Claude Code check ---------------------------------------------------
