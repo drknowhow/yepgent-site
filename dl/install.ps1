@@ -58,7 +58,7 @@ param(
 # Hosted alpha wheel — used when neither -Wheel nor -Source is given, so the
 # one-liner works for testers who have no access to the private repo.
 # RELEASE STEP: bump this version AND upload the new wheel to yepgent.com/dl/.
-$DefaultWheel = 'https://yepgent.com/dl/local_yep-0.3.0-py3-none-any.whl'
+$DefaultWheel = 'https://yepgent.com/dl/local_yep-0.3.1-py3-none-any.whl'
 
 $ErrorActionPreference = 'Stop'
 function Info([string]$m) { Write-Host "[install] $m" -ForegroundColor Cyan }
@@ -157,6 +157,17 @@ if (-not (Test-Path $yepgent)) { $yepgent = 'yepgent' }  # fall back to PATH
 
 # --- 3. configure entitlement verification + gate ---------------------------
 if ($Pubkey) {
+  # Durable lane FIRST: a file in the Local Yep home is read identically from a
+  # scheduled task, a service, an IDE terminal, or a shell that never inherited
+  # the User environment. The env var below stays as an override.
+  $lyHome = Join-Path $HOME '.local-yep'
+  try {
+    if (-not (Test-Path $lyHome)) { New-Item -ItemType Directory -Path $lyHome -Force | Out-Null }
+    Set-Content -Path (Join-Path $lyHome 'entitlement_pubkey') -Value $Pubkey -Encoding ascii -NoNewline
+    Info "entitlement public key written to $lyHome\entitlement_pubkey"
+  } catch {
+    Warn "could not write the entitlement public key file (continuing): $_"
+  }
   [Environment]::SetEnvironmentVariable('LOCAL_YEP_TOOLSPACE_PUBKEY', $Pubkey, 'User')
   $env:LOCAL_YEP_TOOLSPACE_PUBKEY = $Pubkey
   Info "entitlement public key configured (User scope)."
