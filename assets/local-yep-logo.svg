@@ -1,0 +1,28 @@
+<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Local Yep logo">
+  <defs>
+    <linearGradient id="tile" x1="24" y1="16" x2="232" y2="240" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#2fd4a8"/>
+      <stop offset="1" stop-color="#0c7d5e"/>
+    </linearGradient>
+    <linearGradient id="check" x1="92" y1="78" x2="164" y2="128" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0f9d76"/>
+      <stop offset="1" stop-color="#0c7d5e"/>
+    </linearGradient>
+    <radialGradient id="sheen" cx="0.32" cy="0.2" r="0.95">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.20"/>
+      <stop offset="0.55" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- app tile -->
+  <rect x="8" y="8" width="240" height="240" rx="56" fill="url(#tile)"/>
+  <rect x="8" y="8" width="240" height="240" rx="56" fill="url(#sheen)"/>
+
+  <!-- speech bubble (the agent, talking to you) -->
+  <path d="M100 150 L100 186 L134 150 Z" fill="#ffffff"/>
+  <rect x="48" y="58" width="160" height="92" rx="26" fill="#ffffff"/>
+
+  <!-- "Yep" = the affirmative check inside -->
+  <path d="M92 104 L116 128 L164 78" fill="none" stroke="url(#check)"
+        stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
