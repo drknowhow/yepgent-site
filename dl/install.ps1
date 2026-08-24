@@ -58,7 +58,7 @@ param(
 # Hosted alpha wheel — used when neither -Wheel nor -Source is given, so the
 # one-liner works for testers who have no access to the private repo.
 # RELEASE STEP: bump this version AND upload the new wheel to yepgent.com/dl/.
-$DefaultWheel = 'https://yepgent.com/dl/local_yep-0.3.2-py3-none-any.whl'
+$DefaultWheel = 'https://yepgent.com/dl/local_yep-0.3.3-py3-none-any.whl'
 
 $ErrorActionPreference = 'Stop'
 function Info([string]$m) { Write-Host "[install] $m" -ForegroundColor Cyan }
