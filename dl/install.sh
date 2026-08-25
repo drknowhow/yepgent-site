@@ -29,7 +29,7 @@ PUBKEY="TsiByx8LlpIdrtXhpbnJTMGQr8newB8TKRox4tkoW8Q"
 # Hosted alpha wheel — used when neither --wheel nor --source is given, so the
 # one-liner works for testers who have no access to the private repo.
 # RELEASE STEP: bump this version AND upload the new wheel to yepgent.com/dl/.
-DEFAULT_WHEEL="https://yepgent.com/dl/local_yep-0.3.4-py3-none-any.whl"
+DEFAULT_WHEEL="https://yepgent.com/dl/local_yep-0.3.5-py3-none-any.whl"
 
 while [ $# -gt 0 ]; do
   case "$1" in
