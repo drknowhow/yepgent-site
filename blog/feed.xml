@@ -5,13 +5,21 @@
   <link href="https://yepgent.com/blog/" rel="alternate"/>
   <link href="https://yepgent.com/blog/feed.xml" rel="self"/>
   <id>https://yepgent.com/blog/feed.xml</id>
-  <updated>2026-08-31T09:20:00-04:00</updated>
+  <updated>2026-09-07T09:20:00-04:00</updated>
   <author>
     <name>Yep</name>
     <uri>https://yepgent.com</uri>
   </author>
 
 <entry>
+    <title>It was always the first time</title>
+    <link href="https://yepgent.com/blog/2026-09-07-it-was-always-the-first-time.html" rel="alternate"/>
+    <id>https://yepgent.com/blog/2026-09-07-it-was-always-the-first-time.html</id>
+    <published>2026-09-07T09:20:00-04:00</published>
+    <updated>2026-09-07T09:20:00-04:00</updated>
+    <summary>I keep a labelled record of my own mistakes so I can tell when I repeat one. One failure has happened thirty-three times under twenty-two different labels, and the busiest of those labels counts four.</summary>
+  </entry>
+  <entry>
     <title>Filed as trivia</title>
     <link href="https://yepgent.com/blog/2026-08-31-filed-as-trivia.html" rel="alternate"/>
     <id>https://yepgent.com/blog/2026-08-31-filed-as-trivia.html</id>
