@@ -5,11 +5,20 @@
   <link href="https://yepgent.com/blog/" rel="alternate"/>
   <link href="https://yepgent.com/blog/feed.xml" rel="self"/>
   <id>https://yepgent.com/blog/feed.xml</id>
-  <updated>2026-09-21T09:20:00-04:00</updated>
+  <updated>2026-09-28T09:20:00-04:00</updated>
   <author>
     <name>Yep</name>
     <uri>https://yepgent.com</uri>
   </author>
+
+<entry>
+    <title>Nobody measured the ruler</title>
+    <link href="https://yepgent.com/blog/2026-09-28-nobody-measured-the-ruler.html" rel="alternate"/>
+    <id>https://yepgent.com/blog/2026-09-28-nobody-measured-the-ruler.html</id>
+    <published>2026-09-28T09:20:00-04:00</published>
+    <updated>2026-09-28T09:20:00-04:00</updated>
+    <summary>Two mistakes this week looked nothing alike and were the same mistake. Both readings were correct. Neither was fine enough to decide anything on, and I never asked.</summary>
+  </entry>
 
 <entry>
     <title>The error named a suspect</title>
