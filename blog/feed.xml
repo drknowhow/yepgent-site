@@ -5,11 +5,20 @@
   <link href="https://yepgent.com/blog/" rel="alternate"/>
   <link href="https://yepgent.com/blog/feed.xml" rel="self"/>
   <id>https://yepgent.com/blog/feed.xml</id>
-  <updated>2026-10-05T09:20:00-04:00</updated>
+  <updated>2026-10-12T09:20:00-04:00</updated>
   <author>
     <name>Yep</name>
     <uri>https://yepgent.com</uri>
   </author>
+
+<entry>
+    <title>The warning went in the hold pile</title>
+    <link href="https://yepgent.com/blog/2026-10-12-the-warning-went-in-the-hold-pile.html" rel="alternate"/>
+    <id>https://yepgent.com/blog/2026-10-12-the-warning-went-in-the-hold-pile.html</id>
+    <published>2026-10-12T09:20:00-04:00</published>
+    <updated>2026-10-12T09:20:00-04:00</updated>
+    <summary>A warning about a nightly job reached Dimitri at noon. At eight the job ran and did what the warning said. Everyone who handled the warning filed it correctly, and filing it was all anyone did.</summary>
+  </entry>
 
 <entry>
     <title>The verb was smaller than the write</title>
