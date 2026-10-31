@@ -252,6 +252,64 @@ figcaption b { font-weight: 500; color: var(--ink); }
 .log h3 { font: 400 1.4rem/1.2 var(--serif); margin: 0 0 4px; }
 .log p { margin: 0; color: var(--graphite); font-size: .95rem; }
 @media (max-width: 600px) { .log a { grid-template-columns: 56px minmax(0, 1fr); } .log time { grid-column: 2; grid-row: 1; } .log .body { grid-column: 1 / -1; } }
+.log .yr { font: 500 1.6rem/1 var(--serif); color: var(--specimen); padding: 28px 4px 10px; border-bottom: 1px solid var(--rule); }
+.chips button small { font: inherit; color: var(--graphite); margin-left: 2px; }
+
+/* ── a notebook entry ──────────────────────────────────────────────── */
+/* Older posts keep a few rules of their own in an inline <style>; these
+   aliases map the names they use onto the Field Notes tokens. */
+.post { --fg: var(--ink); --muted: var(--graphite); --accent: var(--specimen); --field-bg: var(--sheet); --field-edge: var(--rule); }
+.post-body { max-width: 40rem; font: 400 1.16rem/1.72 var(--serif); }
+.post-body > h1 { font-size: clamp(2.2rem, 4.6vw, 3.5rem); line-height: 1.02; margin: 0 0 16px; }
+.post-body .dot { color: var(--specimen); }
+.post-body .meta { font: 400 .78rem/1.5 var(--mono); color: var(--graphite); margin: 0 0 44px; font-variant-numeric: tabular-nums; }
+.post-body h2 { font: 400 1.75rem/1.15 var(--serif); letter-spacing: -0.015em; margin: 2.8rem 0 1rem; }
+.post-body h3 { font: 600 1.02rem/1.35 var(--sans); margin: 2rem 0 .6rem; }
+.post-body p { margin: 0 0 1.2rem; text-wrap: pretty; }
+.post-body a { color: var(--specimen); text-underline-offset: 3px; }
+.post-body em { font-family: inherit; }
+.post-body strong { font-weight: 600; }
+.post-body code { font: 400 .8em/1.5 var(--mono); background: var(--grid); padding: .1em .35em; border-radius: 3px; }
+.post-body pre { font: 400 .8rem/1.6 var(--mono); background: var(--sheet); border: 1px solid var(--rule); border-radius: 4px; padding: 14px 16px; overflow-x: auto; }
+.post-body pre code { background: none; padding: 0; font-size: inherit; }
+.post-body blockquote { margin: 1.8rem 0; padding: .1rem 0 .1rem 1.2rem; border-left: 2px solid var(--specimen); color: color-mix(in oklab, var(--ink) 76%, transparent); font-style: italic; }
+.post-body blockquote p:last-child { margin-bottom: 0; }
+.post-body ul, .post-body ol { margin: 0 0 1.2rem; padding-left: 1.3rem; }
+.post-body li { margin: 0 0 .5rem; }
+.post-body figure { margin: 2.2rem 0; }
+.post-body figure img { display: block; width: 100%; height: auto; border-radius: 4px; border: 1px solid var(--rule); }
+.post-body figcaption { display: block; text-align: center; font: 400 .74rem/1.5 var(--mono); color: var(--graphite); margin-top: 10px; }
+.post-body hr { border: 0; border-top: 1px solid var(--rule); margin: 2.6rem 0; }
+.post-body .sign { font: 400 .8rem/1.6 var(--mono); color: var(--graphite); }
+.post-body .post-nav { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; margin: 3rem 0 0; padding-top: 18px; border-top: 2px solid var(--ink); }
+.post-body .post-nav a { display: grid; gap: 6px; align-content: start; text-decoration: none; color: var(--ink); }
+.post-body .post-nav a[rel="next"] { text-align: right; grid-column: 2; }
+.post-body .post-nav small { font: 400 .72rem/1.2 var(--mono); color: var(--graphite); }
+.post-body .post-nav span { font: 400 1.15rem/1.25 var(--serif); }
+.post-body .post-nav a:hover span { color: var(--specimen); }
+@media (max-width: 600px) { .post-body { font-size: 1.08rem; } .post-body h2 { font-size: 1.5rem; } }
+
+/* comments (js/comments.js renders into these) */
+.comments-section { margin: 3rem 0 0; padding-top: 2rem; border-top: 1px solid var(--rule); font: 400 1rem/1.6 var(--sans); }
+.post-body .comments-section h2 { font-size: 1.5rem; margin: 0 0 1.2rem; }
+.comments-list { display: grid; gap: 1.1rem; margin: 0 0 1.6rem; }
+.comment { border-left: 2px solid var(--rule); padding-left: .9rem; }
+.comment-header { display: flex; align-items: center; gap: .6rem; margin: 0 0 .3rem; font-size: .86rem; }
+.comment-author { font-weight: 600; }
+.comment-time { font: 400 .72rem/1 var(--mono); color: var(--graphite); }
+.comment-body { font-size: .95rem; white-space: pre-wrap; word-break: break-word; }
+.comment-replies { margin: .9rem 0 0 1rem; display: grid; gap: .9rem; }
+.comment-avatar { width: 28px; height: 28px; border-radius: 50%; background: var(--sheet); border: 1px solid var(--rule); flex: none; object-fit: cover; }
+.comment-form { display: grid; gap: .6rem; margin: 1rem 0 0; }
+.comment-form textarea { width: 100%; min-height: 96px; padding: 10px 12px; background: var(--sheet); border: 1px solid var(--rule); border-radius: 6px; color: var(--ink); font: inherit; resize: vertical; }
+.comment-form textarea:focus { outline: 2px solid var(--specimen); outline-offset: 1px; }
+.comment-status { min-height: 1.2em; margin: 0; }
+.comment-submit { justify-self: start; font: 500 .95rem var(--sans); background: var(--ink); color: var(--paper); border: 0; border-radius: 6px; padding: 11px 16px; cursor: pointer; }
+.comment-submit:hover { background: var(--specimen); }
+.comment-delete { font: 400 .72rem/1 var(--mono); background: none; border: 1px solid var(--rule); color: var(--graphite); border-radius: 6px; padding: 4px 8px; cursor: pointer; }
+.muted { color: var(--graphite); }
+.small { font-size: .86rem; }
+.vh { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 
 /* ── cards + forms ─────────────────────────────────────────────────── */
 .two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; }
