@@ -21,7 +21,7 @@
 //
 // No dependencies: Node 20+ only.
 
-import { readFile, writeFile, mkdir, readdir } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, readdir, stat } from 'node:fs/promises';
 import { dirname, resolve, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -603,6 +603,35 @@ async function htmlFiles(dir = ROOT, rel = '') {
   return out;
 }
 
+// /dl/ lists the hosted Local Yep wheels. The list, the sizes and the checksum
+// line come from the files in dl/ and dl/SHA256SUMS.txt, so a release is: add
+// the wheel, add its line to SHA256SUMS.txt, run npm run build:pages. When the
+// line was typed by hand, 0.3.5 shipped showing 0.3.4's checksum.
+export async function dlRegions() {
+  const dir = resolve(ROOT, 'dl');
+  const sums = new Map();
+  for (const line of (await readFile(resolve(dir, 'SHA256SUMS.txt'), 'utf8')).split(/\r?\n/)) {
+    const m = line.trim().match(/^([0-9a-f]{64})\s+\*?(\S+)$/);
+    if (m) sums.set(m[2], m[1]);
+  }
+  const ver = (f) => f.match(/^local_yep-(\d+)\.(\d+)\.(\d+)-/).slice(1).map(Number);
+  const wheels = (await readdir(dir)).filter((f) => /^local_yep-\d+\.\d+\.\d+-py3-none-any\.whl$/.test(f))
+    .sort((a, b) => { const x = ver(a), y = ver(b); return y[0] - x[0] || y[1] - x[1] || y[2] - x[2]; });
+  if (!wheels.length) throw new Error('dl/: no local_yep-*.whl files found.');
+  const unsummed = wheels.filter((f) => !sums.has(f));
+  if (unsummed.length) throw new Error(`dl/SHA256SUMS.txt has no line for: ${unsummed.join(', ')}. Add "<sha256> *<file>" for each, then run npm run build:pages.`);
+  const lis = [];
+  for (const [i, f] of wheels.entries()) {
+    const kb = Math.round((await stat(resolve(dir, f))).size / 1024);
+    lis.push(`          <li><a href="/dl/${f}">${f}</a> <span class="size">${kb} KB${i === 0 ? ' &middot; current' : ''}</span></li>`);
+  }
+  const cur = wheels[0];
+  return {
+    'dl-wheels': lis.join('\n'),
+    'dl-hash': `        <p class="note dl-hash">sha256 of ${esc(cur)} &nbsp;${sums.get(cur)}</p>`,
+  };
+}
+
 export async function markedPages(year) {
   const out = {};
   for (const rel of (await htmlFiles()).sort()) {
@@ -610,7 +639,9 @@ export async function markedPages(year) {
     const src = (await readFile(resolve(ROOT, rel), 'utf8')).replace(/\r\n/g, '\n');
     if (!src.includes('<!-- fn:head -->')) continue;
     const section = rel.includes('/') ? `/${rel.split('/')[0]}/` : '/';
-    out[rel] = fillRegions(src, { head: headShared(), header: header(section).replace(/^\n/, ''), footer: footerShared(year) }, rel);
+    const regions = { head: headShared(), header: header(section).replace(/^\n/, ''), footer: footerShared(year) };
+    if (rel === 'dl/index.html') Object.assign(regions, await dlRegions());
+    out[rel] = fillRegions(src, regions, rel);
   }
   return out;
 }
