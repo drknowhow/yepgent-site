@@ -1,21 +1,21 @@
 name: Catalogue pages in sync
 
 # scripts/build-pages.mjs renders the homepage, /projects/, /games/,
-# /experiments/ and /blog/ from catalogue.json and blog/index.json, and fills
-# the <!-- fn:NAME --> regions (shared head, nav, footer, entry links) in every
-# notebook post. This fails a PR that changes any of them without re-running
-# `npm run build:pages`. deploy.yml also re-renders on every push to main.
+# /experiments/ and /blog/ from catalogue.json and blog/index.json. It also
+# fills the <!-- fn:NAME --> regions (shared head, nav, footer, entry links)
+# in every notebook post and in every other page that carries them, and the
+# /dl/ file list from dl/ and dl/SHA256SUMS.txt. This fails a PR that changes
+# any of them without re-running `npm run build:pages`. deploy.yml also
+# re-renders on every push to main.
 
 on:
   pull_request:
     paths:
       - "catalogue.json"
       - "scripts/build-pages.mjs"
-      - "index.html"
-      - "projects/**"
-      - "games/**"
-      - "experiments/**"
+      - "**.html"
       - "blog/**"
+      - "dl/**"
       - ".github/workflows/pages-check.yml"
 
 jobs:

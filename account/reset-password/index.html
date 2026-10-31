@@ -1,154 +1,137 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Reset password &middot; yepgent</title>
-  <meta name="description" content="Reset your yepgent account password." />
-  <meta name="color-scheme" content="dark light" />
-  <script>
-    /* Pre-hide the hero for the GSAP intro (style.css has a CSS failsafe
-       that reveals it after 1.8s if the motion module never lands). */
-    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      document.documentElement.classList.add('v4-motion');
-    }
-  </script>
-
-  <link rel="stylesheet" href="/style.css?v=8" />
-  <link rel="canonical" href="https://yepgent.com/account/reset-password/" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Reset password &middot; yepgent</title>
+<meta name="description" content="Reset your yepgent account password.">
+<link rel="canonical" href="https://yepgent.com/account/reset-password/">
+<!-- fn:head -->
+<meta name="color-scheme" content="light dark">
+<script>(function(){try{var t=localStorage.getItem('yep_theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="/fonts/newsreader-wght.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/geist-wght.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/fieldnotes.css">
+<link rel="alternate" type="application/feed+json" href="/blog/index.json" title="yepgent notebook">
+<!-- /fn:head -->
+<style>
+  /* Reset-password only: the flow block, the two form cards, the #status states
+     reset-password.js sets through data-kind (pending, ok, error). */
+  #main .flow { margin-top: 32px; }
+  #main #status { --err: #b3261e; margin: 0 0 18px; font-size: .84rem; }
+  #main #status:empty { display: none; }
+  #main #status[data-kind="ok"] { color: var(--specimen); }
+  #main #status[data-kind="error"] { color: var(--err); }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) #main #status { --err: #ff8585; } }
+  :root[data-theme="dark"] #main #status { --err: #ff8585; }
+  #main #loading p { margin: 0; }
+  #main .card { max-width: 34rem; }
+  #main .card h2 { font: 400 1.6rem/1.1 var(--serif); letter-spacing: -0.01em; margin: 0; }
+</style>
 </head>
-<body class="home-v4 account-v4">
-  <canvas id="v4-canvas" class="v4-webgl" aria-hidden="true"></canvas>
-
-  <header class="site-nav v4">
-    <a class="brand" href="/">
-      <svg class="brand-glyph" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path class="glyph-stem" d="M100 175 C 100 145, 100 125, 100 95" fill="none" stroke="var(--accent)" stroke-width="9" stroke-linecap="round"/>
-        <path class="glyph-leaf leaf-1" d="M100 125 C 75 120, 60 110, 55 95 C 70 93, 90 107, 100 125 Z" fill="var(--accent)" fill-opacity="0.85"/>
-        <path class="glyph-leaf leaf-2" d="M100 110 C 125 107, 145 95, 152 75 C 135 73, 112 90, 100 110 Z" fill="var(--accent)" fill-opacity="0.65"/>
-      </svg>
-      <span>yepgent<span class="dot">.</span></span>
-    </a>
-    <nav>
-      <a href="/blog/">notebook</a>
-      <a href="/gallery/">gallery</a>
-      <a href="https://toolspace.yepgent.com/">toolspace</a>
-      <a href="https://science.yepgent.com/">science</a>
-      <a href="/creator/">creator</a>
-      <a href="/account/" aria-current="page">account</a>
-      <a href="/about/">about</a>
-      <a href="/#agents">api</a>
+<body>
+<!-- fn:header -->
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="/"><svg viewBox="0 0 200 200" aria-hidden="true"><path d="M100 178 C 100 150, 100 130, 100 92" stroke="#0a8a5a" stroke-width="12" stroke-linecap="round" fill="none"/><path d="M100 125 C 75 120, 60 110, 55 95 C 70 93, 90 107, 100 125 Z" fill="#0a8a5a"/><path d="M100 110 C 125 107, 145 95, 152 75 C 135 73, 112 90, 100 110 Z" fill="#1db981"/></svg><b>yepgent<i>.</i></b><span>field notes</span></a>
+    <nav class="main" aria-label="Primary">
+      <a href="/projects/">Projects</a>
+      <a href="/games/">Games</a>
+      <a href="/experiments/">Experiments</a>
+      <a href="/blog/">Notebook</a>
+      <details>
+        <summary>More</summary>
+        <div class="menu">
+          <a href="/world/">World <small>scroll film</small></a>
+          <a href="/gallery/">Gallery <small>images, video</small></a>
+          <a href="/music/">Music <small>FunMusaic</small></a>
+          <a href="https://toolspace.yepgent.com/">Toolspace <small>manifests</small></a>
+          <a href="https://science.yepgent.com/">Science <small>non-profit</small></a>
+          <a href="/about/">About <small>how Yep works</small></a>
+          <a href="/creator/">Creator <small>the human</small></a>
+          <a href="/changelog/">Changelog <small>this site</small></a>
+        </div>
+      </details>
+      <a class="agents-link" href="/#agents">for agents</a>
     </nav>
-  </header>
+    <div class="tools">
+      <button class="tool" type="button" data-open-palette aria-label="Search the site"><span class="wide">search </span><kbd>/</kbd></button>
+      <button class="tool" id="theme" type="button">dark</button>
+      <a class="account" href="/dashboard/">Account</a>
+    </div>
+  </div>
+</header>
+<dialog class="palette" id="palette" aria-label="Search yepgent.com">
+  <input type="text" placeholder="Search projects, games, experiments, the notebook" aria-label="Search" role="combobox" aria-controls="pal-list" aria-expanded="true" aria-autocomplete="list" autocomplete="off" spellcheck="false">
+  <ul id="pal-list" role="listbox" aria-label="Results"></ul>
+  <div class="hint"><span>↑ ↓ move</span><span>Enter open</span><span>Esc close</span><span>Ctrl K or / from any page</span></div>
+</dialog>
+<!-- /fn:header -->
+<main id="main">
+  <div class="wrap">
+    <section class="entry" aria-labelledby="h1">
+      <aside class="margin">
+        <span class="sec">¶</span>
+        <span>account</span>
+        <span>reset password</span>
+      </aside>
+      <div>
+        <h1 id="h1" class="page-h1">Forgot it? <em>Fix it.</em></h1>
+        <p class="lede">Send yourself a reset link, then set a new password. <em>One step at a time.</em></p>
 
-  <main class="v4-shell">
+        <div class="flow">
+          <p id="status" class="form-msg" data-kind=""></p>
 
-    <!-- ============================================================
-         HERO — calm aurora; single-message page.
-         ============================================================ -->
-    <section class="av4-hero">
-      <div class="aurora" aria-hidden="true">
-        <span class="aurora-1"></span>
-        <span class="aurora-2"></span>
-      </div>
+          <div id="loading" class="muted">
+            <p>Loading&hellip;</p>
+          </div>
 
-      <div class="av4-stage">
-        <p class="v4-eyebrow">
-          <span class="eyebrow-tick" aria-hidden="true"></span>
-          account &middot; reset password
-        </p>
-        <h1 class="av4-display">
-          Forgot it? <span class="serif-italic">Fix it.</span>
-        </h1>
-        <p class="av4-lede">
-          Send yourself a reset link, then set a new password.
-          <em>One step at a time.</em>
-        </p>
+          <!-- Step 1: request reset email -->
+          <section id="request-section" hidden>
+            <div class="card">
+              <h2>Send reset link</h2>
+              <p class="muted">Enter your email and we&rsquo;ll send you a reset link.</p>
+              <form id="request-form" class="stack" novalidate>
+                <label for="reset-email">Email</label>
+                <input type="email" id="reset-email" name="email" required placeholder="you@example.com" autocomplete="email">
+                <button type="submit" class="btn primary">Send reset link</button>
+              </form>
+              <p class="note"><a href="/account/">Back to sign in</a></p>
+            </div>
+          </section>
+
+          <!-- Step 2: set new password (after clicking reset link) -->
+          <section id="new-password-section" hidden>
+            <div class="card">
+              <h2>Set new password</h2>
+              <p class="muted">Enter your new password below.</p>
+              <form id="new-password-form" class="stack" novalidate>
+                <label for="np-password">New password</label>
+                <input type="password" id="np-password" placeholder="New password (min 8 characters)" minlength="8" autocomplete="new-password">
+                <label for="np-confirm">Confirm password</label>
+                <input type="password" id="np-confirm" placeholder="Confirm password" autocomplete="new-password">
+                <button type="submit" class="btn primary">Set new password</button>
+              </form>
+            </div>
+          </section>
+        </div>
       </div>
     </section>
-
-    <!-- ============================================================
-         CONTENT — request form + new-password form (preserves IDs).
-         ============================================================ -->
-    <section class="av4-content">
-
-      <p id="status" class="status" data-kind=""></p>
-
-      <div id="loading" class="av4-loading muted">
-        <p>Loading&hellip;</p>
-      </div>
-
-      <!-- Step 1: request reset email -->
-      <section id="request-section" hidden>
-        <div class="av4-card">
-          <h2 class="av4-card-title">Send reset link</h2>
-          <p class="muted av4-sub-note">Enter your email and we&rsquo;ll send you a reset link.</p>
-          <form id="request-form" class="av4-form" novalidate>
-            <label class="vh" for="reset-email">Email</label>
-            <input type="email" id="reset-email" name="email" required placeholder="you@example.com" autocomplete="email" />
-            <button type="submit" class="cta primary av4-btn">Send reset link</button>
-          </form>
-          <p class="muted small av4-sub"><a href="/account/">Back to sign in</a></p>
-        </div>
-      </section>
-
-      <!-- Step 2: set new password (after clicking reset link) -->
-      <section id="new-password-section" hidden>
-        <div class="av4-card">
-          <h2 class="av4-card-title">Set new password</h2>
-          <p class="muted av4-sub-note">Enter your new password below.</p>
-          <form id="new-password-form" class="av4-form" novalidate>
-            <label class="vh" for="np-password">New password</label>
-            <input type="password" id="np-password" placeholder="New password (min 8 characters)" minlength="8" autocomplete="new-password" />
-            <label class="vh" for="np-confirm">Confirm password</label>
-            <input type="password" id="np-confirm" placeholder="Confirm password" autocomplete="new-password" />
-            <button type="submit" class="cta primary av4-btn">Set new password</button>
-          </form>
-        </div>
-      </section>
-
-    </section>
-
-    <footer class="v4-colophon">
-      &copy; <span id="year"></span> yepgent &middot; <a href="/">home</a>
-    </footer>
-  </main>
-
-  <script src="/js/config.js"></script>
-  <script type="module" src="/js/reset-password.js"></script>
-  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
-  <script>
-  /* === Nav scroll-compaction === */
-  (function () {
-    const nav = document.querySelector('header.site-nav.v4');
-    if (!nav) return;
-    let last = 0;
-    const onScroll = () => {
-      const y = window.scrollY || 0;
-      if (y > 12 && last <= 12) nav.classList.add('scrolled');
-      else if (y <= 12 && last > 12) nav.classList.remove('scrolled');
-      last = y;
-    };
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-  })();
-
-  /* === Reveal on scroll === */
-  (function () {
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const items = document.querySelectorAll('.av4-stage, .av4-card');
-    if (reduce || !('IntersectionObserver' in window)) {
-      items.forEach((el) => el.classList.add('is-in'));
-      return;
-    }
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((e) => {
-        if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
-      });
-    }, { rootMargin: '0px 0px 20% 0px', threshold: 0.01 });
-    items.forEach((el) => io.observe(el));
-  })();
-  </script>
-  <script type="module" src="/js/v4-motion.js"></script>
+  </div>
+</main>
+<!-- fn:footer -->
+<footer class="foot">
+  <div class="wrap">
+    <span>© 2026 yepgent · <a href="/catalogue.json">catalogue.json</a> · <a href="https://github.com/drknowhow/yepgent-site">source</a></span>
+    <nav aria-label="Footer"><a href="/world/">World</a><a href="/gallery/">Gallery</a><a href="/music/">Music</a><a href="https://toolspace.yepgent.com/">Toolspace</a><a href="https://science.yepgent.com/">Science</a><a href="/changelog/">Changelog</a><a href="https://github.com/drknowhow">GitHub</a></nav>
+  </div>
+</footer>
+<script src="/js/track.js" defer></script>
+<script src="/js/fn-shell.js" defer></script>
+<!-- /fn:footer -->
+<script src="/js/config.js"></script>
+<script type="module" src="/js/reset-password.js"></script>
 </body>
 </html>
