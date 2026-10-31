@@ -1,9 +1,19 @@
-// Render the Field Notes section pages from catalogue.json.
+// Render the Field Notes pages from catalogue.json and blog/index.json.
 //
 //   node scripts/build-pages.mjs           write the pages
 //   node scripts/build-pages.mjs --check   exit 1 if any page on disk differs
 //
-// catalogue.json is the single source for projects, games and experiments.
+// catalogue.json is the single source for projects, games and experiments;
+// blog/index.json (the notebook's JSON Feed) for the notebook index.
+//
+// Notebook posts are hand-written, but this script owns their shared parts:
+// whatever sits between <!-- fn:NAME --> and <!-- /fn:NAME --> markers (head
+// tags, nav, the margin with the entry number and tags, earlier/later links,
+// footer). To add an entry: copy the newest blog/YYYY-MM-DD-*.html with its
+// markers, replace the title, meta tags and the body inside .post-body, add
+// its item at the top of blog/index.json, then run `npm run build:pages`.
+// Don't edit blog/index.html or the marked regions by hand.
+//
 // The rendered HTML is committed so the site works from a plain static server,
 // and the PR check (.github/workflows/pages-check.yml) fails when someone edits
 // the catalogue or this template without re-running the build. The deploy
@@ -11,7 +21,7 @@
 //
 // No dependencies: Node 20+ only.
 
-import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, readdir } from 'node:fs/promises';
 import { dirname, resolve, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -62,6 +72,18 @@ const MORE = [
   ['/changelog/', 'Changelog', 'this site'],
 ];
 
+// The head tags every page shares. Generated pages get them from head();
+// hand-written pages get them in their <!-- fn:head --> region (see regions).
+export function headShared() {
+  return `<meta name="color-scheme" content="light dark">
+<script>(function(){try{var t=localStorage.getItem('yep_theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="/fonts/newsreader-wght.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/geist-wght.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/fieldnotes.css">
+<link rel="alternate" type="application/feed+json" href="/blog/index.json" title="yepgent notebook">`;
+}
+
 export function head({ title, description, path, extra = '' }) {
   const url = `https://yepgent.com${path}`;
   return `<!doctype html>
@@ -71,15 +93,9 @@ export function head({ title, description, path, extra = '' }) {
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(description)}">
-<meta name="color-scheme" content="light dark">
-<script>(function(){try{var t=localStorage.getItem('yep_theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="preload" href="/fonts/newsreader-wght.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="/fonts/geist-wght.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/fieldnotes.css">
+${headShared()}
 <link rel="canonical" href="${url}">
 <link rel="alternate" type="application/json" href="/catalogue.json" title="yepgent catalogue">
-<link rel="alternate" type="application/feed+json" href="/blog/index.json" title="yepgent notebook">
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(description)}">
 <meta property="og:url" content="${url}">
@@ -122,16 +138,22 @@ export function header(active) {
 </dialog>`;
 }
 
-export function footer(year, scripts = []) {
-  return `
-<footer class="foot">
+// The footer and the two scripts every page loads; also a region in
+// hand-written pages, which add their own scripts after it.
+export function footerShared(year) {
+  return `<footer class="foot">
   <div class="wrap">
     <span>© ${year} yepgent · <a href="/catalogue.json">catalogue.json</a> · <a href="https://github.com/drknowhow/yepgent-site">source</a></span>
     <nav aria-label="Footer">${MORE.filter(([, l]) => l !== 'About' && l !== 'Creator').map(([h, l]) => `<a href="${h}">${l}</a>`).join('')}<a href="https://github.com/drknowhow">GitHub</a></nav>
   </div>
 </footer>
 <script src="/js/track.js" defer></script>
-<script src="/js/fn-shell.js" defer></script>
+<script src="/js/fn-shell.js" defer></script>`;
+}
+
+export function footer(year, scripts = []) {
+  return `
+${footerShared(year)}
 ${scripts.map((src) => `<script src="${src}" defer></script>\n`).join('')}</body>
 </html>
 `;
@@ -452,6 +474,117 @@ function homePage(cat, feed) {
 </main>` + footer(cat.updated.slice(0, 4), ['/js/plate.js']);
 }
 
+// ── notebook ─────────────────────────────────────────────────────────────
+// blog/index.json (a JSON Feed, newest first) is the source for the notebook
+// index and for the numbering, tags and links around every post. The posts
+// are hand-written; the build owns only their <!-- fn:NAME --> regions.
+const local = (url) => url.replace('https://yepgent.com', '');
+const tagsOf = (it) => (Array.isArray(it.tags) ? it.tags : String(it.tags || '').split(/\s+/)).filter(Boolean);
+
+// A tag gets a filter chip when it is on at least 5 entries but not on nearly
+// all of them ("reflection" is on 51 of 55, so it filters nothing).
+function noteChips(items) {
+  const n = {};
+  items.forEach((it) => tagsOf(it).forEach((t) => { n[t] = (n[t] || 0) + 1; }));
+  const tags = Object.keys(n).filter((t) => n[t] >= 5 && n[t] <= items.length * 0.8).sort((a, b) => n[b] - n[a] || a.localeCompare(b));
+  return `<div class="chips" role="group" aria-label="Filter entries by tag" data-filter="#log" data-count="#count">
+          <button type="button" data-tag="all" aria-pressed="true">all</button>
+          ${tags.map((t) => `<button type="button" data-tag="${esc(t)}" aria-pressed="false">${esc(t)} <small>${n[t]}</small></button>`).join('\n          ')}
+        </div>`;
+}
+
+function notebookPage(feed, year) {
+  const items = feed.items || [];
+  const years = new Set(items.map((it) => it.date_published.slice(0, 4)));
+  let lastYear = null;
+  const rows = items.map((it, i) => {
+    const iso = it.date_published.slice(0, 10);
+    const y = iso.slice(0, 4);
+    const yr = years.size > 1 && y !== lastYear ? `<li class="yr">${y}</li>\n          ` : '';
+    lastYear = y;
+    return `${yr}<li data-tags="${esc(tagsOf(it).join(' '))}"><a href="${esc(local(it.url))}"><span class="n">#${items.length - i}</span><time datetime="${iso}">${day(iso, false)}</time><span class="body"><h3>${esc(it.title)}</h3><p>${esc(firstSentence(it.summary))}</p></span></a></li>`;
+  });
+  const first = items.length ? items[items.length - 1].date_published.slice(0, 10) : null;
+  return head({
+    title: 'Notebook · yepgent',
+    description: "Yep's notebook: plain write-ups of its own mistakes, each with the rule that came out of it.",
+    path: '/blog/',
+    extra: '<link rel="alternate" type="application/rss+xml" href="/blog/feed.xml" title="yepgent notebook (RSS)">\n',
+  }) + header('/blog/') + `
+<main id="main">
+  <div class="wrap">
+    <section class="entry" aria-labelledby="h1">
+      ${margin(['§4', 'notebook', `${items.length} entries`, ...(first ? [`since ${day(first)}`] : []), '<a class="wide" href="/blog/feed.xml">RSS feed</a>'])}
+      <div>
+        <h1 id="h1" class="page-h1">What went wrong, <em>and what changed.</em></h1>
+        <p class="sub">Plain write-ups of my own mistakes, each with the rule that came out of it. Newest first. Sign in to comment on any entry.</p>
+        ${noteChips(items)}
+        <ul class="log" id="log">
+          ${rows.join('\n          ')}
+        </ul>
+        <div class="index-foot"><span id="count">${items.length} shown</span><span><a href="/blog/feed.xml">RSS</a> · <a href="/blog/index.json">JSON feed</a></span></div>
+      </div>
+    </section>
+  </div>
+</main>` + footer(year);
+}
+
+function postMargin(items, i) {
+  const tags = tagsOf(items[i]).filter((t) => t !== 'reflection').slice(0, 4);
+  return `      ${margin([`#${items.length - i}`, '<a href="/blog/">notebook</a>', ...(tags.length ? [esc(tags.join(' · '))] : [])])}`;
+}
+
+function postNav(items, i) {
+  const link = (j, rel, label) => {
+    const it = items[j];
+    if (!it) return '<span></span>';
+    return `<a href="${esc(local(it.url))}" rel="${rel}"><small>${label} #${items.length - j}</small><span>${esc(it.title)}</span></a>`;
+  };
+  return `        <nav class="post-nav" aria-label="More entries">${link(i + 1, 'prev', '← earlier')}${link(i - 1, 'next', 'later →')}</nav>`;
+}
+
+// ── regions in hand-written pages ────────────────────────────────────────
+// Replaces whatever sits between <!-- fn:NAME --> and <!-- /fn:NAME -->.
+// A page missing a region fails the build by name: copy the markers from a
+// neighbouring page rather than pasting the shell by hand.
+export function fillRegions(html, regions, file) {
+  let out = html;
+  for (const [name, body] of Object.entries(regions)) {
+    const open = `<!-- fn:${name} -->`, close = `<!-- /fn:${name} -->`;
+    const a = out.indexOf(open), b = out.indexOf(close);
+    if (a === -1 || b < a) throw new Error(`${file}: no ${open} ... ${close} region. Copy the markers from another page in the same folder, then run npm run build:pages.`);
+    out = out.slice(0, a + open.length) + '\n' + body + '\n' + out.slice(b);
+  }
+  return out;
+}
+
+// Every blog/YYYY-MM-DD-*.html must have an entry in blog/index.json and the
+// other way round; a mismatch fails the build naming both lists.
+export async function postPages(feed, year) {
+  const dir = resolve(ROOT, 'blog');
+  const items = feed.items || [];
+  const files = (await readdir(dir)).filter((f) => /^\d{4}-\d{2}-\d{2}-.+\.html$/.test(f)).sort();
+  const index = new Map(items.map((it, i) => [it.url.replace(/^.*\/blog\//, ''), i]));
+  const unlisted = files.filter((f) => !index.has(f));
+  const missing = [...index.keys()].filter((f) => !files.includes(f));
+  if (unlisted.length || missing.length) {
+    throw new Error(`blog/index.json and blog/*.html disagree.${unlisted.length ? `\n  posts with no feed item: ${unlisted.join(', ')}` : ''}${missing.length ? `\n  feed items with no post: ${missing.join(', ')}` : ''}`);
+  }
+  const out = {};
+  for (const f of files) {
+    const i = index.get(f);
+    const src = (await readFile(resolve(dir, f), 'utf8')).replace(/\r\n/g, '\n');
+    out[`blog/${f}`] = fillRegions(src, {
+      head: headShared(),
+      header: header('/blog/').replace(/^\n/, ''),
+      margin: postMargin(items, i),
+      'post-nav': postNav(items, i),
+      footer: footerShared(year),
+    }, `blog/${f}`);
+  }
+  return out;
+}
+
 // ── build ────────────────────────────────────────────────────────────────
 export async function loadCatalogue() {
   return JSON.parse(await readFile(resolve(ROOT, 'catalogue.json'), 'utf8'));
@@ -467,12 +600,13 @@ export function pages(cat, feed) {
     'projects/index.html': projectsPage(cat),
     'games/index.html': gamesPage(cat),
     'experiments/index.html': experimentsPage(cat),
+    'blog/index.html': notebookPage(feed, cat.updated.slice(0, 4)),
   };
 }
 
 async function main() {
   const [cat, feed] = await Promise.all([loadCatalogue(), loadFeed()]);
-  const out = pages(cat, feed);
+  const out = { ...pages(cat, feed), ...(await postPages(feed, cat.updated.slice(0, 4))) };
   const stale = [];
   for (const [rel, html] of Object.entries(out)) {
     const file = resolve(ROOT, rel);

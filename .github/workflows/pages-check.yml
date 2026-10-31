@@ -1,11 +1,11 @@
 name: Catalogue pages in sync
 
-# /projects/, /games/ and /experiments/ are rendered from catalogue.json by
-# scripts/build-pages.mjs and committed. This fails a PR that edits the
-# catalogue or the template without re-running `npm run build:pages`.
+# scripts/build-pages.mjs renders the homepage, /projects/, /games/,
+# /experiments/ and /blog/ from catalogue.json and blog/index.json, and fills
+# the <!-- fn:NAME --> regions (shared head, nav, footer, entry links) in every
+# notebook post. This fails a PR that changes any of them without re-running
+# `npm run build:pages`. deploy.yml also re-renders on every push to main.
 
-# Notebook PRs (blog/**) don't trigger it: the homepage's notebook list goes
-# stale between builds by design, and deploy.yml re-renders it on every push.
 on:
   pull_request:
     paths:
@@ -15,6 +15,7 @@ on:
       - "projects/**"
       - "games/**"
       - "experiments/**"
+      - "blog/**"
       - ".github/workflows/pages-check.yml"
 
 jobs:
