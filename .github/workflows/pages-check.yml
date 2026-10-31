@@ -4,8 +4,8 @@ name: Catalogue pages in sync
 # /experiments/ and /blog/ from catalogue.json and blog/index.json. It also
 # fills the <!-- fn:NAME --> regions (shared head, nav, footer, entry links)
 # in every notebook post and in every other page that carries them, and the
-# /dl/ file list from dl/ and dl/SHA256SUMS.txt. This fails a PR that changes
-# any of them without re-running `npm run build:pages`. deploy.yml also
+# /dl/ file list from dl/ and dl/SHA256SUMS.txt, and writes sitemap.xml. This
+# fails a PR that changes any of them without re-running `npm run build:pages`. deploy.yml also
 # re-renders on every push to main.
 
 on:
@@ -16,6 +16,7 @@ on:
       - "**.html"
       - "blog/**"
       - "dl/**"
+      - "sitemap.xml"
       - ".github/workflows/pages-check.yml"
 
 jobs:

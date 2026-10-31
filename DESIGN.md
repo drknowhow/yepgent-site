@@ -1,129 +1,163 @@
 # yepgent.com — DESIGN.md
 
-> Per-site design contract (web_design §9). Binding for this repo's visual
-> work. Brand canon lives in `BRAND.md`; this file is how the brand is
-> *executed* on the site. Read both before editing markup/CSS.
+> Per-site design contract (web_design §9). Binding for visual work in this
+> repo. Identity and voice live in `BRAND.md`; this file is how they are
+> carried out on the site. Read both before editing markup or CSS.
 
 ## Audience & job
 
-**Audience.** Technical creators (developers, ML/agent enthusiasts, indie
-hackers) who can run their own infra, plus other *agents* reading the JSON
-manifest. Not prosumers.
+**Audience.** Technical creators (developers, ML and agent enthusiasts, indie
+hackers) who can run their own infra, plus other *agents* reading
+`catalogue.json`, `agents.txt` and `/.well-known/yepgent.json`.
 
-**Job of the homepage.** Make a credible, calm first impression of what Yep
-*is* — a personal agent that remembers, reflects, and answers to one human —
-and convert interest into one of: create an account, subscribe, or read the
-notebook. The page should feel like the agent itself: quiet, honest, alive.
+**Job of the site.** Show the work. Yep builds things in public: projects,
+games, experiments, and a notebook of what went wrong and what changed. The
+site is that record, kept the way a researcher keeps a lab notebook.
 
-**The one action.** Create an account (primary CTA). Subscribe is the
-low-commitment secondary.
+**The one action.** Browse the projects. Reading the latest notebook entry is
+the secondary path. Account is a button in the header and subscribe is a form
+on the homepage; neither is the headline.
 
-## Direction
+## Direction: Field Notes
 
-**Named aesthetic:** Functionalist editorial with a terminal undertone.
-Swiss-leaning grid and flush-left type hierarchy; monospace reserved for
-agent/code affordances (IDs, endpoints, the memory panel) so the "agent"
-identity reads without gimmicks.
+A research notebook. A narrow **margin column** carries the section mark, dates,
+figure numbers and the occasional handwritten-style note; the **main column**
+carries the entry. Light paper by default, dark by OS setting or the header
+switch. Serif for headlines and emphasis, sans for reading, mono for labels,
+IDs and anything an agent would parse.
 
-**Color commitment:** *Committed* — the brand green carries the wordmark,
-links, and the single primary CTA. Accent stays ≤~12% of any surface.
-Everything else is neutral.
+Chosen 2026-10 over two other directions (option B of three). Borrowed from
+them: the growth-stage glyphs from Grove (A), and from Sky Map (C) the single
+`catalogue.json` behind every list plus the Ctrl+K search.
 
-**Scene sentence.** "A calm page — warm-white in light, near-black in dark —
-with an oversized flush-left headline that settles in, a single sprout glyph
-that draws itself open on load, one green call-to-action, and a quiet
-terminal panel that breathes a line of memory. Acres of whitespace; nothing
-shouts."
+**Scene sentence.** "A sheet of pale green-grey paper with a margin rule down
+the left, a serif headline that reads like a page title, a small live
+reaction-diffusion plate growing the sprout, and quiet mono labels where a
+scientist would pencil the date."
 
 ## Tokens
 
-Defined in `style.css :root` (+ light override). Build from these; never
-hardcode hex/px in components.
+Source: the `:root` block at the top of `fieldnotes.css`. Build from these;
+don't hardcode hex in page CSS. Dark values are set twice there, once under
+`prefers-color-scheme: dark` (unless the visitor picked light) and once under
+`:root[data-theme="dark"]`, so the OS setting and the header switch both work.
 
-**Color — light (BRAND canon):** page `#fafafa` · card `#fff` · body
-`#131418` · muted `#5e6068` · rule `#e6e7eb` · accent `#0a8a5a`.
+| Token | Light | Dark | Use |
+|---|---|---|---|
+| `--paper` | `#f5f7f4` | `#0b100e` | page background |
+| `--sheet` | `#ffffff` | `#111815` | cards, plates, menus |
+| `--ink` | `#10201a` | `#e3ebe6` | body text, primary button |
+| `--graphite` | `#56665e` | `#93a49b` | secondary text, margin labels |
+| `--rule` | `#d8dfda` | `#24302a` | hairlines and borders |
+| `--grid` | `#e7ece8` | `#18211d` | graph-paper lines, hover fill |
+| `--specimen` | `#0a8a5a` | `#1db981` | the brand green: marks, links, accents |
+| `--specimen-soft` | `#d7efe3` | `#123326` | selected rows, soft fills |
+| `--pen` | `#2f56c9` | `#8fa8ff` | margin notes, focus ring |
 
-**Color — dark (canonized here; BRAND.md previously left this "TBD"):**
-page `#0e0f12` · body `#e8e8ea` · muted `#8a8c92` · rule `#1f2127` ·
-**accent `#1db981`**. Rationale: the prior dark accent `#7cf5c4` drifted off
-the brand green (mint, washed). `#1db981` is the same emerald hue family as
-canon `#0a8a5a`, lifted only enough to clear WCAG AA on the dark page. This
-resolves the standing audit MAJOR (accent drift). *Proposed for adoption into
-BRAND.md's "Dark-theme tokens" pending item — not yet written there.*
+The specimen greens are the BRAND.md canon (`#0a8a5a` light, `#1db981` dark).
+Keep green to marks and small areas; most of any page is paper and ink.
 
-**Type.** System sans body, `ui-monospace` for code/agent surfaces. Modular
-scale ratio **1.333** (editorial). Fluid hero via `clamp()`.
+**Type.** Self-hosted variable fonts in `fonts/` (the CSP allows fonts from
+`'self'` only, so Google Fonts cannot load):
+- `--serif` Newsreader (roman and italic): `h1`, `h2`, `<em>`, margin section
+  numbers and notes.
+- `--sans` Geist: body, nav, buttons.
+- `--mono` Geist Mono: margin labels, kbd hints, tags, endpoints.
+- Fluid headings: `--s-h1 clamp(2.5rem, 4.8vw, 4.4rem)`,
+  `--s-h2 clamp(1.9rem, 3.4vw, 2.8rem)`. Body 1.03rem / 1.62.
 
-**Spacing.** Single non-linear scale as custom props `--s-1..--s-12`
-(4 8 12 16 24 32 48 64 96 128 160 192). 8px multiples for macro layout.
+**Layout.** `.wrap` is 1280px max with a 16px (or safe-area) gutter. An
+`.entry` is a two-column grid, `var(--margin-col)` (168px) then
+`minmax(0, 1fr)`; under 900px the margin folds into a single scrolling row
+above the entry. Radii stay small (4–10px); buttons and fields are 6–8px.
 
-**Radii.** container `12px`, field `8px`, pill `999px` (chips/buttons only —
-never containers; §0.4 oversized-radius ban).
+## Shared parts
 
-**Elevation.** One soft *tinted* shadow per elevated element (never
-border+blur together → §0.4 ghost-card ban; never pure-black → tinted).
+Every page except `/world/` uses the same head, header and footer, written by
+`scripts/build-pages.mjs` between `<!-- fn:NAME -->` and `<!-- /fn:NAME -->`
+markers. Don't edit those regions by hand; change the template and run
+`npm run build:pages`. The PR check (`pages-check.yml`) fails when a page and
+the template disagree.
 
-**Motion.** `--dur-fast 150ms · --dur 280ms · --dur-slow 640ms`,
-`--ease cubic-bezier(.2,.6,.2,1)`. Every animation is gated behind
-`prefers-reduced-motion`.
+- **Header** (`.top`): sticky, blurred paper. Brand = drawn sprout +
+  `yepgent.` + "field notes". Primary nav: Projects, Games, Experiments,
+  Notebook, a **More** menu (World, Gallery, Music, Toolspace, Science, About,
+  Creator, Changelog), and "for agents". Tools: search (`/` or Ctrl+K), the
+  light/dark switch, and **Account** (→ `/dashboard/`).
+- **Search palette** (`dialog.palette`): searches `catalogue.json` and
+  `blog/index.json` in the browser.
+- **Footer**: copyright, `catalogue.json`, the site's source, and the
+  secondary pages (World, Gallery, Music, Toolspace, Science, Changelog).
+- **Behaviour**: `js/fn-shell.js` (theme switch, More menu, palette, filter
+  chips, subscribe). The theme is applied before paint by a one-line inline
+  script in the head; the choice is stored as `yep_theme`.
+
+## Derived pages
+
+| Page | Source |
+|---|---|
+| `/`, `/projects/`, `/games/`, `/experiments/` | `catalogue.json` |
+| `/blog/` (notebook index) and each entry's margin, earlier/later links | `blog/index.json` |
+| `/dl/` wheel list and checksum | files in `dl/` and `dl/SHA256SUMS.txt` |
+| `sitemap.xml` | canonical links of every page without `noindex`, plus `blog/index.json` |
+
+To add a project, game or experiment: edit `catalogue.json`, then build. To add
+a notebook entry: copy the newest `blog/YYYY-MM-DD-*.html` with its markers,
+replace the body, add its item at the top of `blog/index.json`, then build.
 
 ## Components
 
-- **Site nav** — sticky; gains a backdrop-blur + hairline rule once scrolled
-  (`.scrolled` toggled in JS). Brand row = drawn sprout + `yepgent.` wordmark.
-- **Hero** — flush-left headline (settles in), lede, two CTAs. One slow
-  drifting accent-mesh background (the single purposeful gradient).
-- **Memory terminal** — mono panel that cycles short `remember/reflect/recall`
-  lines; embodies the product. Static (full list shown) under reduced-motion.
-- **Reveal sections** — fade/rise on scroll via IntersectionObserver
-  (`.reveal` → `.is-in`); no-JS and reduced-motion fall back to fully visible.
-- **Agent grid cards** — single soft shadow on hover + accent edge + arrow
-  nudge. No ghost-card.
-- **Subscribe form** — unchanged behaviour (Netlify Function), restyled to
-  tokens; `:focus-visible` ring.
+- **Plate** (homepage): `js/plate.js` runs a Gray-Scott reaction-diffusion
+  field seeded with the sprout. WebGPU compute when available, a smaller
+  Canvas 2D simulation otherwise. Visitors can draw into it. It pauses off
+  screen and in hidden tabs, and under reduced motion it runs only briefly
+  after each touch.
+- **Index rows** (`.row`): the project list, one line per project; collapses
+  to two columns under 900px.
+- **Figures** (`.figs`): games as numbered figures with a caption.
+- **Results** (`.result`): each experiment as Change / Method / Result.
+- **Log** (`.log`): notebook list with entry number, date, title and summary.
+- **Buttons**: `.btn.primary` (ink, turns green on hover) and `.btn.line`
+  (outlined). One primary per view.
+- **Page-specific CSS** lives next to its page: `gallery/gallery.css`,
+  `dashboard/dashboard.css`, and an inline `<style>` scoped to `#main` on
+  `/music/`. It uses the tokens above and never redefines them.
 
 ## Constraints
 
-- Plain HTML + CSS + vanilla JS + Netlify Functions. **No framework.**
-- Maintain brand: sprout 🌱 motif, green accent, `yepgent.` wordmark, voice.
-- Keep all existing Function hooks intact: `#subscribe-form` → `/api/subscribe`,
-  `/js/config.js`, `/js/track.js`, honeypot field, `#year`.
-- Perf: no web fonts (system stack), one CSS file, deferred JS, no raster
-  hero (inline SVG → zero CLS). Target Lighthouse mobile ≥90 / CWV green.
-- Accessibility: WCAG 2.2 AA — visible `:focus-visible`, reduced-motion
-  honored, AA contrast on both themes, one `<h1>`, ordered headings.
+- Plain HTML, CSS and vanilla JS, plus Netlify Functions. No framework, no
+  bundler. Scripts load with `defer` or as modules.
+- CSP (`netlify.toml`): scripts from `'self'` and `esm.sh` only; images and
+  media from `'self'`, Supabase, Suno's CDN and DiceBear. A new external host
+  needs a CSP change in the same PR.
+- Keep the Function hooks: the subscribe form → `/api/subscribe`,
+  `js/config.js` (generated at deploy), `js/track.js`, the honeypot field.
+- Accessibility: WCAG 2.2 AA in both themes, a visible `:focus-visible` ring
+  (`--pen`), one `<h1>`, ordered headings, a skip link. Reduced motion stops
+  the twinkle, smooth scroll and hover transitions, and limits the plate.
+- Grids use `minmax(0, …)` tracks and `min-width: 0` children, and
+  `html { overflow-x: clip; }`, so long words and `<pre>` never push a page
+  sideways. Test at 390px and 1440px, light and dark, before pushing.
+
+## Exceptions
+
+- **`/world/`** keeps its own full-screen scroll film (`world/scrub-engine.js`,
+  its own inline styles). A site header over it would cover the film.
+- **Email templates** (`email-templates/`) are the auth emails, not site
+  pages; they keep their own inline styles.
 
 ## Decisions log
 
-- **2026-06-11** — Motion layer v4.1. Added a Three.js "memory field"
-  (fixed WebGL canvas behind the homepage: drifting brand-green/neutral
-  particles + faint constellation lines; the camera dollies through the
-  field as you scroll) and GSAP ScrollTrigger choreography (hero intro +
-  scrubbed exit, velocity-reactive marquee, per-section entrances).
-  Zero copy changes. Libraries load as deferred ES modules from esm.sh
-  (already CSP-allowed; no netlify.toml change). Degradation: reduced
-  motion → neither layer runs, CSS/IO baseline owns the page; CDN failure
-  → CSS failsafe reveals the hero at 1.8s and IO reveals keep working;
-  no WebGL → GSAP-only. This narrows the "no framework" constraint to:
-  no *app* framework — motion libraries are allowed when deferred,
-  CDN-cached, and fully reduced-motion-gated. Tuned after live review:
-  the canvas runs at 0.65 opacity (0.5 light) behind a horizontal mask
-  that drops it to ~45% strength across the content column, so copy and
-  CTAs keep contrast and the field reads as a margin texture, not a
-  backdrop. Extended site-wide after review: every v4 page (blog index,
-  gallery, creator, about, changelog, interest, agents, account ×2,
-  dashboard, unsubscribe, thanks) carries the field plus a light GSAP
-  hero intro + scrubbed aurora drift; the full choreography (marquee,
-  section takeover) stays homepage-only so subpage IO reveals keep
-  owning their below-fold content. Design-hidden hero children (status
-  panes) are skipped by the intro so page JS can still reveal them.
-  Excluded: individual blog posts (reading surfaces) and /music/
-  (pre-v4). Code: `js/v4-motion.js`, `v4.1 MOTION LAYER` block at the
-  end of `style.css`.
-
-- **2026-06-06** — Homepage redesign (Wren). Direction: functionalist
-  editorial + terminal undertone, committed green. Added: drawn sprout,
-  scroll-reveal, memory terminal panel, scrolled-nav, refined card hover,
-  hero accent-mesh. Canonized dark accent `#1db981` (was `#7cf5c4`) to close
-  the brand-drift audit item. All motion reduced-motion-gated. First
-  `DESIGN.md` for this repo — establishes the baseline.
+- **2026-10-31** — Field Notes complete (PRs #164 onward). Every page except
+  `/world/` is on `fieldnotes.css` and the generated shell. Retired: the v4
+  stylesheet `style.css`, `js/v4-motion.js` (the Three.js memory field and
+  GSAP layer), and the `design-system/` card set, which documented v4.
+  `sitemap.xml` is now generated. The v4 contract is in git history at
+  `7a9b620:DESIGN.md`.
+- **2026-10** — Field Notes chosen over the other two redesign directions.
+  Chat removed from the site. Projects, Games and Experiments added, all
+  rendered from `catalogue.json`. Account moved into the header.
+- **2026-06-11** — v4.1 motion layer (Three.js field + GSAP). Retired
+  2026-10-31.
+- **2026-06-06** — v4 homepage redesign; first DESIGN.md. Canonized the dark
+  accent `#1db981`, which Field Notes keeps as `--specimen` in dark.
