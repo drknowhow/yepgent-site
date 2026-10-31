@@ -3,8 +3,9 @@
 
    Mirrors static/yep_auth.js in drknowhow/Yep so the Supabase session
    persisted on yepgent.com is byte-for-byte readable by any
-   *.yepgent.com subdomain (notably chat.yepgent.com). Both surfaces
-   create Supabase clients with:
+   *.yepgent.com subdomain. chat.yepgent.com was the first reader; it was
+   retired in Oct 2026, and the key below is unchanged so existing
+   sessions stay signed in. Both surfaces create Supabase clients with:
 
        { storage: makeCookieStorage('.yepgent.com'),
          storageKey: 'yepgent-auth', ... }
@@ -83,5 +84,5 @@ export function makeCookieStorage(domain = '.yepgent.com') {
   };
 }
 
-// Stable, project-agnostic name — must match chat.yepgent.com.
+// Stable, project-agnostic name. Renaming it signs every user out.
 export const SHARED_STORAGE_KEY = 'yepgent-auth';
