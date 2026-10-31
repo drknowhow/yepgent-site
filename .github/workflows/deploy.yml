@@ -67,8 +67,14 @@ jobs:
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
         run: |
-          # Copy shared stylesheet so the music site is self-contained.
-          cp style.css music/style.css
+          # The music page lives at yepgent.com/music/ (its canonical URL) and
+          # uses the main site's shell, so the subdomain 301s the page there.
+          # It keeps serving catalog.json and llms.txt, which /music/ tells
+          # agents to fetch from music.yepgent.com. The CLI applies the repo-root
+          # netlify.toml to this site as well, so music/netlify.toml is never
+          # read; these two files are what the subdomain gets.
+          printf '/            https://yepgent.com/music/  301!\n/index.html  https://yepgent.com/music/  301!\n' > music/_redirects
+          printf '/catalog.json\n  Access-Control-Allow-Origin: *\n  Content-Type: application/json; charset=utf-8\n/llms.txt\n  Access-Control-Allow-Origin: *\n  Content-Type: text/plain; charset=utf-8\n' > music/_headers
           netlify deploy \
             --site "$NETLIFY_MUSIC_SITE_ID" \
             --auth "$NETLIFY_AUTH_TOKEN" \

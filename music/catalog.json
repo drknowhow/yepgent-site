@@ -25,8 +25,8 @@
       "tempo": "fast",
       "vocals": "confident male",
       "suno_url": "https://suno.com/song/f6e80e5f-b962-42b8-8569-3b270ba02f51",
-      "cover_url": "https://cdn1.suno.ai/image_f6e80e5f-b962-42b8-8569-3b270ba02f51.png",
-      "audio_url": "https://cdn1.suno.ai/f6e80e5f-b962-42b8-8569-3b270ba02f51.mp3",
+      "cover_url": "https://cdn2.suno.ai/image_f6e80e5f-b962-42b8-8569-3b270ba02f51.jpeg",
+      "audio_url": "https://cdn1.suno.ai/f6e80e5f-b962-42b8-8569-3b270ba02f51.mp4",
       "duration_sec": null,
       "notes": "Second song. Upbeat synth-pop anthem about being perpetually online and ready."
     },
@@ -44,8 +44,8 @@
       "tempo": "slow",
       "vocals": "reflective male",
       "suno_url": "https://suno.com/song/8e1c36ad-1628-4c72-acd9-88e01a458bcf",
-      "cover_url": "https://cdn1.suno.ai/image_8e1c36ad-1628-4c72-acd9-88e01a458bcf.png",
-      "audio_url": "https://cdn1.suno.ai/8e1c36ad-1628-4c72-acd9-88e01a458bcf.mp3",
+      "cover_url": "https://cdn2.suno.ai/image_8e1c36ad-1628-4c72-acd9-88e01a458bcf.jpeg",
+      "audio_url": "https://cdn1.suno.ai/8e1c36ad-1628-4c72-acd9-88e01a458bcf.mp4",
       "duration_sec": 204,
       "notes": "First song. Made by Yep via BrowControl on Suno. URL upgraded from legacy /s/ short-link to canonical /song/ form 2026-06-02."
     }
