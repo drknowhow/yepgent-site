@@ -1,0 +1,195 @@
+/* dashboard.css: the Account page (/dashboard/) on the Field Notes shell.
+   Tokens and shared components come from fieldnotes.css (.entry .margin .lede
+   .card .btn .chips .note .muted .small .vh pre.code, and [hidden]). This file
+   adds only what the page and its two scripts need: the sign-in door, the
+   signed-in card grid, and the markup that js/dashboard.js and js/anima.js write
+   at runtime (d5-activity, the ah-* Anima rows). Every rule is scoped under
+   #main so nothing here can leak into the header, footer or another page.
+
+   Scripts toggle sections with the hidden attribute. fieldnotes.css sets
+   [hidden]{display:none!important}; no rule below sets display with !important,
+   so a hidden section stays hidden whatever display a rule gives it. */
+
+/* ── tokens the shared sheet does not define ────────────────────────── */
+#main { --err: #b3261e; --warn: #8a5a00; --spec-ink: color-mix(in oklab, var(--specimen) 72%, var(--ink)); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) #main { --err: #ff8585; --warn: #e0a93b; } }
+:root[data-theme="dark"] #main { --err: #ff8585; --warn: #e0a93b; }
+
+/* ── status line + loading ──────────────────────────────────────────── */
+/* #status is written by dashboard.js through textContent and data-kind
+   (pending, ok, error). #avatar-status takes the same kinds. */
+#main .status { margin: 0 0 18px; font: 400 .84rem/1.4 var(--mono); color: var(--graphite); overflow-wrap: anywhere; }
+#main .status:empty { display: none; }
+#main [data-kind="pending"] { color: var(--graphite); }
+#main [data-kind="ok"] { color: var(--specimen); }
+#main [data-kind="error"] { color: var(--err); }
+#main .d5-loading { padding: 4px 0 24px; }
+#main .d5-loading p { margin: 0; font: 400 .84rem/1.4 var(--mono); }
+
+/* ── signed out: the door ───────────────────────────────────────────── */
+#main .d5-auth { max-width: 34rem; }
+#main .d5-auth .lede { margin-bottom: 32px; }
+#main .d5-auth-card > div { display: grid; gap: 14px; }
+#main .d5-auth-sub { margin: 0; }
+#main .d5-agent-help { margin-top: 20px; background: var(--sheet); border: 1px solid var(--rule); border-radius: 6px; padding: 0 18px; min-width: 0; }
+#main .d5-agent-help[open] { padding-bottom: 18px; }
+#main .d5-agent-help > :not(summary) { margin: 0 0 12px; }
+#main .d5-agent-help > :last-child { margin-bottom: 0; }
+#main .d5-agent-help a { color: var(--specimen); }
+#main .d5-agent-help code { font: 400 .8em/1.5 var(--mono); background: var(--grid); padding: .1em .35em; border-radius: 3px; overflow-wrap: anywhere; }
+#main .d5-agent-help pre.code code { background: none; padding: 0; font-size: inherit; overflow-wrap: normal; }
+
+/* ── signed in: welcome, set-password prompt, tabs, grid ────────────── */
+#main .d5-banner { margin: 0 0 28px; }
+#main .d5-welcome { font-size: clamp(2.1rem, 4vw, 3.4rem); overflow-wrap: anywhere; }
+/* dashboard.js writes <span class="dot">.</span> into #dash-name */
+#main .d5-welcome .dot { color: var(--specimen); }
+#main .d5-banner-lede { max-width: 36rem; }
+#main .d5-setpw { max-width: 34rem; margin: 0 0 28px; }
+#main .d5-setpw-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px; }
+/* the tab row is the shared .chips pill row; this only sets spacing */
+#main .d5-tabs { margin-bottom: 28px; }
+#main .d5-tab { white-space: nowrap; }
+/* the tab script sets .is-active and aria-pressed together; this keeps the look if one is missing */
+#main .d5-tab.is-active { color: var(--ink); border-color: var(--ink); }
+#main .d5-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; align-items: start; }
+#main .d5-grid:not([data-view="overview"]) { max-width: 42rem; }
+#main .d5-grid:not([data-view="overview"]) .d5-col { display: contents; }
+#main .d5-col { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; align-content: start; min-width: 0; }
+@media (min-width: 1100px) {
+  #main .d5-grid[data-view="overview"] { grid-template-columns: minmax(0, 320px) minmax(0, 1fr); gap: 24px; }
+}
+
+/* ── cards ──────────────────────────────────────────────────────────── */
+/* .card (fieldnotes.css) gives the sheet, hairline, radius and rhythm. */
+#main .d5-card, #main .d5-auth-card { min-width: 0; grid-template-columns: minmax(0, 1fr); }
+#main .d5-card p { overflow-wrap: anywhere; }
+#main .d5-reading { min-width: 0; }
+#main .d5-card-head { display: flex; align-items: center; gap: 12px; min-width: 0; }
+#main .d5-ico { width: 22px; height: 22px; flex: none; color: var(--specimen); display: block; }
+#main .d5-ico svg { width: 100%; height: 100%; display: block; }
+#main .d5-card-title { font: 400 1.5rem/1.15 var(--serif); letter-spacing: -0.01em; margin: 0; min-width: 0; text-wrap: balance; }
+#main .d5-count { margin-left: auto; font: 500 .74rem/1 var(--mono); color: var(--spec-ink); background: var(--specimen-soft); padding: 5px 9px; border-radius: 999px; }
+#main .d5-badge { display: inline-flex; align-items: center; font: 500 .72rem/1 var(--mono); color: var(--spec-ink); background: var(--specimen-soft); padding: 5px 9px; border-radius: 999px; }
+
+#main .d5-label { margin: 0; font: 400 .7rem/1.3 var(--mono); color: var(--graphite); text-transform: uppercase; letter-spacing: .08em; }
+#main .d5-val { margin: 0; color: var(--ink); font-size: .95rem; overflow-wrap: anywhere; }
+#main .d5-kv { display: grid; gap: 4px; }
+#main .d5-kv-row { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding-top: 12px; border-top: 1px solid var(--rule); }
+#main .d5-kv-row > * { min-width: 0; }
+#main .d5-mt { margin-top: 10px; }
+#main .d5-btn-stack { display: flex; flex-wrap: wrap; gap: 10px; }
+/* the shared .btn.line sets no text colour, and .card a would turn it green */
+#main .btn.line { color: var(--ink); }
+#main .btn.sm { padding: 8px 12px; font-size: .84rem; }
+#main .btn[disabled] { opacity: .6; cursor: progress; }
+
+/* ── forms: the form.stack look, for labels that wrap their inputs ──── */
+#main .d5-form { display: grid; gap: 14px; min-width: 0; }
+#main .d5-field { display: grid; gap: 6px; min-width: 0; }
+#main .d5-field > span { font: 400 .7rem/1 var(--mono); color: var(--graphite); text-transform: uppercase; letter-spacing: .08em; }
+#main .d5-field input, #main .d5-field textarea { font: inherit; color: var(--ink); background: var(--sheet); border: 1px solid var(--rule); border-radius: 6px; padding: 12px 14px; width: 100%; min-width: 0; }
+#main .d5-field input:focus, #main .d5-field textarea:focus { outline: 2px solid var(--specimen); outline-offset: 1px; }
+#main .d5-field textarea { resize: vertical; min-height: 5.5rem; }
+#main .d5-field-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+#main .d5-field-grid > * { min-width: 0; }
+#main .d5-more { background: var(--paper); border: 1px solid var(--rule); border-radius: 6px; padding: 0 14px; min-width: 0; }
+#main .d5-more[open] { padding-bottom: 14px; }
+#main .d5-more[open] > :not(summary) { margin-top: 14px; }
+#main .d5-more[open] > .d5-label { margin-top: 18px; }
+#main .d5-more .d5-field input { background: var(--sheet); }
+#main .d5-fieldset { display: grid; gap: 14px; margin: 0; padding: 14px 16px 16px; border: 1px solid var(--rule); border-radius: 6px; min-width: 0; }
+#main .d5-fieldset legend { padding: 0 6px; font: 400 .7rem/1 var(--mono); color: var(--graphite); text-transform: uppercase; letter-spacing: .08em; }
+#main .d5-check { display: flex; align-items: flex-start; gap: 10px; color: var(--ink); }
+#main .d5-check input { width: 1.1rem; height: 1.1rem; margin: .2rem 0 0; padding: 0; flex: none; accent-color: var(--specimen); }
+#main .d5-form-actions { display: flex; justify-content: flex-end; }
+/* details summaries, same mark as the More menu */
+#main .d5-more > summary, #main .d5-agent-help > summary { list-style: none; cursor: pointer; padding: 12px 0; font: 500 .78rem/1.5 var(--mono); color: var(--graphite); }
+#main .d5-more > summary:hover, #main .d5-agent-help > summary:hover { color: var(--ink); }
+#main .d5-more > summary::-webkit-details-marker, #main .d5-agent-help > summary::-webkit-details-marker { display: none; }
+#main .d5-more > summary::after, #main .d5-agent-help > summary::after { content: " +"; color: var(--specimen); }
+#main .d5-more[open] > summary::after, #main .d5-agent-help[open] > summary::after { content: " \2212"; }
+
+/* ── profile + avatar ───────────────────────────────────────────────── */
+#main .d5-profile { display: grid; grid-template-columns: 132px minmax(0, 1fr); gap: 24px; }
+#main .d5-profile > * { min-width: 0; }
+#main .d5-avatar-block { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+#main .d5-avatar-wrap { position: relative; width: 120px; height: 120px; }
+/* The fallback avatar is an external image; if it does not load, the alt text sits in a tidy box. */
+#main .d5-avatar { display: block; width: 120px; height: 120px; object-fit: cover; border: 1px solid var(--rule); border-radius: 6px; background: var(--grid); color: var(--graphite); font: 400 .72rem/1.4 var(--mono); }
+#main .d5-avatar-edit { position: absolute; right: -8px; bottom: -8px; width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; padding: 0; font-size: .85rem; line-height: 1; cursor: pointer; background: var(--ink); color: var(--paper); border: 2px solid var(--sheet); }
+#main .d5-avatar-edit:hover { background: var(--specimen); }
+#main #avatar-status { margin: 0; font: 400 .74rem/1.4 var(--mono); }
+#main #avatar-status:empty { display: none; }
+
+/* ── reading history, comments, empty state ────────────────────────── */
+#main .d5-empty { text-align: center; padding: 32px 16px; border: 1px dashed var(--rule); border-radius: 6px; background: var(--paper); display: grid; gap: 6px; justify-items: center; }
+#main .d5-empty svg { width: 28px; height: 28px; color: var(--graphite); margin-bottom: 4px; }
+#main .d5-empty p { margin: 0; }
+#main .d5-empty-title { font: 400 1.2rem/1.2 var(--serif); color: var(--ink); }
+/* dashboard.js writes <ul class="d5-activity"> with <li><a>…</a><time>…</time></li> */
+#main .d5-activity { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--rule); }
+#main .d5-activity li { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--rule); }
+#main .d5-activity a { min-width: 0; color: var(--ink); text-decoration: none; text-transform: capitalize; overflow-wrap: anywhere; }
+#main .d5-activity a:hover { color: var(--specimen); }
+#main .d5-activity time { flex: none; font: 400 .74rem/1 var(--mono); color: var(--graphite); white-space: nowrap; }
+/* comments are built with inline styles (hairline left rule, margins) and
+   .muted.small for the meta line; the card's grey paragraph colour is for the body to undo */
+#main .d5-comments p { color: var(--ink); overflow-wrap: anywhere; }
+#main .d5-comments p.muted { color: var(--graphite); }
+#main .d5-comments > :last-child { margin-bottom: 0 !important; }
+
+/* ── set-password and close-account accents, account id ─────────────── */
+#main .d5-setpw { border-color: color-mix(in oklab, var(--specimen) 45%, var(--rule)); }
+#main .d5-danger { border-color: color-mix(in oklab, var(--err) 40%, var(--rule)); }
+#main .d5-danger .d5-card-title, #main .d5-danger a { color: var(--err); }
+#main .d5-id { margin: 28px 0 0; font: 400 .78rem/1.5 var(--mono); color: var(--graphite); overflow-wrap: anywhere; }
+#main .d5-id code { font: inherit; background: var(--grid); padding: .1em .35em; border-radius: 3px; }
+
+/* ── Science / Anima panel ──────────────────────────────────────────── */
+/* js/anima.js appends its own light-only <style> to <head> at runtime (single
+   class selectors, hard-coded greys). Each rule here carries #main, which
+   outranks them, so the panel follows the theme tokens in light and dark. */
+#main .anima-history { min-width: 0; }
+#main .anima-history .ah-empty { color: var(--graphite); font: 400 .9rem/1.5 var(--sans); padding: 4px 0; }
+#main .anima-history .ah-empty a { color: var(--specimen); }
+#main .anima-history .ah-row { border-top-color: var(--rule); padding: 16px 0; }
+#main .anima-history .ah-row:first-child { padding-top: 4px; }
+#main .anima-history .ah-top { flex-wrap: wrap; gap: 4px 16px; }
+#main .anima-history .ah-name { min-width: 0; font: 500 1rem/1.35 var(--sans); overflow-wrap: anywhere; }
+#main .anima-history .ah-date { flex: none; font: 400 .74rem/1 var(--mono); color: var(--graphite); }
+#main .anima-history .ah-pred { gap: 8px; }
+#main .anima-history .ah-p { font: 500 .72rem/1 var(--mono); padding: 5px 10px; border: 1px solid color-mix(in oklab, currentColor 30%, transparent); }
+#main .anima-history .ah-high { color: var(--err); background: color-mix(in oklab, var(--err) 10%, transparent); }
+#main .anima-history .ah-low { color: var(--spec-ink); background: color-mix(in oklab, var(--specimen) 10%, transparent); }
+#main .anima-history .ah-mod { color: var(--warn); background: color-mix(in oklab, var(--warn) 12%, transparent); }
+#main .anima-history .ah-fbs { margin-top: 10px; font: 400 .82rem/1.5 var(--sans); color: var(--graphite); overflow-wrap: anywhere; }
+#main .anima-history .ah-tag { font: 400 .7rem/1 var(--mono); color: var(--spec-ink); background: var(--specimen-soft); padding: 3px 8px; }
+#main .anima-history .ah-fb summary { color: var(--specimen); font: 500 .78rem/1.5 var(--mono); }
+#main .anima-history .ah-fb-grid { gap: 10px; max-width: 34rem; }
+#main .anima-history .ah-ep, #main .anima-history .ah-verdict, #main .anima-history .ah-obs, #main .anima-history .ah-src, #main .anima-history .ah-notes {
+  font: 400 .9rem/1.4 var(--sans); color: var(--ink); background: var(--sheet); border: 1px solid var(--rule); border-radius: 6px; padding: 10px 12px; width: 100%; min-width: 0;
+}
+#main .anima-history .ah-two { gap: 10px; }
+#main .anima-history .ah-ep, #main .anima-history .ah-verdict { flex: 1 1 9rem; width: auto; }
+#main .anima-history .ah-obs:focus, #main .anima-history .ah-src:focus, #main .anima-history .ah-notes:focus,
+#main .anima-history .ah-ep:focus, #main .anima-history .ah-verdict:focus { outline: 2px solid var(--specimen); outline-offset: 1px; }
+#main .anima-history .ah-notes { resize: vertical; min-height: 4.5rem; }
+#main .anima-history .ah-row2 { flex-wrap: wrap; gap: 8px 14px; }
+/* the Submit button also carries the retired style.css classes cta / primary /
+   av4-btn; ah-fb-btn is the only one that is styled now */
+#main .anima-history .ah-fb-btn { font: 500 .9rem/1 var(--sans); background: var(--ink); color: var(--paper); border: 0; border-radius: 8px; padding: 11px 16px; cursor: pointer; transition: background .2s; }
+#main .anima-history .ah-fb-btn:hover { background: var(--specimen); }
+#main .anima-history .ah-fb-btn[disabled] { opacity: .6; cursor: progress; }
+#main .anima-history .ah-msg { min-width: 0; font: 400 .78rem/1.4 var(--mono); color: var(--graphite); overflow-wrap: anywhere; }
+
+/* ── narrow screens ─────────────────────────────────────────────────── */
+@media (max-width: 560px) {
+  #main .d5-profile { grid-template-columns: minmax(0, 1fr); }
+  #main .d5-field-grid { grid-template-columns: minmax(0, 1fr); }
+  #main .d5-card, #main .d5-auth-card { padding: 20px 18px; }
+  #main .d5-agent-help { padding-inline: 14px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #main .anima-history .ah-fb-btn { transition: none; }
+}
