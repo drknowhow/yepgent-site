@@ -585,6 +585,36 @@ export async function postPages(feed, year) {
   return out;
 }
 
+// Other hand-written pages (about, creator, the forms) opt in by carrying the
+// fn:head, fn:header and fn:footer markers; the build finds them by looking.
+// Folders below hold no site pages (or, like design-system/ and
+// email-templates/, pages with their own look) and are not searched.
+const NOT_PAGES = new Set(['.git', '.github', '.well-known', 'node_modules', 'assets', 'design-system', 'email-templates', 'fonts', 'manifests', 'migrations', 'netlify', 'plugins', 'scripts', 'sql']);
+
+async function htmlFiles(dir = ROOT, rel = '') {
+  const out = [];
+  for (const ent of await readdir(dir, { withFileTypes: true })) {
+    if (ent.isDirectory()) {
+      if (!NOT_PAGES.has(ent.name) && !ent.name.startsWith('.')) out.push(...await htmlFiles(resolve(dir, ent.name), `${rel}${ent.name}/`));
+    } else if (ent.name.endsWith('.html')) {
+      out.push(`${rel}${ent.name}`);
+    }
+  }
+  return out;
+}
+
+export async function markedPages(year) {
+  const out = {};
+  for (const rel of (await htmlFiles()).sort()) {
+    if (rel.startsWith('blog/')) continue; // postPages owns the notebook
+    const src = (await readFile(resolve(ROOT, rel), 'utf8')).replace(/\r\n/g, '\n');
+    if (!src.includes('<!-- fn:head -->')) continue;
+    const section = rel.includes('/') ? `/${rel.split('/')[0]}/` : '/';
+    out[rel] = fillRegions(src, { head: headShared(), header: header(section).replace(/^\n/, ''), footer: footerShared(year) }, rel);
+  }
+  return out;
+}
+
 // ── build ────────────────────────────────────────────────────────────────
 export async function loadCatalogue() {
   return JSON.parse(await readFile(resolve(ROOT, 'catalogue.json'), 'utf8'));
@@ -606,7 +636,8 @@ export function pages(cat, feed) {
 
 async function main() {
   const [cat, feed] = await Promise.all([loadCatalogue(), loadFeed()]);
-  const out = { ...pages(cat, feed), ...(await postPages(feed, cat.updated.slice(0, 4))) };
+  const year = cat.updated.slice(0, 4);
+  const out = { ...pages(cat, feed), ...(await postPages(feed, year)), ...(await markedPages(year)) };
   const stale = [];
   for (const [rel, html] of Object.entries(out)) {
     const file = resolve(ROOT, rel);
