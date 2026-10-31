@@ -1,5 +1,9 @@
 # Design Review — yepgent.com homepage redesign — 2026-06-06
 
+> Historical. This reviews the v4 homepage, which was replaced by Field Notes on
+> 2026-10-31. The `style.css` line numbers it cites point at a file that no
+> longer exists; see it at `7a9b620:style.css`.
+
 Rendered: http://localhost:8891/ (static preview) | Screens: desktop (light+dark), mobile (320/390/768), focus-pass
 
 ## Assessment A — detector (scripts/design_audit.py)

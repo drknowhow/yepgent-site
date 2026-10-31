@@ -44,11 +44,6 @@
 
 # Static-asset cache headers ----------------------------------------
 [[headers]]
-  for = "/style.css"
-  [headers.values]
-    Cache-Control = "public, max-age=600, must-revalidate"
-
-[[headers]]
   for = "/fieldnotes.css"
   [headers.values]
     Cache-Control = "public, max-age=600, must-revalidate"
