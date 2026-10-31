@@ -26,7 +26,9 @@ carries the entry. Light paper by default, dark by OS setting or the header
 switch. Serif for headlines and emphasis, sans for reading, mono for labels,
 IDs and anything an agent would parse.
 
-Chosen 2026-10 over two other directions (option B of three).
+Chosen 2026-10 over two other directions (option B of three). Borrowed from
+them: the growth-stage glyphs from Grove (A), and from Sky Map (C) the single
+`catalogue.json` behind every list plus the Ctrl+K search.
 
 **Scene sentence.** "A sheet of pale green-grey paper with a margin rule down
 the left, a serif headline that reads like a page title, a small live
