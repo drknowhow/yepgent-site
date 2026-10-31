@@ -12,7 +12,7 @@
 // footer). To add an entry: copy the newest blog/YYYY-MM-DD-*.html with its
 // markers, replace the title, meta tags and the body inside .post-body, add
 // its item at the top of blog/index.json, then run `npm run build:pages`.
-// Don't edit blog/index.html or the marked regions by hand.
+// Don't edit blog/index.html, sitemap.xml or the marked regions by hand.
 //
 // The rendered HTML is committed so the site works from a plain static server,
 // and the PR check (.github/workflows/pages-check.yml) fails when someone edits
@@ -587,9 +587,9 @@ export async function postPages(feed, year) {
 
 // Other hand-written pages (about, creator, the forms) opt in by carrying the
 // fn:head, fn:header and fn:footer markers; the build finds them by looking.
-// Folders below hold no site pages (or, like design-system/ and
-// email-templates/, pages with their own look) and are not searched.
-const NOT_PAGES = new Set(['.git', '.github', '.well-known', 'node_modules', 'assets', 'design-system', 'email-templates', 'fonts', 'manifests', 'migrations', 'netlify', 'plugins', 'scripts', 'sql']);
+// Folders below hold no site pages (or, like email-templates/, pages that are
+// not served as part of the site) and are not searched.
+const NOT_PAGES = new Set(['.git', '.github', '.well-known', 'node_modules', 'assets', 'email-templates', 'fonts', 'manifests', 'migrations', 'netlify', 'plugins', 'scripts', 'sql']);
 
 async function htmlFiles(dir = ROOT, rel = '') {
   const out = [];
@@ -646,6 +646,40 @@ export async function markedPages(year) {
   return out;
 }
 
+// sitemap.xml lists every page under ROOT that has a canonical link and no
+// robots noindex, then every notebook entry in blog/index.json with its date.
+// It used to be typed by hand, and it went on listing /account/ and
+// music.yepgent.com/ after both became redirects. A page with neither a
+// canonical link nor noindex fails the build, naming the page. The two
+// non-HTML files below are listed by hand: leaving one out only drops it
+// from the sitemap.
+const SITEMAP_FILES = ['https://yepgent.com/catalogue.json', 'https://yepgent.com/agents.txt'];
+
+export async function sitemap(feed, rendered = {}) {
+  const pages = [];
+  for (const rel of await htmlFiles()) {
+    if (rel.startsWith('blog/') && rel !== 'blog/index.html') continue; // entries come from the feed
+    const html = rendered[rel] ?? (await readFile(resolve(ROOT, rel), 'utf8'));
+    if (/<meta name="robots" content="[^"]*noindex/i.test(html)) continue;
+    const m = html.match(/<link rel="canonical" href="([^"]+)"/);
+    if (!m) throw new Error(`${rel}: no <link rel="canonical">. Add one, or <meta name="robots" content="noindex"> to leave the page out of sitemap.xml.`);
+    pages.push(m[1]);
+  }
+  const home = 'https://yepgent.com/';
+  pages.sort((a, b) => (b === home) - (a === home) || a.localeCompare(b));
+  const url = (loc, lastmod) => `  <url><loc>${esc(loc)}</loc>${lastmod ? `<lastmod>${lastmod}</lastmod>` : ''}</url>`;
+  return [
+    '<?xml version="1.0" encoding="UTF-8"?>',
+    '<!-- Written by scripts/build-pages.mjs from the pages and blog/index.json. Run npm run build:pages instead of editing it. -->',
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    ...pages.map((p) => url(p)),
+    ...(feed.items || []).map((it) => url(it.url, (it.date_modified || it.date_published || '').slice(0, 10))),
+    ...SITEMAP_FILES.map((f) => url(f)),
+    '</urlset>',
+    '',
+  ].join('\n');
+}
+
 // ── build ────────────────────────────────────────────────────────────────
 export async function loadCatalogue() {
   return JSON.parse(await readFile(resolve(ROOT, 'catalogue.json'), 'utf8'));
@@ -669,6 +703,7 @@ async function main() {
   const [cat, feed] = await Promise.all([loadCatalogue(), loadFeed()]);
   const year = cat.updated.slice(0, 4);
   const out = { ...pages(cat, feed), ...(await postPages(feed, year)), ...(await markedPages(year)) };
+  out['sitemap.xml'] = await sitemap(feed, out);
   const stale = [];
   for (const [rel, html] of Object.entries(out)) {
     const file = resolve(ROOT, rel);
