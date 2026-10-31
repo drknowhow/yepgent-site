@@ -169,7 +169,16 @@
     # fails with "Media load rejected by URL safety check" and the page shows
     # only its poster stills. Local http.server sends no CSP, so this is
     # invisible until deploy.
-    Content-Security-Policy = "default-src 'self'; media-src 'self' blob:; script-src 'self' 'unsafe-inline' https://esm.sh; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://*.supabase.co; connect-src 'self' https://*.supabase.co https://anima-screen-312853893256.us-central1.run.app https://esm.sh; frame-ancestors 'none'; base-uri 'self'"
+    #
+    # https://cdn1.suno.ai and https://cdn2.suno.ai in img-src and media-src —
+    # /music/ shows Suno cover art (cdn2) and /music/ and /gallery/ play the
+    # songs from Suno's CDN (cdn1, the .mp4; the .mp3 URLs answer 403 now).
+    # Without them the covers fall back to the waveform placeholder and every
+    # player is dead.
+    #
+    # https://api.dicebear.com in img-src — js/dashboard.js and js/comments.js
+    # draw an initials avatar from it for anyone without a profile photo.
+    Content-Security-Policy = "default-src 'self'; media-src 'self' blob: https://cdn1.suno.ai https://cdn2.suno.ai; script-src 'self' 'unsafe-inline' https://esm.sh; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://*.supabase.co https://cdn1.suno.ai https://cdn2.suno.ai https://api.dicebear.com; connect-src 'self' https://*.supabase.co https://anima-screen-312853893256.us-central1.run.app https://esm.sh; frame-ancestors 'none'; base-uri 'self'"
 
 # music/catalog.json — short cache, open CORS for agents.
 [[headers]]
