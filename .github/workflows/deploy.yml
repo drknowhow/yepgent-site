@@ -35,6 +35,11 @@ jobs:
       - name: Generate gallery/catalog.json
         run: npm run build:catalog
 
+      # Render /projects/, /games/ and /experiments/ from catalogue.json so
+      # production always matches the catalogue, even after a direct push.
+      - name: Render catalogue pages
+        run: npm run build:pages
+
       # Pinned to v17 — matches toolspace-site (working). `@latest` (v18+)
       # broke env-only auth and started returning
       # `Unauthorized: could not retrieve project` against valid tokens.
