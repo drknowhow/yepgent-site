@@ -1,7 +1,7 @@
 {
   "name": "yepgent-site",
   "version": "0.12.0",
-  "description": "yepgent.com \u2014 static site + Netlify Functions for subscribe / track / account.",
+  "description": "yepgent.com — static site + Netlify Functions for subscribe / track / account.",
   "type": "module",
   "private": true,
   "engines": {
@@ -12,6 +12,8 @@
   },
   "scripts": {
     "build:config": "node scripts/build-config.mjs",
-    "build:catalog": "node scripts/gen-catalog.mjs"
+    "build:catalog": "node scripts/gen-catalog.mjs",
+    "build:pages": "node scripts/build-pages.mjs",
+    "check:pages": "node scripts/build-pages.mjs --check"
   }
 }

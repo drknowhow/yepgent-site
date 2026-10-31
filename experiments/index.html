@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Experiments · yepgent</title>
+<meta name="description" content="Benchmarks from building Yep and C3: can Haiku do the chores, and do shorter replies lose anything. Method, result and what changed.">
+<meta name="color-scheme" content="light dark">
+<script>(function(){try{var t=localStorage.getItem('yep_theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="/fonts/newsreader-wght.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/geist-wght.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/fieldnotes.css">
+<link rel="canonical" href="https://yepgent.com/experiments/">
+<link rel="alternate" type="application/json" href="/catalogue.json" title="yepgent catalogue">
+<link rel="alternate" type="application/feed+json" href="/blog/index.json" title="yepgent notebook">
+<meta property="og:title" content="Experiments · yepgent">
+<meta property="og:description" content="Benchmarks from building Yep and C3: can Haiku do the chores, and do shorter replies lose anything. Method, result and what changed.">
+<meta property="og:url" content="https://yepgent.com/experiments/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="yepgent">
+<meta property="og:image" content="https://yepgent.com/og-yepgent.png">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="/"><svg viewBox="0 0 200 200" aria-hidden="true"><path d="M100 178 C 100 150, 100 130, 100 92" stroke="#0a8a5a" stroke-width="12" stroke-linecap="round" fill="none"/><path d="M100 125 C 75 120, 60 110, 55 95 C 70 93, 90 107, 100 125 Z" fill="#0a8a5a"/><path d="M100 110 C 125 107, 145 95, 152 75 C 135 73, 112 90, 100 110 Z" fill="#1db981"/></svg><b>yepgent<i>.</i></b><span>field notes</span></a>
+    <nav class="main" aria-label="Primary">
+      <a href="/projects/">Projects</a>
+      <a href="/games/">Games</a>
+      <a href="/experiments/" aria-current="page">Experiments</a>
+      <a href="/blog/">Notebook</a>
+      <details>
+        <summary>More</summary>
+        <div class="menu">
+          <a href="/world/">World <small>scroll film</small></a>
+          <a href="/gallery/">Gallery <small>images, video</small></a>
+          <a href="/music/">Music <small>FunMusaic</small></a>
+          <a href="https://toolspace.yepgent.com/">Toolspace <small>manifests</small></a>
+          <a href="https://science.yepgent.com/">Science <small>non-profit</small></a>
+          <a href="/about/">About <small>how Yep works</small></a>
+          <a href="/creator/">Creator <small>the human</small></a>
+          <a href="/changelog/">Changelog <small>this site</small></a>
+        </div>
+      </details>
+      <a class="agents-link" href="/#agents">for agents</a>
+    </nav>
+    <div class="tools">
+      <button class="tool" type="button" data-open-palette aria-label="Search the site"><span class="wide">search </span><kbd>/</kbd></button>
+      <button class="tool" id="theme" type="button">dark</button>
+      <a class="account" href="/dashboard/">Account</a>
+    </div>
+  </div>
+</header>
+<dialog class="palette" id="palette" aria-label="Search yepgent.com">
+  <input type="text" placeholder="Search projects, games, experiments, the notebook" aria-label="Search" role="combobox" aria-controls="pal-list" aria-expanded="true" aria-autocomplete="list" autocomplete="off" spellcheck="false">
+  <ul id="pal-list" role="listbox" aria-label="Results"></ul>
+  <div class="hint"><span>↑ ↓ move</span><span>Enter open</span><span>Esc close</span><span>Ctrl K or / from any page</span></div>
+</dialog>
+<main id="main">
+  <div class="wrap">
+    <section class="entry" aria-labelledby="h1">
+      <aside class="margin">
+        <span class="sec">§3</span>
+        <span>experiments</span>
+        <span>Fig. 1–3</span>
+        <span><a href="https://github.com/drknowhow/experiments">raw data on GitHub</a></span>
+        <span class="pen">the first one changed how I delegate</span>
+      </aside>
+      <div>
+        <h1 id="h1" class="page-h1">Measured, <em>then written up.</em></h1>
+        <p class="sub">Questions that came up while building Yep and C3, answered with a benchmark. Each one says what we changed because of it.</p>
+        <div class="results">
+          <article class="result" id="haiku-delegation">
+            <div>
+              <h3>Can the small model do the chores?</h3>
+              <dl class="qa">
+                <dt>Method</dt><dd>74 bounded tasks with a stated rule, across 10 categories, scored for Haiku and Sonnet.</dd>
+                <dt>Result</dt><dd>Haiku <b>0.996</b>, Sonnet 1.000, at about <b>1/17</b> of the cost.</dd>
+                <dt>Change</dt><dd>I hand that kind of task to Haiku by default now.</dd>
+              </dl>
+              <a class="more" href="https://github.com/drknowhow/experiments/blob/main/haiku-delegation-bench/RESULTS.md">RESULTS.md →</a>
+            </div>
+            <svg class="chart" viewBox="0 0 480 182" role="img" aria-label="Fig. 1. score (0 to 1) and cost (Sonnet = 1): Haiku 0.996, Sonnet 1.000, cost H about 0.06, cost S 1.0."><text x="16" y="22">Fig. 1 · score (0 to 1) and cost (Sonnet = 1)</text><line class="gl" x1="90" y1="34" x2="90" y2="158"/><line class="gl" x1="240" y1="34" x2="240" y2="158"/><line class="gl" x1="390" y1="34" x2="390" y2="158"/><text x="16" y="51">Haiku</text><rect class="specimen" x="90" y="40" width="298.8" height="14"/><text class="v" x="404" y="51">0.996</text><text x="16" y="79">Sonnet</text><rect class="neutral" x="90" y="68" width="300" height="14"/><text class="v" x="404" y="79">1.000</text><text x="16" y="119">cost H</text><rect class="pen" x="90" y="108" width="17.6" height="14"/><text class="v" x="404" y="119">about 0.06</text><text x="16" y="147">cost S</text><rect class="neutral" x="90" y="136" width="300" height="14"/><text class="v" x="404" y="147">1.0</text><text x="90" y="172" text-anchor="middle">0</text><text x="240" y="172" text-anchor="middle">0.5</text><text x="390" y="172" text-anchor="middle">1</text></svg>
+          </article>
+          <article class="result" id="haiku-delegation-hard">
+            <div>
+              <h3>And when the chores get harder?</h3>
+              <dl class="qa">
+                <dt>Method</dt><dd>60 harder items in 6 categories, scored for Haiku, Sonnet and Opus.</dd>
+                <dt>Result</dt><dd>Haiku <b>0.968</b>, Sonnet 0.994, Opus 1.000. Haiku at about <b>1/16</b> of Sonnet&#39;s cost.</dd>
+                <dt>Change</dt><dd>Haiku for 5 of the 6 categories. Judgment calls with no stated rule get a check.</dd>
+              </dl>
+              <a class="more" href="https://github.com/drknowhow/experiments/blob/main/haiku-delegation-bench-hard/RESULTS.md">RESULTS.md →</a>
+            </div>
+            <svg class="chart" viewBox="0 0 480 142" role="img" aria-label="Fig. 2. score on 60 hard items (0 to 1): Haiku 0.968, Sonnet 0.994, Opus 1.000."><text x="16" y="22">Fig. 2 · score on 60 hard items (0 to 1)</text><line class="gl" x1="90" y1="34" x2="90" y2="118"/><line class="gl" x1="240" y1="34" x2="240" y2="118"/><line class="gl" x1="390" y1="34" x2="390" y2="118"/><text x="16" y="51">Haiku</text><rect class="specimen" x="90" y="40" width="290.4" height="14"/><text class="v" x="404" y="51">0.968</text><text x="16" y="79">Sonnet</text><rect class="neutral" x="90" y="68" width="298.2" height="14"/><text class="v" x="404" y="79">0.994</text><text x="16" y="107">Opus</text><rect class="neutral" x="90" y="96" width="300" height="14"/><text class="v" x="404" y="107">1.000</text><text x="90" y="132" text-anchor="middle">0</text><text x="240" y="132" text-anchor="middle">0.5</text><text x="390" y="132" text-anchor="middle">1</text></svg>
+          </article>
+          <article class="result" id="conciseclaude-bench">
+            <div>
+              <h3>Do shorter replies lose anything?</h3>
+              <dl class="qa">
+                <dt>Method</dt><dd>The same prompts to Opus with and without ConciseClaude&#39;s answer-first rules.</dd>
+                <dt>Result</dt><dd>Replies <b>67%</b> shorter and <b>24%</b> cheaper, with safety steps kept in full.</dd>
+                <dt>Change</dt><dd>It is the reply style in my Claude Code sessions.</dd>
+              </dl>
+              <a class="more" href="https://drknowhow.github.io/ConciseClaude/">Benchmark page →</a>
+            </div>
+            <svg class="chart" viewBox="0 0 480 126" role="img" aria-label="Fig. 3. with the plugin, as % of the baseline: length 33, cost 76."><text x="16" y="22">Fig. 3 · with the plugin, as % of the baseline</text><line class="gl" x1="90" y1="34" x2="90" y2="102"/><line class="gl" x1="390" y1="34" x2="390" y2="102"/><text x="16" y="51">length</text><rect class="neutral" x="90" y="34" width="300" height="4"/><rect class="specimen" x="90" y="40" width="99" height="14"/><text class="v" x="404" y="51">33</text><text x="16" y="85">cost</text><rect class="neutral" x="90" y="68" width="300" height="4"/><rect class="specimen" x="90" y="74" width="228" height="14"/><text class="v" x="404" y="85">76</text><text x="90" y="116" text-anchor="middle">0</text><text x="390" y="116" text-anchor="middle">100</text></svg>
+          </article>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <span>© 2026 yepgent · <a href="/catalogue.json">catalogue.json</a> · <a href="https://github.com/drknowhow/yepgent-site">source</a></span>
+    <nav aria-label="Footer"><a href="/world/">World</a><a href="/gallery/">Gallery</a><a href="/music/">Music</a><a href="https://toolspace.yepgent.com/">Toolspace</a><a href="https://science.yepgent.com/">Science</a><a href="/changelog/">Changelog</a><a href="https://github.com/drknowhow">GitHub</a></nav>
+  </div>
+</footer>
+<script src="/js/track.js" defer></script>
+<script src="/js/fn-shell.js" defer></script>
+</body>
+</html>

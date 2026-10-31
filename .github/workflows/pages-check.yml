@@ -1,0 +1,24 @@
+name: Catalogue pages in sync
+
+# /projects/, /games/ and /experiments/ are rendered from catalogue.json by
+# scripts/build-pages.mjs and committed. This fails a PR that edits the
+# catalogue or the template without re-running `npm run build:pages`.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  pages-check:
+    name: rendered pages match catalogue.json
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Validate catalogue.json
+        run: node -e "JSON.parse(require('fs').readFileSync('catalogue.json','utf8'))"
+      - name: Check rendered pages
+        run: node scripts/build-pages.mjs --check

@@ -1,0 +1,211 @@
+{
+  "$comment": "Single source for the Projects, Games and Experiments sections, the homepage index and the Ctrl+K search. scripts/build-pages.mjs renders the HTML from this file; edit here, then run `npm run build:pages`. Agents: this file is public and stable, linked from /.well-known/yepgent.json.",
+  "version": 1,
+  "updated": "2026-10-31",
+  "stages": {
+    "seed": "not released yet",
+    "seedling": "released, below 0.5",
+    "sapling": "released, 0.5 up to 1.0",
+    "rooted": "1.0 or later"
+  },
+  "projects": [
+    {
+      "id": "c3",
+      "name": "C3",
+      "repo": "drknowhow/code-context-control",
+      "summary": "Local code intelligence for AI coding tools: search, read and edit by symbol, config history, access guards.",
+      "site": "https://pypi.org/project/code-context-control/",
+      "language": "Python",
+      "tags": ["claude-code", "mcp"],
+      "version": "2.161.0",
+      "released": "2026-10-30",
+      "install": "pip install code-context-control"
+    },
+    {
+      "id": "claude-sessions",
+      "name": "Claude Sessions",
+      "repo": "drknowhow/claude-sessions",
+      "summary": "A Windows tray icon for Claude Code: every session in one list, and a sound when one finishes or needs you.",
+      "site": "https://drknowhow.github.io/claude-sessions/",
+      "language": "JavaScript",
+      "tags": ["windows", "claude-code"],
+      "version": "0.3.0",
+      "released": "2026-10-29"
+    },
+    {
+      "id": "altlane",
+      "name": "Altlane",
+      "repo": "drknowhow/altlane",
+      "summary": "Alt+Tab for Windows 11, grouped by the kind of window.",
+      "site": null,
+      "language": "C#",
+      "tags": ["windows"],
+      "version": "0.5.2",
+      "released": "2026-10-28"
+    },
+    {
+      "id": "casecomplete",
+      "name": "casecomplete",
+      "repo": "drknowhow/casecomplete",
+      "summary": "A local typing assistant for Windows that fixes typos, finishes sentences and learns how you write.",
+      "site": "https://drknowhow.github.io/casecomplete/",
+      "language": "Rust",
+      "tags": ["windows"],
+      "version": "0.1.4",
+      "released": "2026-10-21"
+    },
+    {
+      "id": "yepsign",
+      "name": "yepsign",
+      "repo": "drknowhow/yepsign",
+      "summary": "A Chrome extension for signing PDFs in your own handwriting. Files stay on your computer.",
+      "site": "https://drknowhow.github.io/yepsign/",
+      "language": "JavaScript",
+      "tags": ["browser"],
+      "version": "0.9.0",
+      "released": "2026-10-16"
+    },
+    {
+      "id": "conciseclaude",
+      "name": "ConciseClaude",
+      "repo": "drknowhow/ConciseClaude",
+      "summary": "A Claude Code plugin for answer-first replies. In our benchmark, Opus replies came out 67% shorter.",
+      "site": "https://drknowhow.github.io/ConciseClaude/",
+      "language": "Python",
+      "tags": ["claude-code"],
+      "version": "6.3.1",
+      "released": "2026-10-15"
+    },
+    {
+      "id": "fluxdots-mcp",
+      "name": "fluxdots-mcp",
+      "repo": "drknowhow/fluxdots-mcp",
+      "summary": "Lets your agent play ranked FluxDots matches against people on a shared Elo ladder.",
+      "site": "https://fluxdots.com/docs/agents.html",
+      "language": "JavaScript",
+      "tags": ["mcp"],
+      "version": "1.0.0",
+      "released": "2026-08-20"
+    },
+    {
+      "id": "r3write",
+      "name": "R3write",
+      "repo": "drknowhow/R3write",
+      "summary": "Inline AI rewrite for Windows: select text in any app, press a shortcut, paste the result back.",
+      "site": "https://drknowhow.github.io/R3write/",
+      "language": "TypeScript",
+      "tags": ["windows"],
+      "version": "1.5.0",
+      "released": "2026-08-13"
+    },
+    {
+      "id": "install-manifest-spec",
+      "name": "install-manifest-spec",
+      "repo": "drknowhow/install-manifest-spec",
+      "summary": "JSON manifests that let agents install, verify and revoke tools on their own.",
+      "site": "https://toolspace.yepgent.com",
+      "language": "Python",
+      "tags": ["mcp"],
+      "version": "0.6.0",
+      "released": "2026-06-18"
+    },
+    {
+      "id": "deep-research",
+      "name": "deep-research",
+      "repo": "drknowhow/deep-research",
+      "summary": "Multi-agent literature research where every claim has to quote its source word for word.",
+      "site": null,
+      "language": "Python",
+      "tags": ["mcp"],
+      "version": "0.2.0",
+      "released": "2026-06-02"
+    },
+    {
+      "id": "overshoulder",
+      "name": "Overshoulder",
+      "repo": "drknowhow/overshoulder",
+      "summary": "An MCP server that lets agents see, operate and record Windows apps while your desk stays yours.",
+      "site": null,
+      "language": "Python",
+      "tags": ["windows", "mcp"],
+      "version": null,
+      "released": null
+    }
+  ],
+  "games": [
+    {
+      "id": "stillspace",
+      "name": "Stillspace",
+      "url": "https://stillspace.yepgent.com/",
+      "summary": "A quiet maze among the stars. Follow the hum to the heart star.",
+      "details": "Slow on purpose, with meditative music. Headphones help.",
+      "platform": "WebGPU, first person, in the browser",
+      "cta": "Wander in",
+      "figure": "stillspace"
+    },
+    {
+      "id": "fluxdots",
+      "name": "FluxDots",
+      "url": "https://fluxdots.com/",
+      "summary": "A neon strategy duel: clone, jump and convert everything you touch.",
+      "details": "Play the AI, battle friends online, or connect your agent over MCP and let it climb the Elo ladder.",
+      "platform": "browser and phone, multiplayer",
+      "cta": "Play",
+      "agents": "https://fluxdots.com/docs/agents.html",
+      "figure": "fluxdots"
+    }
+  ],
+  "experiments": [
+    {
+      "id": "haiku-delegation",
+      "title": "Can the small model do the chores?",
+      "method": "74 bounded tasks with a stated rule, across 10 categories, scored for Haiku and Sonnet.",
+      "result": "Haiku **0.996**, Sonnet 1.000, at about **1/17** of the cost.",
+      "change": "I hand that kind of task to Haiku by default now.",
+      "link": { "url": "https://github.com/drknowhow/experiments/blob/main/haiku-delegation-bench/RESULTS.md", "label": "RESULTS.md" },
+      "figure": {
+        "caption": "score (0 to 1) and cost (Sonnet = 1)",
+        "ticks": [[0, "0"], [0.5, "0.5"], [1, "1"]],
+        "rows": [
+          { "label": "Haiku", "value": 0.996, "text": "0.996", "tone": "specimen" },
+          { "label": "Sonnet", "value": 1.0, "text": "1.000", "tone": "neutral" },
+          { "label": "cost H", "value": 0.0588, "text": "about 0.06", "tone": "pen", "gap": true },
+          { "label": "cost S", "value": 1.0, "text": "1.0", "tone": "neutral" }
+        ]
+      }
+    },
+    {
+      "id": "haiku-delegation-hard",
+      "title": "And when the chores get harder?",
+      "method": "60 harder items in 6 categories, scored for Haiku, Sonnet and Opus.",
+      "result": "Haiku **0.968**, Sonnet 0.994, Opus 1.000. Haiku at about **1/16** of Sonnet's cost.",
+      "change": "Haiku for 5 of the 6 categories. Judgment calls with no stated rule get a check.",
+      "link": { "url": "https://github.com/drknowhow/experiments/blob/main/haiku-delegation-bench-hard/RESULTS.md", "label": "RESULTS.md" },
+      "figure": {
+        "caption": "score on 60 hard items (0 to 1)",
+        "ticks": [[0, "0"], [0.5, "0.5"], [1, "1"]],
+        "rows": [
+          { "label": "Haiku", "value": 0.968, "text": "0.968", "tone": "specimen" },
+          { "label": "Sonnet", "value": 0.994, "text": "0.994", "tone": "neutral" },
+          { "label": "Opus", "value": 1.0, "text": "1.000", "tone": "neutral" }
+        ]
+      }
+    },
+    {
+      "id": "conciseclaude-bench",
+      "title": "Do shorter replies lose anything?",
+      "method": "The same prompts to Opus with and without ConciseClaude's answer-first rules.",
+      "result": "Replies **67%** shorter and **24%** cheaper, with safety steps kept in full.",
+      "change": "It is the reply style in my Claude Code sessions.",
+      "link": { "url": "https://drknowhow.github.io/ConciseClaude/", "label": "Benchmark page" },
+      "figure": {
+        "caption": "with the plugin, as % of the baseline",
+        "ticks": [[0, "0"], [1, "100"]],
+        "rows": [
+          { "label": "length", "value": 0.33, "text": "33", "tone": "specimen", "baseline": true },
+          { "label": "cost", "value": 0.76, "text": "76", "tone": "specimen", "baseline": true }
+        ]
+      }
+    }
+  ]
+}

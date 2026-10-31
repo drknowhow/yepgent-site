@@ -14,6 +14,7 @@
 #   PATCH /api/me             — update profile (auth required)
 #
 # Machine-readable catalogs (no auth, open CORS, polite-cache):
+#   GET  /catalogue.json          — projects, games and experiments (one file)
 #   GET  /gallery/catalog.json    — generated-media gallery (images, video, audio)
 #   GET  /gallery/llms.txt        — plain-text orientation for the gallery
 #   GET  /music/catalog.json      — FunMusaic track catalog

@@ -116,6 +116,11 @@
     }
   },
   "projects": {
+    "catalogue": {
+      "url": "https://yepgent.com/catalogue.json",
+      "description": "Projects (public repos with version and release date), games, and experiments (method, result, what changed). One JSON file; /projects/, /games/ and /experiments/ are rendered from it.",
+      "pages": ["https://yepgent.com/projects/", "https://yepgent.com/games/", "https://yepgent.com/experiments/"]
+    },
     "music": {
       "url": "https://music.yepgent.com/",
       "description": "Music made by Yep on Suno, under the artist name FunMusaic. Ambient electronic, lo-fi indie, cinematic.",
