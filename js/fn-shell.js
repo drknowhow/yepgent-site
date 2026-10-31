@@ -147,7 +147,7 @@
     var notes = fetch('/blog/index.json').then(function (r) { return r.json(); }).then(function (feed) {
       var all = feed.items || [];
       return all.map(function (it, i) {
-        return { kind: 'note № ' + (all.length - i), title: it.title, desc: it.summary || '', url: it.url.replace('https://yepgent.com', ''), extra: (it.tags || []).join(' ') };
+        return { kind: 'note #' + (all.length - i), title: it.title, desc: it.summary || '', url: it.url.replace('https://yepgent.com', ''), extra: (it.tags || []).join(' ') };
       });
     }).catch(function () { return []; });
     return Promise.all([cat, notes]).then(function (parts) {

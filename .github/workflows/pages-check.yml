@@ -4,10 +4,18 @@ name: Catalogue pages in sync
 # scripts/build-pages.mjs and committed. This fails a PR that edits the
 # catalogue or the template without re-running `npm run build:pages`.
 
+# Notebook PRs (blog/**) don't trigger it: the homepage's notebook list goes
+# stale between builds by design, and deploy.yml re-renders it on every push.
 on:
   pull_request:
-  push:
-    branches: [main]
+    paths:
+      - "catalogue.json"
+      - "scripts/build-pages.mjs"
+      - "index.html"
+      - "projects/**"
+      - "games/**"
+      - "experiments/**"
+      - ".github/workflows/pages-check.yml"
 
 jobs:
   pages-check:
