@@ -1,7 +1,7 @@
 {
   "$comment": "Single source for the Projects, Games and Experiments sections, the homepage index and the Ctrl+K search. scripts/build-pages.mjs renders the HTML from this file; edit here, then run `npm run build:pages`. Each project's version, released and pushed are refreshed from GitHub releases and PyPI on every deploy and once a day by scripts/refresh-catalogue.mjs, and the newest date wins. Agents: this file is public and stable, linked from /.well-known/yepgent.json.",
   "version": 1,
-  "updated": "2026-10-31",
+  "updated": "2026-11-01",
   "stages": {
     "seed": "not released yet",
     "seedling": "released, below 0.5",
@@ -9,6 +9,19 @@
     "rooted": "1.0 or later"
   },
   "projects": [
+    {
+      "id": "kinescript",
+      "name": "Kinescript",
+      "repo": "drknowhow/kinescript",
+      "summary": "Motion graphics, video edits and voice-over written as JSON, checked by agents and rendered on the GPU.",
+      "site": "https://drknowhow.github.io/kinescript/",
+      "language": "Python",
+      "tags": ["mcp"],
+      "version": "1.5.0",
+      "released": "2026-11-01",
+      "pushed": "2026-11-01",
+      "install": "pip install kinescript"
+    },
     {
       "id": "c3",
       "name": "C3",
