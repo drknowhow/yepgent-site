@@ -3,10 +3,41 @@ name: Deploy to Netlify
 on:
   push:
     branches: [main]
+  # Daily: pick up new releases and pushes in the repos catalogue.json lists.
+  schedule:
+    - cron: '17 11 * * *'
   workflow_dispatch:
 
+# A scheduled run and a push can overlap; deploy them one at a time, in order.
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
 jobs:
+  # Scheduled runs only: refresh catalogue.json from GitHub and PyPI and
+  # compare it with the live one. The deploy job below runs on a schedule only
+  # when they differ; a push or a manual run always deploys.
+  check:
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      changed: ${{ steps.refresh.outputs.changed }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Compare the refreshed catalogue with the live one
+        id: refresh
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node scripts/refresh-catalogue.mjs --dry-run --compare
+
   deploy:
+    needs: check
+    if: ${{ !cancelled() && (github.event_name != 'schedule' || needs.check.outputs.changed == 'true') }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -34,6 +65,14 @@ jobs:
       # so the catalog must be produced explicitly as a CI step.
       - name: Generate gallery/catalog.json
         run: npm run build:catalog
+
+      # Fill in each project's version, release day and last push from GitHub
+      # releases and PyPI. Failed lookups fall back to the live catalogue and
+      # never fail the step. The result is deployed, not committed.
+      - name: Refresh catalogue.json
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: npm run refresh:catalogue
 
       # Render /projects/, /games/ and /experiments/ from catalogue.json so
       # production always matches the catalogue, even after a direct push.
@@ -63,7 +102,8 @@ jobs:
       # Setup: create site at app.netlify.com → copy site ID → add secret.
       # DNS: add CNAME music → <music-site-name>.netlify.app at GoDaddy.
       - name: Deploy music.yepgent.com (production)
-        if: ${{ env.NETLIFY_MUSIC_SITE_ID != '' }}
+        # The daily run changes nothing the music site serves.
+        if: ${{ env.NETLIFY_MUSIC_SITE_ID != '' && github.event_name != 'schedule' }}
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
         run: |
