@@ -13,6 +13,7 @@ on:
     paths:
       - "catalogue.json"
       - "scripts/build-pages.mjs"
+      - "scripts/refresh-catalogue*.mjs"
       - "**.html"
       - "blog/**"
       - "dl/**"
@@ -32,3 +33,5 @@ jobs:
         run: node -e "JSON.parse(require('fs').readFileSync('catalogue.json','utf8'))"
       - name: Check rendered pages
         run: node scripts/build-pages.mjs --check
+      - name: Test the catalogue refresh rules
+        run: node --test scripts/refresh-catalogue.test.mjs

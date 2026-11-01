@@ -14,6 +14,8 @@
     "build:config": "node scripts/build-config.mjs",
     "build:catalog": "node scripts/gen-catalog.mjs",
     "build:pages": "node scripts/build-pages.mjs",
+    "refresh:catalogue": "node scripts/refresh-catalogue.mjs",
+    "test": "node --test scripts/refresh-catalogue.test.mjs",
     "check:pages": "node scripts/build-pages.mjs --check"
   }
 }

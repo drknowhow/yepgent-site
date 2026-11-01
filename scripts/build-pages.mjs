@@ -4,7 +4,9 @@
 //   node scripts/build-pages.mjs --check   exit 1 if any page on disk differs
 //
 // catalogue.json is the single source for projects, games and experiments;
-// blog/index.json (the notebook's JSON Feed) for the notebook index.
+// blog/index.json (the notebook's JSON Feed) for the notebook index. At
+// deploy, scripts/refresh-catalogue.mjs first updates each project's version,
+// release day and last push from GitHub and PyPI.
 //
 // Notebook posts are hand-written, but this script owns their shared parts:
 // whatever sits between <!-- fn:NAME --> and <!-- /fn:NAME --> markers (head

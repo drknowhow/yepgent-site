@@ -97,11 +97,18 @@ the template disagree.
 | Page | Source |
 |---|---|
 | `/`, `/projects/`, `/games/`, `/experiments/` | `catalogue.json` |
+| each project's `version`, `released` and `pushed` in `catalogue.json` | GitHub releases and PyPI, refreshed at deploy by `scripts/refresh-catalogue.mjs` |
 | `/blog/` (notebook index) and each entry's margin, earlier/later links | `blog/index.json` |
 | `/dl/` wheel list and checksum | files in `dl/` and `dl/SHA256SUMS.txt` |
 | `sitemap.xml` | canonical links of every page without `noindex`, plus `blog/index.json` |
 
-To add a project, game or experiment: edit `catalogue.json`, then build. To add
+To add a project, game or experiment: edit `catalogue.json`, then build. The
+file decides what the site lists, so adding or removing an entry is a PR.
+Project versions and dates look after themselves: every deploy, and a daily
+scheduled run of `deploy.yml`, takes the latest GitHub release (and the PyPI
+release when `install` is `pip install <name>`) and the last push. The newest
+date wins over what the file says, and the daily run deploys only when that
+changed something. `npm run refresh:catalogue` does the same locally. To add
 a notebook entry: copy the newest `blog/YYYY-MM-DD-*.html` with its markers,
 replace the body, add its item at the top of `blog/index.json`, then build.
 

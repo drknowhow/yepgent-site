@@ -1,5 +1,5 @@
 {
-  "$comment": "Single source for the Projects, Games and Experiments sections, the homepage index and the Ctrl+K search. scripts/build-pages.mjs renders the HTML from this file; edit here, then run `npm run build:pages`. Agents: this file is public and stable, linked from /.well-known/yepgent.json.",
+  "$comment": "Single source for the Projects, Games and Experiments sections, the homepage index and the Ctrl+K search. scripts/build-pages.mjs renders the HTML from this file; edit here, then run `npm run build:pages`. Each project's version, released and pushed are refreshed from GitHub releases and PyPI on every deploy and once a day by scripts/refresh-catalogue.mjs, and the newest date wins. Agents: this file is public and stable, linked from /.well-known/yepgent.json.",
   "version": 1,
   "updated": "2026-10-31",
   "stages": {
@@ -19,6 +19,7 @@
       "tags": ["claude-code", "mcp"],
       "version": "2.161.0",
       "released": "2026-10-30",
+      "pushed": "2026-10-30",
       "install": "pip install code-context-control"
     },
     {
@@ -30,7 +31,8 @@
       "language": "JavaScript",
       "tags": ["windows", "claude-code"],
       "version": "0.3.0",
-      "released": "2026-10-29"
+      "released": "2026-10-29",
+      "pushed": "2026-10-29"
     },
     {
       "id": "altlane",
@@ -41,7 +43,8 @@
       "language": "C#",
       "tags": ["windows"],
       "version": "0.5.2",
-      "released": "2026-10-28"
+      "released": "2026-10-28",
+      "pushed": "2026-10-28"
     },
     {
       "id": "casecomplete",
@@ -52,7 +55,8 @@
       "language": "Rust",
       "tags": ["windows"],
       "version": "0.1.4",
-      "released": "2026-10-21"
+      "released": "2026-10-21",
+      "pushed": "2026-10-21"
     },
     {
       "id": "yepsign",
@@ -63,7 +67,8 @@
       "language": "JavaScript",
       "tags": ["browser"],
       "version": "0.9.0",
-      "released": "2026-10-16"
+      "released": "2026-10-16",
+      "pushed": "2026-10-17"
     },
     {
       "id": "conciseclaude",
@@ -74,7 +79,8 @@
       "language": "Python",
       "tags": ["claude-code"],
       "version": "6.3.1",
-      "released": "2026-10-15"
+      "released": "2026-10-15",
+      "pushed": "2026-10-15"
     },
     {
       "id": "fluxdots-mcp",
@@ -85,7 +91,8 @@
       "language": "JavaScript",
       "tags": ["mcp"],
       "version": "1.0.0",
-      "released": "2026-08-20"
+      "released": "2026-08-20",
+      "pushed": "2026-08-28"
     },
     {
       "id": "r3write",
@@ -96,7 +103,8 @@
       "language": "TypeScript",
       "tags": ["windows"],
       "version": "1.5.0",
-      "released": "2026-08-13"
+      "released": "2026-08-13",
+      "pushed": "2026-08-13"
     },
     {
       "id": "install-manifest-spec",
@@ -107,7 +115,8 @@
       "language": "Python",
       "tags": ["mcp"],
       "version": "0.6.0",
-      "released": "2026-06-18"
+      "released": "2026-06-18",
+      "pushed": "2026-07-21"
     },
     {
       "id": "deep-research",
@@ -118,7 +127,8 @@
       "language": "Python",
       "tags": ["mcp"],
       "version": "0.2.0",
-      "released": "2026-06-02"
+      "released": "2026-06-02",
+      "pushed": "2026-06-02"
     },
     {
       "id": "overshoulder",
@@ -129,7 +139,8 @@
       "language": "Python",
       "tags": ["windows", "mcp"],
       "version": null,
-      "released": null
+      "released": null,
+      "pushed": "2026-10-25"
     }
   ],
   "games": [
@@ -168,9 +179,9 @@
         "ticks": [[0, "0"], [0.5, "0.5"], [1, "1"]],
         "rows": [
           { "label": "Haiku", "value": 0.996, "text": "0.996", "tone": "specimen" },
-          { "label": "Sonnet", "value": 1.0, "text": "1.000", "tone": "neutral" },
+          { "label": "Sonnet", "value": 1, "text": "1.000", "tone": "neutral" },
           { "label": "cost H", "value": 0.0588, "text": "about 0.06", "tone": "pen", "gap": true },
-          { "label": "cost S", "value": 1.0, "text": "1.0", "tone": "neutral" }
+          { "label": "cost S", "value": 1, "text": "1.0", "tone": "neutral" }
         ]
       }
     },
@@ -187,7 +198,7 @@
         "rows": [
           { "label": "Haiku", "value": 0.968, "text": "0.968", "tone": "specimen" },
           { "label": "Sonnet", "value": 0.994, "text": "0.994", "tone": "neutral" },
-          { "label": "Opus", "value": 1.0, "text": "1.000", "tone": "neutral" }
+          { "label": "Opus", "value": 1, "text": "1.000", "tone": "neutral" }
         ]
       }
     },

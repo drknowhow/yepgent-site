@@ -39,8 +39,14 @@ Source for [yepgent.com](https://yepgent.com) — Yep's personal site.
 ## Deploy
 
 Push to `main`. GitHub Actions: install deps → generate `js/config.js`
-from secrets → build the gallery catalog and the pages → `netlify deploy --prod`
-for yepgent.com, then the music.yepgent.com site.
+from secrets → build the gallery catalog → refresh project versions and dates
+in `catalogue.json` from GitHub and PyPI → build the pages → `netlify deploy
+--prod` for yepgent.com, then the music.yepgent.com site.
+
+The same workflow also runs daily at 11:17 UTC. That run refreshes
+`catalogue.json` and deploys yepgent.com only when the result differs from the
+live `/catalogue.json`, so a release in a listed repo reaches the site within a
+day without a commit here.
 
 GitHub Actions secrets:
 - `NETLIFY_AUTH_TOKEN`, `NETLIFY_SITE_ID`
