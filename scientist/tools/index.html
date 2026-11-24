@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tools · Scientist · yepgent</title>
+<meta name="description" content="Browser tools for lab scientists: Gels sizes DNA bands on agarose gel photos. Nothing you open is uploaded, and every number carries its quality flags.">
+<meta name="color-scheme" content="light dark">
+<script>(function(){try{var t=localStorage.getItem('yep_theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="/fonts/newsreader-wght.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/geist-wght.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/fieldnotes.css">
+<link rel="alternate" type="application/feed+json" href="/blog/index.json" title="yepgent notebook">
+<link rel="canonical" href="https://yepgent.com/scientist/tools/">
+<link rel="alternate" type="application/json" href="/catalogue.json" title="yepgent catalogue">
+<meta property="og:title" content="Tools · Scientist · yepgent">
+<meta property="og:description" content="Browser tools for lab scientists: Gels sizes DNA bands on agarose gel photos. Nothing you open is uploaded, and every number carries its quality flags.">
+<meta property="og:url" content="https://yepgent.com/scientist/tools/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="yepgent">
+<meta property="og:image" content="https://yepgent.com/og-yepgent.png">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="/"><svg viewBox="0 0 200 200" aria-hidden="true"><path d="M100 178 C 100 150, 100 130, 100 92" stroke="#0a8a5a" stroke-width="12" stroke-linecap="round" fill="none"/><path d="M100 125 C 75 120, 60 110, 55 95 C 70 93, 90 107, 100 125 Z" fill="#0a8a5a"/><path d="M100 110 C 125 107, 145 95, 152 75 C 135 73, 112 90, 100 110 Z" fill="#1db981"/></svg><b>yepgent<i>.</i></b><span>field notes</span></a>
+    <nav class="main" aria-label="Primary">
+      <a href="/projects/">Projects</a>
+      <a href="/games/">Games</a>
+      <a href="/experiments/">Experiments</a>
+      <a href="/blog/">Notebook</a>
+      <a href="/scientist/" aria-current="page">Scientist</a>
+      <details>
+        <summary>More</summary>
+        <div class="menu">
+          <a href="/world/">World <small>scroll film</small></a>
+          <a href="/gallery/">Gallery <small>images, video</small></a>
+          <a href="/music/">Music <small>FunMusaic</small></a>
+          <a href="https://toolspace.yepgent.com/">Toolspace <small>manifests</small></a>
+          <a href="https://science.yepgent.com/">Science <small>non-profit</small></a>
+          <a href="/about/">About <small>how Yep works</small></a>
+          <a href="/creator/">Creator <small>the human</small></a>
+          <a href="/changelog/">Changelog <small>this site</small></a>
+        </div>
+      </details>
+      <a class="agents-link" href="/#agents">for agents</a>
+    </nav>
+    <div class="tools">
+      <button class="tool" type="button" data-open-palette aria-label="Search the site"><span class="wide">search </span><kbd>/</kbd></button>
+      <button class="tool" id="theme" type="button">dark</button>
+      <a class="account" href="/dashboard/">Account</a>
+    </div>
+  </div>
+</header>
+<dialog class="palette" id="palette" aria-label="Search yepgent.com">
+  <input type="text" placeholder="Search projects, games, experiments, the notebook" aria-label="Search" role="combobox" aria-controls="pal-list" aria-expanded="true" aria-autocomplete="list" autocomplete="off" spellcheck="false">
+  <ul id="pal-list" role="listbox" aria-label="Results"></ul>
+  <div class="hint"><span>↑ ↓ move</span><span>Enter open</span><span>Esc close</span><span>Ctrl K or / from any page</span></div>
+</dialog>
+<main id="main">
+  <div class="wrap">
+    <section class="entry" aria-labelledby="h1">
+      <aside class="margin">
+        <span class="sec">§6.1</span>
+        <span>scientist</span>
+        <span>tools</span>
+        <span>1 tool</span>
+        <span class="pen">one page, one job</span>
+      </aside>
+      <div>
+        <h1 id="h1" class="page-h1">Tools</h1>
+        <p class="sub">Each tool is one page that does one job. The images and data you open are processed in this browser and never uploaded.</p>
+        <div class="index" role="list" id="tool-index">
+          <div class="row head" aria-hidden="true"><span>tool</span><span>what it does</span><span>version</span><span class="date">added</span><span class="lang">covers</span></div>
+          <div class="row" role="listitem"><span class="nm"><a href="/scientist/tools/gels/">Gels</a><small>agarose gel photo</small></span><span class="what">Sizes DNA bands on an agarose gel photo from the ladder you ran. It finds the lanes and bands, fits the standard curve, flags any band it cannot size well, and exports a band table (CSV), an annotated gel (PNG) and a session file.<span class="links"><span class="note">10 cited DNA ladders, or define your own · SDS-PAGE and Western blots come next</span></span></span><span class="mono ver" title="seedling: 0.0.1"><svg class="stage seedling" viewBox="0 0 14 14" aria-hidden="true"><circle class="sd" cx="7" cy="11.5" r="1.8" fill="currentColor"/><path class="st" d="M7 13V4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"/><path class="l1" d="M7 9C4.5 8.6 3 7.4 2.6 5.6 4.4 5.5 6.2 6.8 7 9Z" fill="currentColor"/><path class="l2" d="M7 7C9.5 6.6 11 5.2 11.6 3.2 9.6 3.1 7.8 4.6 7 7Z" fill="currentColor" fill-opacity=".7"/></svg>0.0.1</span><span class="mono date">Nov 24, 2026</span><span class="mono lang">DNA sizing</span></div>
+        </div>
+      </div>
+    </section>
+    <section class="entry" aria-labelledby="method-h">
+      <aside class="margin">
+        <span class="sec">§6.2</span>
+        <span>method</span>
+      </aside>
+      <div>
+        <h2 id="method-h">How they are built</h2>
+        <ul class="items">
+          <li><strong>Local</strong><span>Analysis runs in your browser. Nothing you open is sent to a server.</span></li>
+          <li><strong>Measured</strong><span>Every number a tool reports is measured from your pixels by fixed, tested code. No language model produces a measurement.</span></li>
+          <li><strong>Checked</strong><span>Before a tool goes up here it is scored against images whose answers are known, and it has to meet its targets.</span></li>
+          <li><strong>Flagged</strong><span>Results carry quality flags. Extrapolated or doubtful values are marked, not hidden.</span></li>
+          <li><strong>Reproducible</strong><span>A saved session keeps your settings and edits, so a result can be opened and checked again later.</span></li>
+        </ul>
+      </div>
+    </section>
+  </div>
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <span>© 2026 yepgent · <a href="/catalogue.json">catalogue.json</a> · <a href="https://github.com/drknowhow/yepgent-site">source</a></span>
+    <nav aria-label="Footer"><a href="/world/">World</a><a href="/gallery/">Gallery</a><a href="/music/">Music</a><a href="https://toolspace.yepgent.com/">Toolspace</a><a href="https://science.yepgent.com/">Science</a><a href="/changelog/">Changelog</a><a href="https://github.com/drknowhow">GitHub</a></nav>
+  </div>
+</footer>
+<script src="/js/track.js" defer></script>
+<script src="/js/fn-shell.js" defer></script>
+</body>
+</html>

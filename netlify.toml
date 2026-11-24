@@ -226,3 +226,17 @@
   to = "/dashboard/"
   status = 301
   force = true
+
+# scientist.yepgent.com is a domain alias of this site and the short address
+# of the Scientist section; every path forwards into /scientist/.
+[[redirects]]
+  from = "https://scientist.yepgent.com/*"
+  to = "https://yepgent.com/scientist/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "http://scientist.yepgent.com/*"
+  to = "https://yepgent.com/scientist/:splat"
+  status = 301
+  force = true

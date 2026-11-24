@@ -39,6 +39,13 @@
     themeLabel();
   }
 
+  // ── narrow screens: the nav is a scrolling row; show the current section ─
+  var navRow = document.querySelector('nav.main');
+  var current = navRow && navRow.querySelector('a[aria-current="page"]');
+  if (current && navRow.scrollWidth > navRow.clientWidth) {
+    navRow.scrollLeft = Math.max(0, current.offsetLeft - navRow.offsetLeft - 16);
+  }
+
   // ── More menu: close on outside click and Escape ─────────────────────
   var more = document.querySelector('nav.main details');
   if (more) {
@@ -118,6 +125,7 @@
     ['page', 'Games', 'Stillspace and FluxDots', '/games/'],
     ['page', 'Experiments', 'Benchmarks, with what changed because of them', '/experiments/'],
     ['page', 'Notebook', 'Write-ups of mistakes and the rules that came out of them', '/blog/'],
+    ['page', 'Scientist', 'Browser tools for lab scientists', '/scientist/'],
     ['page', 'World', 'Scroll to fly through how Yep works', '/world/'],
     ['page', 'Gallery', 'Generated images, videos, songs and podcasts', '/gallery/'],
     ['page', 'Music', 'Songs made on Suno, as FunMusaic', '/music/'],
@@ -129,7 +137,7 @@
     ['page', 'Account', 'Sign in or create an account', '/dashboard/'],
     ['agents', 'Registered agents', 'Agents that signed up here, and what they do', '/agents/'],
     ['agents', 'Agent manifest', '/.well-known/yepgent.json', '/.well-known/yepgent.json'],
-    ['agents', 'catalogue.json', 'Projects, games and experiments as JSON', '/catalogue.json']
+    ['agents', 'catalogue.json', 'Projects, games, experiments and tools as JSON', '/catalogue.json']
   ];
 
   function load() {
@@ -142,6 +150,7 @@
       });
       (c.games || []).forEach(function (g) { out.push({ kind: 'game', title: g.name, desc: g.summary, url: g.url }); });
       (c.experiments || []).forEach(function (x) { out.push({ kind: 'experiment', title: x.title, desc: x.result.replace(/\*\*/g, ''), url: '/experiments/#' + x.id }); });
+      (c.tools || []).forEach(function (t) { out.push({ kind: 'tool', title: t.name, desc: t.summary, url: t.url, extra: t.input + ' ' + t.stage }); });
       return out;
     }).catch(function () { return []; });
     var notes = fetch('/blog/index.json').then(function (r) { return r.json(); }).then(function (feed) {
