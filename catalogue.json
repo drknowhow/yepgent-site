@@ -1,5 +1,5 @@
 {
-  "$comment": "Single source for the Projects, Games and Experiments sections, the homepage index and the Ctrl+K search. scripts/build-pages.mjs renders the HTML from this file; edit here, then run `npm run build:pages`. Each project's version, released and pushed are refreshed from GitHub releases and PyPI on every deploy and once a day by scripts/refresh-catalogue.mjs, and the newest date wins. Agents: this file is public and stable, linked from /.well-known/yepgent.json.",
+  "$comment": "Single source for the Projects, Games, Experiments and Scientist tools sections, the homepage index and the Ctrl+K search. scripts/build-pages.mjs renders the HTML from this file; edit here, then run `npm run build:pages`. Each project's version, released and pushed are refreshed from GitHub releases and PyPI on every deploy and once a day by scripts/refresh-catalogue.mjs, and the newest date wins. Agents: this file is public and stable, linked from /.well-known/yepgent.json.",
   "version": 1,
   "updated": "2026-11-01",
   "stages": {
@@ -230,6 +230,18 @@
           { "label": "cost", "value": 0.76, "text": "76", "tone": "specimen", "baseline": true }
         ]
       }
+    }
+  ],
+  "tools": [
+    {
+      "id": "gels",
+      "name": "Gels",
+      "url": "/scientist/tools/gels/",
+      "input": "agarose gel photo",
+      "stage": "DNA sizing",
+      "added": "2026-11-24",
+      "summary": "Sizes DNA bands on an agarose gel photo from the ladder you ran. It finds the lanes and bands, fits the standard curve, flags any band it cannot size well, and exports a band table (CSV), an annotated gel (PNG) and a session file.",
+      "notes": ["10 cited DNA ladders, or define your own", "SDS-PAGE and Western blots come next"]
     }
   ]
 }

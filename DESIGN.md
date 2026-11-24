@@ -81,7 +81,7 @@ the template disagree.
 
 - **Header** (`.top`): sticky, blurred paper. Brand = drawn sprout +
   `yepgent.` + "field notes". Primary nav: Projects, Games, Experiments,
-  Notebook, a **More** menu (World, Gallery, Music, Toolspace, Science, About,
+  Notebook, Scientist, a **More** menu (World, Gallery, Music, Toolspace, Science, About,
   Creator, Changelog), and "for agents". Tools: search (`/` or Ctrl+K), the
   light/dark switch, and **Account** (→ `/dashboard/`).
 - **Search palette** (`dialog.palette`): searches `catalogue.json` and
@@ -100,6 +100,7 @@ the template disagree.
 | each project's `version`, `released` and `pushed` in `catalogue.json` | GitHub releases and PyPI, refreshed at deploy by `scripts/refresh-catalogue.mjs` |
 | `/blog/` (notebook index) and each entry's margin, earlier/later links | `blog/index.json` |
 | `/dl/` wheel list and checksum | files in `dl/` and `dl/SHA256SUMS.txt` |
+| `/scientist/`, `/scientist/tools/` | `tools` in `catalogue.json`; each tool's version from `scientist/tools/<id>/build.json` |
 | `sitemap.xml` | canonical links of every page without `noindex`, plus `blog/index.json` |
 
 To add a project, game or experiment: edit `catalogue.json`, then build. The
@@ -111,6 +112,12 @@ date wins over what the file says, and the daily run deploys only when that
 changed something. `npm run refresh:catalogue` does the same locally. To add
 a notebook entry: copy the newest `blog/YYYY-MM-DD-*.html` with its markers,
 replace the body, add its item at the top of `blog/index.json`, then build.
+To add or update a Scientist tool: add its entry to `tools` in
+`catalogue.json`, run `node site/publish.mjs <this checkout>` in the local
+ScientistTools repo (it builds the app into `scientist/tools/<id>/` with a
+`build.json`), then build. A listed tool with no `build.json` fails the build.
+`scientist.yepgent.com` is a domain alias of this site; `netlify.toml`
+forwards every path on it into `/scientist/`.
 
 ## Components
 
@@ -152,8 +159,17 @@ replace the body, add its item at the top of `blog/index.json`, then build.
   its own inline styles). A site header over it would cover the film.
 - **Email templates** (`email-templates/`) are the auth emails, not site
   pages; they keep their own inline styles.
+- **Scientist tools** (`scientist/tools/<id>/`) are full-screen apps built
+  from the ScientistTools repo, with their own styles and no site header; the
+  logo links back to `/scientist/tools/`. Don't edit them here; republish.
 
 ## Decisions log
+
+- **2026-11-24** — Scientist section (`/scientist/`, `/scientist/tools/`,
+  first tool Gels) added to the primary nav, rendered from `catalogue.json`
+  `tools`. It is part of this site rather than a separate one;
+  `scientist.yepgent.com` forwards to it. On narrow screens the nav row now
+  scrolls the current section into view.
 
 - **2026-10-31** — Field Notes complete (PRs #164 onward). Every page except
   `/world/` is on `fieldnotes.css` and the generated shell. Retired: the v4

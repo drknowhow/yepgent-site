@@ -1,7 +1,7 @@
 name: Catalogue pages in sync
 
 # scripts/build-pages.mjs renders the homepage, /projects/, /games/,
-# /experiments/ and /blog/ from catalogue.json and blog/index.json. It also
+# /experiments/, /blog/ and /scientist/ from catalogue.json and blog/index.json. It also
 # fills the <!-- fn:NAME --> regions (shared head, nav, footer, entry links)
 # in every notebook post and in every other page that carries them, and the
 # /dl/ file list from dl/ and dl/SHA256SUMS.txt, and writes sitemap.xml. This
@@ -17,6 +17,7 @@ on:
       - "**.html"
       - "blog/**"
       - "dl/**"
+      - "scientist/**"
       - "sitemap.xml"
       - ".github/workflows/pages-check.yml"
 

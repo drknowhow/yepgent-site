@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Gels: DNA gel band sizing</title>
+    <meta name="description" content="Size DNA bands on an agarose gel photo from your ladder, in the browser. The image is never uploaded, and doubtful sizes are flagged." />
+    <script type="module" crossorigin src="/scientist/tools/gels/assets/index-CeZaW_rg.js"></script>
+    <link rel="stylesheet" crossorigin href="/scientist/tools/gels/assets/index-CubW016j.css">
+    <link rel="canonical" href="https://yepgent.com/scientist/tools/gels/">
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="../" title="All tools"><span class="logo" aria-hidden="true"></span>Gels</a>
+      <div class="file"><span id="file-name">No image</span> <span id="info" class="muted"></span></div>
+      <label class="ladder-pick" title="The ladder you ran"><span class="muted">Ladder</span><select id="ladder" class="field"></select></label>
+      <label class="btn">Open image<input type="file" id="file" accept=".png,.jpg,.jpeg,.tif,.tiff" hidden /></label>
+      <details class="menu" id="export-menu">
+        <summary class="btn ghost">Export</summary>
+        <div class="menu-pop">
+          <button id="export-csv" disabled>Band table (CSV)</button>
+          <button id="export-png" disabled>Annotated gel (PNG)</button>
+          <button id="export-session" disabled>Save session (JSON)</button>
+        </div>
+      </details>
+      <details class="menu" id="more-menu">
+        <summary class="btn ghost" aria-label="More options">More</summary>
+        <div class="menu-pop">
+          <label class="menu-file">Load a saved session…<input type="file" id="session-file" accept=".json" hidden /></label>
+          <button id="edit-ladder">Define your own ladder…</button>
+          <hr />
+          <label class="menu-check" title="Large ladder bands stayed in the well or merged at the top"><input type="checkbox" id="ran-off-top" /> Top ladder bands missing</label>
+          <label class="menu-check" title="Small ladder bands ran off the bottom of the gel"><input type="checkbox" id="ran-off-bottom" /> Bottom ladder bands ran off</label>
+          <label class="menu-check">Number of lanes <input id="lane-count" class="field num" type="number" min="1" max="60" placeholder="auto" /></label>
+          <hr />
+          <button id="reset-edits">Undo all my band edits</button>
+          <button id="theme">Switch light / dark</button>
+        </div>
+      </details>
+    </header>
+
+    <main class="bench">
+      <section class="viewer">
+        <div id="stage" class="stage">
+          <div id="empty" class="empty">
+            <div class="drop-card">
+              <div class="drop-icon" aria-hidden="true"></div>
+              <p class="drop-title">Drop a gel image here</p>
+              <p class="muted">PNG, JPEG or TIFF. It stays in this browser.</p>
+              <label class="btn">Choose a file<input type="file" id="file2" accept=".png,.jpg,.jpeg,.tif,.tiff" hidden /></label>
+            </div>
+          </div>
+          <div id="canvas-wrap" class="canvas-wrap" hidden>
+            <canvas id="view"></canvas>
+            <div id="lane-chips" class="lane-chips"></div>
+          </div>
+        </div>
+        <div id="notice" class="notice" role="status"></div>
+        <div class="toolbar" id="toolbar" hidden>
+          <button class="tb" id="zoom-out" title="Zoom out">−</button>
+          <button class="tb wide" id="zoom-fit" title="Fit to window"><span id="zoom-label">100%</span></button>
+          <button class="tb" id="zoom-in" title="Zoom in">+</button>
+        </div>
+      </section>
+
+      <aside class="panel" id="panel">
+        <div id="inspect" class="inspect"></div>
+        <div class="curve-box" id="curve-box">
+          <h2>Standard curve</h2>
+          <canvas id="curve"></canvas>
+        </div>
+      </aside>
+    </main>
+
+    <section class="drawer" id="drawer">
+      <div class="drawer-head">
+        <button class="drawer-toggle" id="drawer-toggle" aria-expanded="false"><span class="caret"></span>All bands <span id="band-count" class="count">0</span></button>
+        <span class="drawer-filters" id="drawer-filters" hidden>
+          <label class="inline muted small">Lane <select id="filter-lane" class="field small"><option value="">all</option></select></label>
+          <label class="inline muted small"><input type="checkbox" id="filter-flagged" /> needs a check only</label>
+        </span>
+      </div>
+      <div class="drawer-body" id="drawer-body" hidden>
+        <table class="bands">
+          <thead>
+            <tr><th>Lane</th><th class="r">Size</th><th>Given size</th><th class="r">Error</th><th class="r">SNR</th><th>Check</th><th></th></tr>
+          </thead>
+          <tbody id="bands-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <dialog id="ladder-editor">
+      <form method="dialog" class="dialog">
+        <h2>Your ladder</h2>
+        <p class="muted small">Saved in this browser and in the session file.</p>
+        <label>Name <input type="text" id="le-name" class="field" placeholder="e.g. Lab 1 kb ladder" /></label>
+        <label>Band sizes in bp <textarea id="le-sizes" class="field" rows="2" placeholder="10000, 8000, 6000, 5000, 4000, 3000, 2000, 1500, 1000, 500"></textarea></label>
+        <details class="more">
+          <summary class="muted small">Optional: brighter bands and amounts</summary>
+          <label>Brighter reference bands <input type="text" id="le-ref" class="field" placeholder="3000, 1000" /></label>
+          <label>ng per band, same order as the sizes <input type="text" id="le-ng" class="field" /></label>
+          <label>for this much ladder loaded (ng) <input type="text" id="le-load" class="field" /></label>
+        </details>
+        <div id="ladder-problems" class="problems"></div>
+        <div class="dialog-actions">
+          <button id="le-delete" type="button" class="btn ghost danger">Delete</button>
+          <span class="grow"></span>
+          <button id="le-close" type="button" class="btn ghost">Cancel</button>
+          <button id="le-save" type="button" class="btn">Use this ladder</button>
+        </div>
+      </form>
+    </dialog>
+  </body>
+</html>

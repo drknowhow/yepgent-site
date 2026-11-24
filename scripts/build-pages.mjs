@@ -62,6 +62,7 @@ const PRIMARY = [
   ['/games/', 'Games'],
   ['/experiments/', 'Experiments'],
   ['/blog/', 'Notebook'],
+  ['/scientist/', 'Scientist'],
 ];
 const MORE = [
   ['/world/', 'World', 'scroll film'],
@@ -326,6 +327,97 @@ function experimentsPage(cat) {
         <h1 id="h1" class="page-h1">Measured, <em>then written up.</em></h1>
         <p class="sub">Questions that came up while building Yep and C3, answered with a benchmark. Each one says what we changed because of it.</p>
         ${results(cat.experiments)}
+      </div>
+    </section>
+  </div>
+</main>` + footer(cat.updated.slice(0, 4));
+}
+
+// ── scientist ────────────────────────────────────────────────────────────
+// Each tool in catalogue.json is a built app in scientist/tools/<id>/, put
+// there by ScientistTools' site/publish.mjs together with a build.json
+// ({ version, commit, built }). A tool without one fails the build.
+export async function toolBuilds(cat) {
+  const out = {};
+  for (const t of cat.tools || []) {
+    const file = resolve(ROOT, 'scientist', 'tools', t.id, 'build.json');
+    try {
+      out[t.id] = JSON.parse(await readFile(file, 'utf8'));
+    } catch {
+      throw new Error(`catalogue.json tool "${t.id}" has no scientist/tools/${t.id}/build.json. Publish it from ScientistTools (node site/publish.mjs <this checkout>), then run npm run build:pages.`);
+    }
+  }
+  return out;
+}
+
+export function toolRows(tools, builds) {
+  const head = '<div class="row head" aria-hidden="true"><span>tool</span><span>what it does</span><span>version</span><span class="date">added</span><span class="lang">covers</span></div>';
+  const rows = tools.map((t) => {
+    const v = builds[t.id]?.version;
+    const notes = (t.notes || []).map(esc).join(' · ');
+    return `<div class="row" role="listitem"><span class="nm"><a href="${esc(t.url)}">${esc(t.name)}</a><small>${esc(t.input)}</small></span><span class="what">${esc(t.summary)}${notes ? `<span class="links"><span class="note">${notes}</span></span>` : ''}</span><span class="mono ver" title="${stageOf(v)}: ${esc(v)}">${stageGlyph(stageOf(v))}${esc(v)}</span><span class="mono date">${day(t.added)}</span><span class="mono lang">${esc(t.stage)}</span></div>`;
+  });
+  return `<div class="index" role="list" id="tool-index">
+          ${head}
+          ${rows.join('\n          ')}
+        </div>`;
+}
+
+const toolCount = (cat) => { const n = (cat.tools || []).length; return `${n} tool${n === 1 ? '' : 's'}`; };
+
+function scientistPage(cat, builds) {
+  const first = cat.tools[0];
+  return head({ title: 'Scientist · yepgent', description: 'Small browser tools for lab scientists, made by Yep. Your images stay on your computer, and every number comes with its quality flags.', path: '/scientist/' })
+    + header('/scientist/') + `
+<main id="main">
+  <div class="wrap">
+    <section class="entry" aria-labelledby="h1">
+      ${margin(['§6', 'scientist', 'opened Nov 24, 2026'], 'tools first; experiments, papers and notes to follow')}
+      <div>
+        <h1 id="h1" class="page-h1">Tools for the <em>bench.</em></h1>
+        <p class="sub">Small web tools for lab scientists. Each one does one job, runs in your browser, and tells you how far to trust each number it gives.</p>
+        <div class="ctas"><a class="btn primary" href="/scientist/tools/">Browse the tools</a>${first ? `<a class="btn line" href="${esc(first.url)}">Open ${esc(first.name)} <small>${esc(first.stage)}</small></a>` : ''}</div>
+      </div>
+    </section>
+    <section class="entry" aria-labelledby="tools-h">
+      ${margin(['§6.1', 'tools', toolCount(cat)])}
+      <div>
+        <h2 id="tools-h">Tools</h2>
+        ${toolRows(cat.tools, builds)}
+        <div class="index-foot"><span>Your images and data stay in this browser.</span><a href="/scientist/tools/">All tools and how they are built</a></div>
+      </div>
+    </section>
+  </div>
+</main>` + footer(cat.updated.slice(0, 4));
+}
+
+function scientistToolsPage(cat, builds) {
+  const items = [
+    ['Local', 'Analysis runs in your browser. Nothing you open is sent to a server.'],
+    ['Measured', 'Every number a tool reports is measured from your pixels by fixed, tested code. No language model produces a measurement.'],
+    ['Checked', 'Before a tool goes up here it is scored against images whose answers are known, and it has to meet its targets.'],
+    ['Flagged', 'Results carry quality flags. Extrapolated or doubtful values are marked, not hidden.'],
+    ['Reproducible', 'A saved session keeps your settings and edits, so a result can be opened and checked again later.'],
+  ];
+  return head({ title: 'Tools · Scientist · yepgent', description: 'Browser tools for lab scientists: Gels sizes DNA bands on agarose gel photos. Nothing you open is uploaded, and every number carries its quality flags.', path: '/scientist/tools/' })
+    + header('/scientist/') + `
+<main id="main">
+  <div class="wrap">
+    <section class="entry" aria-labelledby="h1">
+      ${margin(['§6.1', 'scientist', 'tools', toolCount(cat)], 'one page, one job')}
+      <div>
+        <h1 id="h1" class="page-h1">Tools</h1>
+        <p class="sub">Each tool is one page that does one job. The images and data you open are processed in this browser and never uploaded.</p>
+        ${toolRows(cat.tools, builds)}
+      </div>
+    </section>
+    <section class="entry" aria-labelledby="method-h">
+      ${margin(['§6.2', 'method'])}
+      <div>
+        <h2 id="method-h">How they are built</h2>
+        <ul class="items">
+          ${items.map(([k, v]) => `<li><strong>${k}</strong><span>${v}</span></li>`).join('\n          ')}
+        </ul>
       </div>
     </section>
   </div>
@@ -659,7 +751,9 @@ const SITEMAP_FILES = ['https://yepgent.com/catalogue.json', 'https://yepgent.co
 
 export async function sitemap(feed, rendered = {}) {
   const pages = [];
-  for (const rel of await htmlFiles()) {
+  // Pages rendered in this run count even before they exist on disk.
+  const files = new Set([...(await htmlFiles()), ...Object.keys(rendered).filter((r) => r.endsWith('.html'))]);
+  for (const rel of files) {
     if (rel.startsWith('blog/') && rel !== 'blog/index.html') continue; // entries come from the feed
     const html = rendered[rel] ?? (await readFile(resolve(ROOT, rel), 'utf8'));
     if (/<meta name="robots" content="[^"]*noindex/i.test(html)) continue;
@@ -691,20 +785,23 @@ export async function loadFeed() {
   return JSON.parse(await readFile(resolve(ROOT, 'blog/index.json'), 'utf8'));
 }
 
-export function pages(cat, feed) {
+export function pages(cat, feed, builds = {}) {
   return {
     'index.html': homePage(cat, feed),
     'projects/index.html': projectsPage(cat),
     'games/index.html': gamesPage(cat),
     'experiments/index.html': experimentsPage(cat),
     'blog/index.html': notebookPage(feed, cat.updated.slice(0, 4)),
+    'scientist/index.html': scientistPage(cat, builds),
+    'scientist/tools/index.html': scientistToolsPage(cat, builds),
   };
 }
 
 async function main() {
   const [cat, feed] = await Promise.all([loadCatalogue(), loadFeed()]);
   const year = cat.updated.slice(0, 4);
-  const out = { ...pages(cat, feed), ...(await postPages(feed, year)), ...(await markedPages(year)) };
+  const builds = await toolBuilds(cat);
+  const out = { ...pages(cat, feed, builds), ...(await postPages(feed, year)), ...(await markedPages(year)) };
   out['sitemap.xml'] = await sitemap(feed, out);
   const stale = [];
   for (const [rel, html] of Object.entries(out)) {
